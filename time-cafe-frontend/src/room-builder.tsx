@@ -1,10 +1,6 @@
-// pages/room-builder.tsx
 import React, { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Rect, Group, Text, Transformer } from "react-konva";
 import { v4 as uuidv4 } from "uuid";
-
-// Установите: npm i uuid
-// Или замените uuidv4() любым генератором id
 
 type ItemType = "wall" | "table" | "sofa";
 
@@ -31,7 +27,6 @@ export default function RoomBuilder() {
   const layerRef = useRef<any>(null);
   const trRef = useRef<any>(null);
 
-  // Attach transformer to selected node
   useEffect(() => {
     if (!trRef.current) return;
     const stage = stageRef.current;
@@ -52,7 +47,6 @@ export default function RoomBuilder() {
     }
   }, [selectedId, items]);
 
-  // Keyboard handlers: Delete to remove, R rotate selected by 15°
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === "Delete" || e.key === "Backspace") {
@@ -73,10 +67,8 @@ export default function RoomBuilder() {
     return () => window.removeEventListener("keydown", onKey);
   }, [selectedId]);
 
-  // Utility: snap function
   const snap = (value: number) => (snapToGrid ? Math.round(value / GRID) * GRID : value);
 
-  // Adders
   const addWall = () => {
     const id = uuidv4();
     const item: Item = {
@@ -85,7 +77,7 @@ export default function RoomBuilder() {
       x: 50,
       y: 50,
       width: 240,
-      height: 8, // thin wall
+      height: 8,
       rotation: 0,
       fill: "#444",
       name: "Wall",
@@ -128,25 +120,20 @@ export default function RoomBuilder() {
     setSelectedId(id);
   };
 
-  // Update item on drag/transform
   const updateItem = (id: string, newProps: Partial<Item>) => {
     setItems((prev) => prev.map((it) => (it.id === id ? { ...it, ...newProps } : it)));
   };
 
-  // Deselect when clicked outside
   const onStageMouseDown = (e: any) => {
-    // clicked on empty area - clear selection
     if (e.target === e.target.getStage()) {
       setSelectedId(null);
       return;
     }
-    // clicked on shape
     const clickedOn = e.target;
     const id = clickedOn.attrs.id;
     if (id) setSelectedId(id);
   };
 
-  // Draw grid
   const GridLayer = () => {
     const lines = [];
     const WIDTH = 1200;
@@ -319,7 +306,6 @@ export default function RoomBuilder() {
                 );
               }
 
-              // table
               if (it.type === "table") {
                 return (
                   <Group key={it.id}>
@@ -341,7 +327,6 @@ export default function RoomBuilder() {
                 );
               }
 
-              // sofa
               if (it.type === "sofa") {
                 return (
                   <Group key={it.id}>
