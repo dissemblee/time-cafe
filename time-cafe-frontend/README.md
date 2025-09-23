@@ -7,17 +7,17 @@
   - Таким образом получится изолировать маршруты от фактической реализации и избежать захламления папки `app`.
 
   **Нейминг:**
-    - **Файлы:** всегда `page.tsx`  
-    - **Функции:** `PascalCase + Route` → `LandingRoute()`  
-    - **Пример:** `app/landing/page.tsx -> LandingRoute()`
+  - **Файлы:** всегда `page.tsx`  
+  - **Функции:** `PascalCase + Route` → `LandingRoute()`  
+  - **Пример:** `app/landing/page.tsx -> LandingRoute()`
 
 ## 📂 Папка `pages`
   - Фактическая реализация страниц.  
 
   **Нейминг:**
-    - **Файлы:** `PascalCase + Page.tsx` → `LandingPage.tsx`, `LoginPage.tsx`  
-    - **Функции:** совпадает с именем файла, `PascalCase`  
-    - **Примеры:** `pages/landing/LandingPage.tsx -> LandingPage()`, `pages/LoginPage.tsx -> LoginPage()`
+  - **Файлы:** `PascalCase + Page.tsx` → `LandingPage.tsx`, `LoginPage.tsx`  
+  - **Функции:** совпадает с именем файла, `PascalCase`  
+  - **Примеры:** `pages/landing/LandingPage.tsx -> LandingPage()`, `pages/LoginPage.tsx -> LoginPage()`
 
 ## 📂 Папка `widgets` — Составные UI компоненты.
 
