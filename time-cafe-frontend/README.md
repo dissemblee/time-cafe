@@ -27,13 +27,13 @@
 ## 📂 Папка `features` — Блоки
   **Нейминг:**
   - **Файлы UI:** `PascalCase` → `LoginForm.tsx`, `NotificationList.tsx`  
-  - **Файлы state / model / API:** `camelCase` → `authSlice.ts`  
   - **Пример:** ` features/auth/ui/LoginForm.tsx -> LoginForm()`, `features/auth/model/authSlice.ts`  
 
 ## 📂 Папка `entities` — доменные объекты
   **Нейминг:**
   - **Модели / типы:** `PascalCase` → `User.ts`, `Product.ts`  
-  - **API:** `camelCase` → `userApi.ts`  
+  - **API:** `camel.case` → `user.api.ts`  
+  - **Файлы state / model:** `camelCase` → `authSlice.ts`  
   - **Утилиты:** `camelCase` → `userUtils.ts`  
   - **Пример:** `entities/user/model.ts || api.ts || utils.ts`
 

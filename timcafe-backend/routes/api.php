@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\BookingController;
@@ -17,6 +19,11 @@ use App\Http\Controllers\RootController;
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Auth
+Route::post('/register', [RegisteredUserController::class, 'store']);
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth:sanctum');
 
 // Users
 Route::apiResource('users', UserController::class);
@@ -43,7 +50,7 @@ Route::apiResource('food-items', FoodItemController::class);
 Route::apiResource('board-games', BoardGameController::class);
 
 // Staff
-Route::apiResource('staff', StaffController::class);
+Route::apiResource('staffs', StaffController::class);
 
 // Room Layout Items
 Route::apiResource('room-layout-items', RoomLayoutItemController::class);

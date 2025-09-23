@@ -13,8 +13,7 @@ class Transaction extends Model
   protected $fillable = [
     'client_id',
     'table_id',
-    'hours',
-    'price',
+    'booking_id',
     'status',
   ];
 
@@ -26,5 +25,10 @@ class Transaction extends Model
   public function table()
   {
     return $this->belongsTo(Table::class);
+  }
+
+  public function booking()
+  {
+    return $this->belongsTo(Booking::class);
   }
 }

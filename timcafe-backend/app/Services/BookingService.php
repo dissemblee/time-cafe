@@ -16,6 +16,8 @@ class BookingService extends BaseService
             'start_time' => 'required|date',
             'end_time' => 'required|date|after_or_equal:start_time',
             'status' => 'required|string',
+            'price' => 'required|numeric|min:1',
+            'hours' => 'required|numeric|min:1',
         ];
     }
 }
