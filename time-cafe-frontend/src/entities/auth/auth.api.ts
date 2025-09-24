@@ -8,7 +8,7 @@ import { LoginDto, RegisterDto, RegisterResponseDto } from './auth.dto'
  * @returns {Promise<RegisterResponseDto>} - A promise of the registered user.
  */
 export const register = (data: RegisterDto) => {
-  return $api<RegisterResponseDto>({
+  return $api<RegisterResponseDto, RegisterDto>({
     endPoint: "register",
     method: "POST",
     data,

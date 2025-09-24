@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.9.0",
     "axios": "^1.12.2",
     "konva": "^10.0.2",
     "lucide-react": "^0.544.0",
