@@ -1,2 +1,2 @@
-export { createRoom, deleteRoom, getAllRooms, getRoom, updateRoom} from "./room.api"
-export type {CreateRoomDto, RoomDto, UpdateRoomDto} from "./room.dto"
+export { roomsApi, useCreateRoomMutation, useDeleteRoomMutation, useGetAllRoomsQuery, useGetRoomQuery, useUpdateRoomMutation } from "./room.api"
+export type { CreateRoomDto, RoomDto, UpdateRoomDto } from "./room.dto"
