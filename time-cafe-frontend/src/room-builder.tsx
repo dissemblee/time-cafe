@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Rect, Group, Text, Transformer } from "react-konva";
 import { v4 as uuidv4 } from "uuid";
