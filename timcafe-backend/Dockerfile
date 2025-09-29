@@ -20,6 +20,8 @@ COPY --chown=www-data:www-data . .
 
 RUN composer install
 
+RUN php artisan migrate:refresh
+
 EXPOSE 9000
 
 CMD ["php-fpm"]
