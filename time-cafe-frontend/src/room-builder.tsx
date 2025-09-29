@@ -2,10 +2,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Stage, Layer, Rect, Group, Text, Transformer } from "react-konva";
 import { v4 as uuidv4 } from "uuid";
+import { SvgItem } from "./SvgItem";
 
 type ItemType = "wall" | "table" | "sofa";
 
-type Item = {
+export type Item = {
   id: string;
   type: ItemType;
   x: number;
@@ -15,6 +16,7 @@ type Item = {
   rotation: number;
   fill?: string;
   name?: string;
+  svg?: string;
 };
 
 const GRID = 20;
@@ -116,6 +118,7 @@ export default function RoomBuilder() {
       rotation: 0,
       fill: "#7aa6ff",
       name: "Sofa",
+      svg: `<svg viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#000000" stroke-width="0.576" transform="matrix(1, 0, 0, 1, 0, 0)rotate(0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="1.6799999999999997"> <path d="M19.7497 12.75C20.7166 8.86578 21.1456 6.84737 20.134 5.42821C20.0665 5.33345 19.9948 5.24169 19.9193 5.15317C18.7216 3.75 16.4811 3.75 11.9999 3.75C7.5188 3.75 5.27824 3.75 4.08059 5.15317C4.00504 5.24169 3.93339 5.33345 3.86584 5.42821C2.85424 6.84737 3.28329 8.86578 4.25017 12.75H19.7497Z" fill="#9e9fa3"></path> <path d="M4.75 17.75V19.75C4.75 20.1642 4.41421 20.5 4 20.5C3.58579 20.5 3.25 20.1642 3.25 19.75V17.6046C2.51704 17.3079 2 16.5893 2 15.75C2 14.6454 2.89543 13.75 4 13.75H20C21.1046 13.75 22 14.6454 22 15.75C22 16.5893 21.483 17.3079 20.75 17.6046V19.75C20.75 20.1642 20.4142 20.5 20 20.5C19.5858 20.5 19.25 20.1642 19.25 19.75V17.75H4.75Z" fill="#9e9fa3"></path> </g><g id="SVGRepo_iconCarrier"> <path d="M19.7497 12.75C20.7166 8.86578 21.1456 6.84737 20.134 5.42821C20.0665 5.33345 19.9948 5.24169 19.9193 5.15317C18.7216 3.75 16.4811 3.75 11.9999 3.75C7.5188 3.75 5.27824 3.75 4.08059 5.15317C4.00504 5.24169 3.93339 5.33345 3.86584 5.42821C2.85424 6.84737 3.28329 8.86578 4.25017 12.75H19.7497Z" fill="#9e9fa3"></path> <path d="M4.75 17.75V19.75C4.75 20.1642 4.41421 20.5 4 20.5C3.58579 20.5 3.25 20.1642 3.25 19.75V17.6046C2.51704 17.3079 2 16.5893 2 15.75C2 14.6454 2.89543 13.75 4 13.75H20C21.1046 13.75 22 14.6454 22 15.75C22 16.5893 21.483 17.3079 20.75 17.6046V19.75C20.75 20.1642 20.4142 20.5 20 20.5C19.5858 20.5 19.25 20.1642 19.25 19.75V17.75H4.75Z" fill="#9e9fa3"></path> </g></svg>`
     };
     setItems((p) => [...p, item]);
     setSelectedId(id);
@@ -328,16 +331,10 @@ export default function RoomBuilder() {
                 );
               }
 
-              if (it.type === "sofa") {
+              if (it.type === "sofa" && it.svg) {
                 return (
                   <Group key={it.id}>
-                    <Rect
-                      {...commonProps}
-                      cornerRadius={10}
-                      fill={it.fill || "#7aa6ff"}
-                      stroke={isSelected ? "#1976d2" : undefined}
-                      strokeWidth={isSelected ? 2 : 0}
-                    />
+                    <SvgItem item={it} isSelected={isSelected} commonProps={commonProps} />
                     <Text
                       x={it.x + 8}
                       y={it.y + Math.max(6, it.height / 2 - 8)}
