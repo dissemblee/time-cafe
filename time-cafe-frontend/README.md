@@ -63,16 +63,19 @@
   ### **Элемент (Element)** -> Составная часть блока, не существует без блока.
     **Обозначение:** `block__element.`
     **Пример:**
+    ```scss
       .Header__logo {
         width: 120px;
       }
       .Header__nav {
         display: flex;
       }
+    ```
 
   ### **Модификатор (Modifier)** -> Вариант блока или элемента (цвет, состояние, размер).
     **Обозначение**: `block--modifier или block__element--modifier.`
     **Пример:**
+    ```scss
       .Button--primary {
         background-color: #344AEB;
       }
@@ -82,4 +85,5 @@
       .Header__nav--mobile {
         display: none;
       }
+    ```
 
