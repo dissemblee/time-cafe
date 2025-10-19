@@ -51,12 +51,14 @@
   ### **Блок (Block)** -> Основная часть.
   **Обозначение:** `BlockPascalCase.`
   **Пример:**
-  .Header {
-    @include flexCenter;
-    @include cardInfoBase;
-    padding: $value-9 $value-28;
-    background-color: #080A23;
-  }
+  css`
+    .Header {
+      @include flexCenter;
+      @include cardInfoBase;
+      padding: $value-9 $value-28;
+      background-color: #080A23;
+    }
+  `
 
   ### **Элемент (Element)** -> Составная часть блока, не существует без блока.
     **Обозначение:** `block__element.`
