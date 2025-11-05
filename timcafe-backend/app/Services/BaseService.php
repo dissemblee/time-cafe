@@ -10,34 +10,23 @@ abstract class BaseService
 {
     protected string $modelClass;
 
-    /**
-     * Получить все записи
-     */
-    public function all()
+    public function all(array $params = [])
     {
-        return $this->modelClass::all();
+        $perPage = $params['per_page'] ?? 10;
+        return $this->modelClass::paginate($perPage);
     }
 
-    /**
-     * Найти запись по id
-     */
     public function find(int $id): ?Model
     {
         return $this->modelClass::find($id);
     }
 
-    /**
-     * Создать запись
-     */
     public function create(array $data): Model
     {
         $this->validate($data);
         return $this->modelClass::create($data);
     }
 
-    /**
-     * Обновить запись
-     */
     public function update(int $id, array $data): ?Model
     {
         $model = $this->find($id);
@@ -51,9 +40,6 @@ abstract class BaseService
         return $model;
     }
 
-    /**
-     * Удалить запись
-     */
     public function delete(int $id): bool
     {
         $model = $this->find($id);
@@ -64,9 +50,6 @@ abstract class BaseService
         return $model->delete();
     }
 
-    /**
-     * Валидировать данные
-     */
     protected function validate(array $data, int $id = null)
     {
         $rules = $this->rules($id);
@@ -77,8 +60,5 @@ abstract class BaseService
         }
     }
 
-    /**
-     * Определить правила валидации в конкретном сервисе
-     */
     abstract protected function rules(int $id = null): array;
 }

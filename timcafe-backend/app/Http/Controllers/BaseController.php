@@ -20,7 +20,13 @@ class BaseController extends Controller
         $data = $this->service->all($request->all());
         return response()->json([
             'success' => true,
-            'data' => $data,
+            'data' => $data->items(),
+            'meta' => [
+                'current_page' => $data->currentPage(),
+                'per_page' => $data->perPage(),
+                'total' => $data->total(),
+                'last_page' => $data->lastPage(),
+            ],
         ]);
     }
 
