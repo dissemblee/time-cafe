@@ -12,13 +12,14 @@ class RoomLayoutItemService extends BaseService
     {
         return [
             'room_id' => 'required|exists:rooms,id',
-            'type' => 'required|string|max:255',
-            'table_id' => 'nullable|exists:tables,id',
-            'x' => 'required|numeric',
-            'y' => 'required|numeric',
-            'width' => 'required|numeric',
-            'height' => 'required|numeric',
-            'rotation' => 'nullable|numeric',
+            'items' => 'required|array|min:1',
+            'items.*.type' => 'required|string|max:255',
+            'items.*.table_id' => 'nullable|exists:tables,id',
+            'items.*.x' => 'required|numeric',
+            'items.*.y' => 'required|numeric',
+            'items.*.width' => 'required|numeric',
+            'items.*.height' => 'required|numeric',
+            'items.*.rotation' => 'nullable|numeric',
         ];
     }
 }

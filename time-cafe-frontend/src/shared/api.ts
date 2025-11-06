@@ -1,7 +1,15 @@
-import axios, { AxiosResponse } from "axios"
-import { fetchBaseQuery, BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query/react"
+import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
+import { BaseQueryFn } from "@reduxjs/toolkit/query/react";
+import { getCookie } from 'cookies-next';
 
-interface ApiArgs<TData = any> {
+interface ApiArgs {
+  url: string;
+  method?: "GET" | "POST" | "PUT" | "DELETE";
+  data?: any;
+  params?: Record<string, any>;
+}
+
+interface ApiArgsAxios<TData = any> {
   endPoint: string
   id?: number
   method: "GET" | "POST" | "PUT" | "DELETE"
@@ -9,24 +17,24 @@ interface ApiArgs<TData = any> {
   query?: Record<string, any>
 }
 
+/**
+ * Axios instance с правильными заголовками и withCredentials
+ */
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL, // без /api на конце
   withCredentials: true,
-})
+  headers: {
+    "Accept": "application/json",
+  },
+});
 
-// /**
-//  * Ensures that a CSRF cookie is set before making a request
-//  * that requires authentication. This is necessary because Next.js
-//  * does not send cookies with API requests by default.
-//  */
-// async function ensureCsrfCookie() {
-//   await axiosInstance.get("/sanctum/csrf-cookie")
-// }
-
+/**
+ * Обеспечивает наличие CSRF cookie перед POST/PUT/DELETE
+ */
 async function ensureCsrfCookie() {
-  await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/sanctum/csrf-cookie`, {
-    credentials: "include",
-  })
+  await axios.get(`${(process.env.NEXT_PUBLIC_BACKEND_URL ?? "").replace(/\/api\/?$/, "")}/sanctum/csrf-cookie`, {
+    withCredentials: true,
+  });
 }
 
 /**
@@ -38,7 +46,7 @@ async function ensureCsrfCookie() {
  * @throws {Error} - If there is an error with the request.
  */
 export async function $api<TResponse = any, TData = any>(
-  args: ApiArgs<TData>
+  args: ApiArgsAxios<TData>
 ): Promise<AxiosResponse<TResponse>> {
   try {
 
@@ -60,28 +68,40 @@ export async function $api<TResponse = any, TData = any>(
   }
 }
 
-
-const rawBaseQuery = fetchBaseQuery({
-  baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
-  credentials: "include",
-})
-
+/**
+ * customBaseQuery для RTK Query
+ */
 export const customBaseQuery: BaseQueryFn<
-  string | FetchArgs,
+  ApiArgs,
   unknown,
-  FetchBaseQueryError
-> = async (args, api, extraOptions) => {
-  let method: string | undefined
+  { status?: number; data?: any }
+> = async ({ url, method = "GET", body, params }: any) => {
+  try {
+    if (method !== "GET") {
+      await ensureCsrfCookie();
+    }
 
-  if (typeof args === "string") {
-    method = "GET"
-  } else {
-    method = (args.method || "GET").toUpperCase()
+    const xsrfToken = getCookie("XSRF-TOKEN")?.toString();
+
+    const response = await axiosInstance.request({
+      url,
+      method,
+      data: body,
+      params,
+      headers: {
+        "Content-Type": "application/json",
+        ...(xsrfToken ? { "X-XSRF-TOKEN": xsrfToken } : {})
+      }
+    });
+
+    return { data: response.data };
+  } catch (err) {
+    const error = err as AxiosError;
+    return {
+      error: {
+        status: error.response?.status,
+        data: error.response?.data,
+      },
+    };
   }
-
-  if (method !== "GET") {
-    await ensureCsrfCookie()
-  }
-
-  return rawBaseQuery(args, api, extraOptions)
-}
+};
