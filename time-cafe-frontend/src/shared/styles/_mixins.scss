@@ -1,3 +1,6 @@
+// ДОБАВЬ ЭТУ СТРОКУ В НАЧАЛО ФАЙЛА
+@use './_variables' as *;
+
 @mixin flexCenter {
   display: flex;
   justify-content: center;
@@ -14,4 +17,40 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+@mixin glassEffect {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+@mixin glassCard {
+  @include glassEffect;
+  border-radius: 25px;
+  box-shadow: 0 0 30px rgba(100, 200, 255, 0.3);
+  transition: all 0.5s ease;
+}
+
+@mixin liquidButton {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(100, 200, 255, 0.15);
+  color: white;
+  border: 1px solid rgba(100, 200, 255, 0.4);
+  padding: 1.2rem 2.5rem;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  overflow: hidden;
+
+  &:hover {
+    box-shadow: 0 0 50px rgba(100, 200, 255, 0.5);
+    transform: translateY(-3px);
+    background: rgba(100, 200, 255, 0.25);
+  }
 }

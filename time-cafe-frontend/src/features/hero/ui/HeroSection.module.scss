@@ -1,0 +1,365 @@
+@use '../../../shared/styles/variables' as *;
+@use '../../../shared/styles/mixins' as *;
+
+.HeroSection {
+  @include glassEffect;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  margin: 2rem 20px 4rem;
+  padding: 4rem 3rem;
+  border-radius: 35px;
+  box-shadow: $glass-glow;
+  border: 1px solid $ultra-glass-border;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 300%;
+    height: 300%;
+    background: linear-gradient(45deg, transparent 40%, rgba(100, 200, 255, 0.05) 50%, transparent 60%);
+    animation: ultra-shine 4s infinite linear;
+    transform: rotate(45deg);
+  }
+
+  &__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(100, 200, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(180, 100, 255, 0.1) 0%, transparent 50%),
+      linear-gradient(135deg, #0a0a1a 0%, #151530 50%, #0a0a1a 100%);
+  }
+
+  &__layer1, &__layer2, &__layer3 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.02) 50%, transparent 70%);
+    animation: glass-shift 20s infinite linear;
+    filter: blur(40px);
+  }
+
+  &__layer2 { animation-delay: -7s; filter: blur(60px); }
+  &__layer3 { animation-delay: -14s; filter: blur(80px); }
+
+  &__bubble1, &__bubble2, &__bubble3, &__bubble4 {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(100, 200, 255, 0.2), transparent 50%);
+    animation: float-bubble 25s infinite ease-in-out;
+    filter: blur(20px);
+  }
+
+  &__bubble1 {
+    width: 400px;
+    height: 400px;
+    top: -100px;
+    left: -100px;
+    animation-delay: 0s;
+  }
+
+  &__bubble2 {
+    width: 300px;
+    height: 300px;
+    top: 50%;
+    right: -100px;
+    animation-delay: -8s;
+  }
+
+  &__bubble3 {
+    width: 350px;
+    height: 350px;
+    bottom: -100px;
+    left: 20%;
+    animation-delay: -16s;
+  }
+
+  &__bubble4 {
+    width: 250px;
+    height: 250px;
+    top: 20%;
+    right: 30%;
+    animation-delay: -12s;
+  }
+
+  &__content {
+    display: contents;
+  }
+
+  &__text {
+    position: relative;
+    z-index: 2;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(100, 200, 255, 0.1);
+    color: #64C8FF;
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(100, 200, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  &__badgeRefraction {
+    width: 12px;
+    height: 12px;
+    background: #64C8FF;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #64C8FF;
+    animation: pulse 2s infinite alternate;
+  }
+
+  &__title {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+  }
+
+  &__titleLine {
+    display: block;
+  }
+
+  &__titleAccent {
+    display: block;
+    background: $gradient-primary;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 30px rgba(100, 200, 255, 0.5);
+  }
+
+  &__description {
+    font-size: 1.3rem;
+    color: $glass-text-light;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+  }
+
+  &__stats {
+    display: flex;
+    gap: 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  &__stat {
+    text-align: center;
+    position: relative;
+    padding: 1.5rem 1rem;
+  }
+
+  &__statGlass {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 25px;
+    background: $ultra-glass;
+    border-radius: 8px;
+    border: 1px solid $ultra-glass-border;
+    overflow: hidden;
+  }
+
+  &__statDistortion {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 30%, rgba(100, 200, 255, 0.3) 50%, transparent 70%);
+    animation: distortion 3s infinite linear;
+  }
+
+  &__statValue {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #64C8FF;
+    margin: 1.5rem 0 0.8rem;
+    text-shadow: 0 0 20px rgba(100, 200, 255, 0.5);
+  }
+
+  &__statLabel {
+    font-size: 0.9rem;
+    color: $glass-text-light;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 1.2rem;
+  }
+
+  &__visual {
+    position: relative;
+    height: 450px;
+  }
+
+  &__consoleCard1, &__consoleCard2, &__consoleCard3 {
+    position: absolute;
+    padding: 2rem;
+    animation: float-glass 8s infinite ease-in-out;
+  }
+
+  &__consoleCard1 {
+    top: 0;
+    left: 0;
+    animation-delay: 0s;
+  }
+
+  &__consoleCard2 {
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    animation-delay: -2.5s;
+  }
+
+  &__consoleCard3 {
+    bottom: 0;
+    left: 20%;
+    animation-delay: -5s;
+  }
+
+  &__consoleContent {
+    text-align: center;
+  }
+
+  &__consoleIcon {
+    width: 70px;
+    height: 70px;
+    background: rgba(100, 200, 255, 0.1);
+    border-radius: 20px;
+    @include flexCenter;
+    margin: 0 auto 1rem;
+    font-size: 2rem;
+    color: #64C8FF;
+    border: 1px solid rgba(100, 200, 255, 0.3);
+  }
+
+  &__consoleTitle {
+    font-weight: 600;
+    color: $glass-text;
+    font-size: 1.1rem;
+  }
+}
+
+@keyframes ultra-shine {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+@keyframes glass-shift {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  25% {
+    transform: translateX(20px) translateY(20px);
+  }
+  50% {
+    transform: translateX(0) translateY(40px);
+  }
+  75% {
+    transform: translateX(-20px) translateY(20px);
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+}
+
+@keyframes float-bubble {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(50px, 30px) scale(1.1);
+  }
+  50% {
+    transform: translate(0, 60px) scale(1);
+  }
+  75% {
+    transform: translate(-50px, 30px) scale(1.1);
+  }
+}
+
+@keyframes float-glass {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-15px) rotate(2deg);
+  }
+  50% {
+    transform: translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateY(15px) rotate(-2deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes distortion {
+  0% {
+    transform: translateX(-100%) rotate(0deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(180deg);
+  }
+}
+
+// Адаптив
+@media (max-width: 1024px) {
+  .HeroSection {
+    grid-template-columns: 1fr;
+    
+    &__visual {
+      height: 350px;
+      order: -1;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .HeroSection {
+    &__title {
+      font-size: 3rem;
+    }
+    
+    &__stats {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    
+    &__actions {
+      flex-direction: column;
+    }
+  }
+}

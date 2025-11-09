@@ -1,0 +1,149 @@
+@use '../../shared/styles/variables' as *;
+@use '../../shared/styles/mixins' as *;
+
+.Header {
+  @include glassEffect;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  margin: 20px 20px 0;
+  border-radius: 25px;
+  box-shadow: $glass-glow;
+  border: 1px solid $ultra-glass-border;
+
+  &__nav {
+    @include flexBetween;
+    padding: 1.2rem 2rem;
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  &__logoCore {
+    position: relative;
+    width: 45px;
+    height: 45px;
+    background: $ultra-glass;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid $ultra-glass-border;
+  }
+
+  &__liquidAnimation {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 30%, rgba(100, 200, 255, 0.3) 50%, transparent 70%);
+    animation: liquid-flow 3s infinite linear;
+  }
+
+  &__logoText {
+    font-weight: 800;
+    font-size: 1.6rem;
+    background: $gradient-primary;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 20px rgba(100, 200, 255, 0.5);
+  }
+
+  &__links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: $glass-text-light;
+    font-weight: 500;
+    padding: 0.8rem 1.5rem;
+    border-radius: 15px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    background: $ultra-glass;
+    border: 1px solid $ultra-glass-border;
+
+    &:hover,
+    &--active {
+      color: $glass-text;
+      background: rgba(100, 200, 255, 0.1);
+      box-shadow: 0 0 20px rgba(100, 200, 255, 0.2);
+    }
+  }
+
+  &__linkLiquid {
+    width: 6px;
+    height: 6px;
+    background: #64C8FF;
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.4s ease;
+    box-shadow: 0 0 10px #64C8FF;
+  }
+
+  &__link:hover &__linkLiquid,
+  &__link--active &__linkLiquid {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  &__actionButton {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 1px solid $ultra-glass-border;
+    background: $ultra-glass;
+    color: $glass-text;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(30px);
+
+    &:hover {
+      background: rgba(100, 200, 255, 0.15);
+      box-shadow: $glass-glow;
+      transform: translateY(-2px) scale(1.05);
+    }
+  }
+}
+
+@keyframes liquid-flow {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(100%) skewX(-15deg);
+  }
+}
+
+// Адаптив
+@media (max-width: 768px) {
+  .Header {
+    &__links {
+      display: none;
+    }
+    
+    &__nav {
+      padding: 1rem;
+    }
+  }
+}

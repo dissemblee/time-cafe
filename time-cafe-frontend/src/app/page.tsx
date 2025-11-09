@@ -1,10 +1,5 @@
-"use client";
-import RoomBuilder from "@/room-builder";
+import { LandingPage } from '../pages/landing/LandingPage';
 
-export default function HomePage() {
-  return (
-     <main className="h-screen">
-      <RoomBuilder />
-    </main>
-  );
+export default function HomeRoute() {
+  return <LandingPage />;
 }

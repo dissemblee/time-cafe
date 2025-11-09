@@ -1,0 +1,192 @@
+@use '../../shared/styles/variables' as *;
+@use '../../shared/styles/mixins' as *;
+
+.RoomsPage {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+
+  // Фон как на главной
+  &__universe {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(100, 200, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(180, 100, 255, 0.1) 0%, transparent 50%),
+      linear-gradient(135deg, #0a0a1a 0%, #151530 50%, #0a0a1a 100%);
+  }
+
+  // Анимированные элементы
+  &__layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.02) 50%, transparent 70%);
+    animation: glass-shift 20s infinite linear;
+  }
+
+  &__layer1 { @extend .RoomsPage__layer; animation-delay: 0s; filter: blur(40px); }
+  &__layer2 { @extend .RoomsPage__layer; animation-delay: -7s; filter: blur(60px); }
+  &__layer3 { @extend .RoomsPage__layer; animation-delay: -14s; filter: blur(80px); }
+
+  &__bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(100, 200, 255, 0.2), transparent 50%);
+    animation: float-bubble 25s infinite ease-in-out;
+    filter: blur(20px);
+  }
+
+  &__bubble1 { @extend .RoomsPage__bubble; width: 400px; height: 400px; top: -100px; left: -100px; animation-delay: 0s; }
+  &__bubble2 { @extend .RoomsPage__bubble; width: 300px; height: 300px; top: 50%; right: -100px; animation-delay: -8s; }
+  &__bubble3 { @extend .RoomsPage__bubble; width: 350px; height: 350px; bottom: -100px; left: 20%; animation-delay: -16s; }
+  &__bubble4 { @extend .RoomsPage__bubble; width: 250px; height: 250px; top: 20%; right: 30%; animation-delay: -12s; }
+
+  &__prism {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(45deg, rgba(100, 200, 255, 0.1), rgba(180, 100, 255, 0.1), rgba(255, 100, 200, 0.1));
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+    animation: prism-rotate 30s infinite linear;
+    filter: blur(15px);
+  }
+
+  &__prism1 { @extend .RoomsPage__prism; top: 10%; left: 10%; animation-delay: 0s; }
+  &__prism2 { @extend .RoomsPage__prism; top: 60%; right: 10%; animation-delay: -10s; }
+  &__prism3 { @extend .RoomsPage__prism; bottom: 20%; left: 60%; animation-delay: -20s; }
+
+  &__interface {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__main {
+    padding: 2rem 0;
+  }
+
+  &__hero {
+    @include glassEffect;
+    text-align: center;
+    padding: 4rem 2rem;
+    border-radius: 35px;
+    margin: 2rem 20px 4rem;
+    box-shadow: $glass-glow;
+    border: 1px solid $ultra-glass-border;
+  }
+
+  &__title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: $gradient-primary;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  &__description {
+    font-size: 1.3rem;
+    color: $glass-text-light;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 2rem;
+    margin: 0 20px;
+  }
+
+  &__card {
+    padding: 2.5rem 2rem;
+  }
+
+  &__cardContent {
+    text-align: center;
+  }
+
+  &__roomName {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: $glass-text;
+  }
+
+  &__roomDescription {
+    color: $glass-text-light;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  &__details {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  &__detail {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $glass-text-light;
+    
+    i {
+      color: #64C8FF;
+    }
+  }
+
+  &__features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+  }
+
+  &__feature {
+    background: rgba(100, 200, 255, 0.1);
+    color: #64C8FF;
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    border: 1px solid rgba(100, 200, 255, 0.3);
+  }
+
+  &__bookButton {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+// Анимации
+@keyframes glass-shift {
+  0% { transform: translateX(0) translateY(0); }
+  25% { transform: translateX(20px) translateY(20px); }
+  50% { transform: translateX(0) translateY(40px); }
+  75% { transform: translateX(-20px) translateY(20px); }
+  100% { transform: translateX(0) translateY(0); }
+}
+
+@keyframes float-bubble {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(50px, 30px) scale(1.1); }
+  50% { transform: translate(0, 60px) scale(1); }
+  75% { transform: translate(-50px, 30px) scale(1.1); }
+}
+
+@keyframes prism-rotate {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); }
+  100% { transform: rotate(360deg) scale(1); }
+}

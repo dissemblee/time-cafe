@@ -1,10 +1,11 @@
 // Добавить настоящие цвета
-$primary-color: #111;
-$secondary-color: #111;
-$dark-bg-color: #111;
-$light-bg-color: #111;
-$text-color: #111;
-$block-color: #111;
+$primary-color: #64C8FF;        // Голубой акцент
+$secondary-color: #B464FF;      // Фиолетовый акцент  
+$dark-bg-color: #0a0a1a;        // Темный фон
+$light-bg-color: #151530;       // Светлее фон
+$text-color: #ffffff;           // БЕЛЫЙ текст ✅
+$text-color-light: rgba(255, 255, 255, 0.8); // Светлый текст
+$block-color: rgba(255, 255, 255, 0.08);     // Glass блоки
 
 // ==============================
 // value scale в rem
@@ -53,3 +54,30 @@ $rounded-xl: 0.75rem;      // 12px
 $rounded-2xl: 1rem;        // 16px
 $rounded-3xl: 1.5rem;      // 24px
 $rounded-full: 9999px;     // полный круг
+
+// ==============================
+// Glass Morphism Variables
+// ==============================
+
+// Colors
+$glass-bg: #0a0a1a;
+$glass-text: #ffffff;
+$glass-text-light: rgba(255, 255, 255, 0.8);
+$glass-primary: rgba(100, 200, 255, 0.15);
+$glass-secondary: rgba(180, 100, 255, 0.15);
+$glass-accent: rgba(255, 100, 200, 0.15);
+$ultra-glass: rgba(255, 255, 255, 0.08);
+$ultra-glass-border: rgba(255, 255, 255, 0.12);
+
+// Gradients
+$gradient-primary: linear-gradient(135deg, #64C8FF, #B464FF);
+$gradient-glass: linear-gradient(135deg, rgba(100, 200, 255, 0.1), rgba(180, 100, 255, 0.1));
+
+// Shadows
+$glass-glow: 0 0 30px rgba(100, 200, 255, 0.3);
+$glass-glow-strong: 0 0 50px rgba(100, 200, 255, 0.5);
+
+// Breakpoints
+$mobile: 768px;
+$tablet: 1024px;
+$desktop: 1200px;
