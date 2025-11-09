@@ -1,0 +1,63 @@
+@use '../../../shared/styles/variables' as *;
+@use '../../../shared/styles/mixins' as *;
+
+.GlassCard {
+  @include glassCard;
+  position: relative;
+  overflow: hidden;
+
+  &--hover:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: $glass-glow-strong;
+  }
+
+  &__reflections {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  &__reflection1 {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    filter: blur(10px);
+    top: -20px;
+    left: -20px;
+  }
+
+  &__reflection2 {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    filter: blur(10px);
+    bottom: -15px;
+    right: -15px;
+  }
+
+  &__liquid {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(100, 200, 255, 0.08), transparent);
+    transition: left 0.6s ease;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+  }
+
+  &:hover &__liquid {
+    left: 100%;
+  }
+}
