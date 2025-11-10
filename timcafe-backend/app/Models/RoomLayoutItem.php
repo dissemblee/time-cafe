@@ -7,34 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class RoomLayoutItem extends Model
 {
-  use HasFactory;
+    use HasFactory;
 
-  protected $fillable = [
-    'room_id',
-    'type',
-    'table_id',
-    'x',
-    'y',
-    'width',
-    'height',
-    'rotation',
-  ];
+    protected $fillable = [
+        'room_id',
+        'items',
+    ];
 
-  protected $casts = [
-    'x' => 'float',
-    'y' => 'float',
-    'width' => 'float',
-    'height' => 'float',
-    'rotation' => 'float',
-  ];
+    protected $casts = [
+        'items' => 'array',
+    ];
 
-  public function room()
-  {
-    return $this->belongsTo(Room::class);
-  }
-
-  public function table()
-  {
-    return $this->belongsTo(Table::class);
-  }
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
 }

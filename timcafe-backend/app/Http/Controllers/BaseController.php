@@ -20,7 +20,7 @@ class BaseController extends Controller
         $data = $this->service->all($request->all());
         return response()->json([
             'success' => true,
-            'data' => $data->items(),
+            'data' => $items->toArray(),
             'meta' => [
                 'current_page' => $data->currentPage(),
                 'per_page' => $data->perPage(),
@@ -36,7 +36,7 @@ class BaseController extends Controller
             $item = $this->service->find($id);
             return response()->json([
                 'success' => true,
-                'data' => $item,
+                ...$item->toArray(),
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
@@ -51,7 +51,7 @@ class BaseController extends Controller
         $item = $this->service->create($request->all());
         return response()->json([
             'success' => true,
-            'data' => $item,
+            ...$item->toArray(),
         ], 201);
     }
 
@@ -61,7 +61,7 @@ class BaseController extends Controller
             $item = $this->service->update($id, $request->all());
             return response()->json([
                 'success' => true,
-                'data' => $item,
+                ...$item->toArray(),
             ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
