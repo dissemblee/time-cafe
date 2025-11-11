@@ -1,5 +1,6 @@
 import { RoomsPage } from '../../pages/rooms/RoomsPage';
+import { ClientLayout } from '../clientLayout';
 
 export default function RoomsRoute() {
-  return <RoomsPage />;
+  return <ClientLayout><RoomsPage /></ClientLayout>;
 }

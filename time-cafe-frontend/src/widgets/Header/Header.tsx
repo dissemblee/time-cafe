@@ -11,7 +11,7 @@ export const Header: React.FC = () => {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <header className={styles.Header}>
+    <div className={styles.Header}>
       <nav className={styles.Header__nav}>
         <div className={styles.Header__brand}>
           <div className={styles.Header__logo}>
@@ -73,6 +73,6 @@ export const Header: React.FC = () => {
           </button>
         </div>
       </nav>
-    </header>
+    </div>
   );
 };

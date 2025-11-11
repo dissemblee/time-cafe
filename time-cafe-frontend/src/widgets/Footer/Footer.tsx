@@ -5,7 +5,7 @@ import styles from './Footer.module.scss';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className={styles.Footer}>
+    <div className={styles.Footer}>
       <div className={styles.Footer__content}>
         <div className={styles.Footer__brand}>
           <div className={styles.Footer__logo}>
@@ -57,6 +57,6 @@ export const Footer: React.FC = () => {
       <div className={styles.Footer__bottom}>
         <p>&copy; 2024 TimeCafe. Все права защищены.</p>
       </div>
-    </footer>
+    </div>
   );
 };

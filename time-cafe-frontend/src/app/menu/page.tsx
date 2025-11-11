@@ -1,5 +1,6 @@
 import { MenuPage } from '../../pages/menu/MenuPage';
+import { ClientLayout } from '../clientLayout';
 
 export default function MenuRoute() {
-  return <MenuPage />;
+  return <ClientLayout><MenuPage /></ClientLayout>;
 }
