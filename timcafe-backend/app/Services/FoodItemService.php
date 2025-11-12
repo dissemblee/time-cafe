@@ -14,6 +14,7 @@ class FoodItemService extends BaseService
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
+            'type' => 'nullable|string|in:snack,drink,dessert,no',
         ];
     }
 }

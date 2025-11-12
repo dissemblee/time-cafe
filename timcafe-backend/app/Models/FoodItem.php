@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\FoodType;
 
 class FoodItem extends Model
 {
@@ -13,5 +14,10 @@ class FoodItem extends Model
         'name',
         'description',
         'price',
+        'type',
+    ];
+
+    protected $casts = [
+        'type' => FoodType::class,
     ];
 }

@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->string('name');
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2)->default(0);
+            $table->enum('type', ['snack', 'drink', 'dessert', 'no'])->default('no');
             $table->timestamps();
         });
     }
