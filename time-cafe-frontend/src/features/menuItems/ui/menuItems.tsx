@@ -3,6 +3,8 @@
 import { FoodType, useGetAllFoodItemsQuery } from "@/entities/foodItem";
 import { GlassCard } from "@/shared/ui/GlassCard/GlassCard"
 import styles from "./menuItems.module.scss"
+import { Loader } from "@/shared/ui/Loader";
+import { Error } from "@/shared/ui/Error"
 
 export const MenuItems = () => {
   const { data: foodItems, isLoading, error } = useGetAllFoodItemsQuery();
@@ -25,9 +27,9 @@ export const MenuItems = () => {
   return (
       <section className={styles.MenuPage__grid}>
         {isLoading ? (
-          <GlassCard> <br /> Загрузка...</GlassCard>
+          <Loader />
         ) : error ? (
-          <GlassCard>Ошибка при загрузке меню</GlassCard>
+          <Error message="Ошибка при загрузке меню" />
         ) : menuCategories ? (
           Object.entries(menuCategories).map(([type, items], index) => (
             <GlassCard key={index} className={styles.MenuPage__card}>

@@ -1,11 +1,16 @@
-// Добавить настоящие цвета
-$primary-color: #64C8FF;        // Голубой акцент
-$secondary-color: #B464FF;      // Фиолетовый акцент  
-$dark-bg-color: #0a0a1a;        // Темный фон
-$light-bg-color: #151530;       // Светлее фон
-$text-color: #ffffff;           // БЕЛЫЙ текст ✅
-$text-color-light: rgba(255, 255, 255, 0.8); // Светлый текст
-$block-color: rgba(255, 255, 255, 0.08);     // Glass блоки
+$dark-bg-color: #0a0a1a;
+$light-bg-color: #151530;
+$text-color: #ffffff;
+$text-color-light: rgba(255, 255, 255, 0.8);
+$block-color: rgba(255, 255, 255, 0.08);
+
+
+$primary-color: #344AEB;
+$secondary-color: #080A23;
+$accent-color: #64C8FF;
+$error-color: #FF4757;
+$success-color: #2ED573;
+$warning-color: #FFA502;
 
 // ==============================
 // value scale в rem

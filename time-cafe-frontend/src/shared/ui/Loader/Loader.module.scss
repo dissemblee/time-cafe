@@ -1,0 +1,22 @@
+@use '../../../shared/styles/variables' as *;
+@use '../../../shared/styles/mixins' as *;
+
+.Loader {
+  @include flexCenter;
+  flex-direction: column;
+  margin: $value-24;
+}
+
+.Loader__spinner {
+  border-radius: 50%;
+  border: 3px solid rgba(#64C8FF, 0.2);
+  border-top-color: #64C8FF;
+  animation: spin 1s linear infinite;
+  width: $value-48;
+  height: $value-48;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

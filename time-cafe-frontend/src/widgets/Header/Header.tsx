@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './Header.module.scss';
+import { FaUser, FaSearch} from "react-icons/fa"
 
 export const Header: React.FC = () => {
   const pathname = usePathname();
@@ -66,10 +67,10 @@ export const Header: React.FC = () => {
         
         <div className={styles.Header__actions}>
           <button className={styles.Header__actionButton}>
-            <i className="fas fa-search"></i>
+            <FaUser />
           </button>
           <button className={styles.Header__actionButton}>
-            <i className="fas fa-user"></i>
+            <FaSearch />
           </button>
         </div>
       </nav>

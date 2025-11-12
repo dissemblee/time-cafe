@@ -4,11 +4,12 @@ import { GlassCard } from "@/shared/ui/GlassCard/GlassCard"
 import { LiquidButton } from "@/shared/ui/LiquidButton";
 import Link from "next/link";
 import styles from "./RoomList.module.scss"
+import { Loader } from "@/shared/ui/Loader";
 
 export const RoomList = () => {
   const { data: roomsData, isLoading, error } = useGetAllRoomsQuery();
   
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader />;
   if (error) return <div>Error loading rooms</div>;
 
   return (

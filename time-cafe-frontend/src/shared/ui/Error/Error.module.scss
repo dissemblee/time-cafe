@@ -1,0 +1,47 @@
+@use '../../../shared/styles/variables' as *;
+@use '../../../shared/styles/mixins' as *;
+
+.Error {
+  @include flexCenter;
+  flex-direction: column;
+  padding: $value-32;
+  margin: $value-24;
+  border-radius: $value-16;
+  @include glassEffect;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+
+  &__icon {
+    font-size: $value-48;
+    margin-bottom: $value-16;
+    color: #FF4C4C; // красный для ошибки
+    animation: shake 0.6s ease-in-out infinite;
+  }
+
+  &__message {
+    font-size: $value-16;
+    font-weight: 600;
+    color: white;
+    line-height: 1.4;
+  }
+
+  &__hint {
+    font-size: $value-14;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: $value-8;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+  75% { transform: rotate(-5deg); }
+}
