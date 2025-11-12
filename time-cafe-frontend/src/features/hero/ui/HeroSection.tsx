@@ -16,18 +16,6 @@ export const HeroSection: React.FC = () => {
 
   return (
     <section className={styles.HeroSection}>
-      {/* Liquid Universe Background */}
-      <div className={styles.HeroSection__background}>
-        <div className={styles.HeroSection__layer1}></div>
-        <div className={styles.HeroSection__layer2}></div>
-        <div className={styles.HeroSection__layer3}></div>
-        
-        <div className={styles.HeroSection__bubble1}></div>
-        <div className={styles.HeroSection__bubble2}></div>
-        <div className={styles.HeroSection__bubble3}></div>
-        <div className={styles.HeroSection__bubble4}></div>
-      </div>
-
       <div className={styles.HeroSection__content}>
         <div className={styles.HeroSection__text}>
           <div className={styles.HeroSection__badge}>

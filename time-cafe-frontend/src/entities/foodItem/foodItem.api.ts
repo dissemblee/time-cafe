@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { FoodItemDto, CreateFoodItemDto, UpdateFoodItemDto } from "./foodItem.dto";
+import type { FoodItemDto, CreateFoodItemDto, UpdateFoodItemDto, FoodItemsResponse } from "./foodItem.dto";
 import { customBaseQuery } from "@/shared/api";
 
 const endPoint = "food-items";
@@ -9,12 +9,12 @@ export const foodItemApi = createApi({
   baseQuery: customBaseQuery,
   tagTypes: ["FoodItems"],
   endpoints: (builder) => ({
-    getAllFoodItems: builder.query<FoodItemDto[], void>({
+    getAllFoodItems: builder.query<FoodItemsResponse, void>({
       query: () => ({ url: endPoint, method: "GET" }),
       providesTags: (result) =>
-        result
+        result?.data
           ? [
-              ...result.map(({ id }) => ({ type: "FoodItems" as const, id })),
+              ...result.data.map(({ id }) => ({ type: "FoodItems" as const, id })),
               { type: "FoodItems", id: "LIST" },
             ]
           : [{ type: "FoodItems", id: "LIST" }],

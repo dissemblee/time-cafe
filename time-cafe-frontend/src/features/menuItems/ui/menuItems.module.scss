@@ -1,0 +1,45 @@
+@use '../../../shared/styles/variables' as *;
+@use '../../../shared/styles/mixins' as *;
+
+.MenuPage__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin: 0 20px;
+}
+
+.MenuPage__card {
+  @include glassEffect;
+  padding: 2.5rem 2rem;
+  border-radius: 25px;
+  box-shadow: $glass-glow;
+  border: 1px solid $ultra-glass-border;
+}
+
+.MenuPage__cardContent {
+  text-align: center;
+}
+
+.MenuPage__cardTitle {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: $glass-text;
+}
+
+.MenuPage__items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.MenuPage__item {
+  padding: 1rem 0;
+  color: $glass-text-light;
+  font-size: 1.1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
