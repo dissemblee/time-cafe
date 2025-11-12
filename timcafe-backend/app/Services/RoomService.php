@@ -13,8 +13,11 @@ class RoomService extends BaseService
         return [
             'name' => 'required|string|max:255',
             'type' => 'required|string|max:255',
-            'smoking_allowed' => 'nullable|boolean',
+            'smoking_allowed' => 'sometimes|boolean',
+            'description' => 'nullable|string|max:1000',
+            'features' => 'nullable|array',
             'layout' => 'nullable|array',
+            'min_price' => 'nullable|numeric|min:1',
         ];
     }
 }

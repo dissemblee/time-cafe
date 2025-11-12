@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { RoomDto, CreateRoomDto, UpdateRoomDto } from "./room.dto";
+import type { RoomDto, CreateRoomDto, UpdateRoomDto, RoomsResponse } from "./room.dto";
 import { customBaseQuery } from "@/shared/api";
 
 const endPoint = "rooms";
@@ -9,12 +9,12 @@ export const roomsApi = createApi({
   baseQuery: customBaseQuery,
   tagTypes: ["Rooms"],
   endpoints: (builder) => ({
-    getAllRooms: builder.query<RoomDto[], void>({
+    getAllRooms: builder.query<RoomsResponse, void>({
       query: () => ({ url: endPoint, method: "GET" }),
       providesTags: (result) =>
-        result
+        result?.data
           ? [
-              ...result.map(({ id }) => ({ type: "Rooms" as const, id })),
+              ...result.data.map(({ id }) => ({ type: "Rooms" as const, id })),
               { type: "Rooms", id: "LIST" },
             ]
           : [{ type: "Rooms", id: "LIST" }],

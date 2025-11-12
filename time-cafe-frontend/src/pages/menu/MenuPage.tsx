@@ -1,17 +1,12 @@
 import React from 'react';
-import styles from './MenuPage.module.scss';
-import { MenuItems } from '@/features/menuItems/ui/menuItems';
+import { MenuItems } from '@/features/menuItems';
+import { HeroSection } from '@/shared/ui/HeroSection/HeroSection';
 
 export const MenuPage: React.FC = () => {
   return (
-    <div className={styles.MenuPage}>
-      <section className={styles.MenuPage__hero}>
-        <h1 className={styles.MenuPage__title}>Меню TimeCafe</h1>
-        <p className={styles.MenuPage__description}>
-          Вкусные напитки и закуски для идеального отдыха
-        </p>
-      </section>
+    <>
+      <HeroSection title="Меню TimeCafe" description="Вкусные напитки и закуски для идеального отдыха" />
       <MenuItems />
-    </div>
+    </>
   );
 };

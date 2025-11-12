@@ -12,6 +12,9 @@ return new class extends Migration {
             $table->string('type');
             $table->boolean('smoking_allowed')->default(false);
             $table->json('layout')->nullable();
+            $table->decimal('min_price', 10, 2)->nullable();
+            $table->json('features')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

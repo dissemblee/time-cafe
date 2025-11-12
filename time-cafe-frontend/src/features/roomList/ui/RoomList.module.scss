@@ -1,0 +1,60 @@
+@use '../../../shared/styles/variables' as *;
+@use '../../../shared/styles/mixins' as *;
+
+.RoomsPage__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 2rem;
+  margin: 0 20px;
+}
+
+.RoomsPage__card {
+  @include glassEffect;
+  padding: 2.5rem 2rem;
+  border-radius: 25px;
+  box-shadow: $glass-glow;
+  border: 1px solid $ultra-glass-border;
+}
+
+.RoomsPage__cardContent {
+  text-align: center;
+}
+
+.RoomsPage__roomName {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: $glass-text;
+}
+
+.RoomsPage__roomDescription {
+  color: $glass-text-light;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.RoomsPage__detail {
+  @include flexCenter;
+  margin-bottom: 1rem;
+  color: $glass-text-light;
+}
+
+.RoomsPage__features {
+  @include flexCenter;
+  gap: 0.8rem;
+  margin-bottom: 2.5rem;
+}
+
+.RoomsPage__feature {
+  background: rgba(100, 200, 255, 0.1);
+  color: #64C8FF;
+  padding: 0.5rem 1rem;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(100, 200, 255, 0.3);
+}
+
+.RoomsPage__bookButton {
+  width: 100%;
+  justify-content: center;
+}

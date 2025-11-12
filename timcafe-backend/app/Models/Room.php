@@ -12,7 +12,19 @@ class Room extends Model
     protected $fillable = [
         'name',
         'type',
+        'description',
         'smoking_allowed',
+        'min_price',
+        'features'
+    ];
+
+    protected $casts = [
+        'name'            => 'string',
+        'min_price'       => 'decimal:2',
+        'description'     => 'string',
+        'smoking_allowed' => 'boolean',
+        'type'            => 'string',
+        'features'        => 'array',
     ];
 
     public function tables()
