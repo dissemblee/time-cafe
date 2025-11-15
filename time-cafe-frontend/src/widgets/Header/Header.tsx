@@ -66,9 +66,9 @@ export const Header: React.FC = () => {
         </div>
         
         <div className={styles.Header__actions}>
-          <button className={styles.Header__actionButton}>
+          <Link href="/register" className={styles.Header__actionButton}>
             <FaUser />
-          </button>
+          </Link>
           <button className={styles.Header__actionButton}>
             <FaSearch />
           </button>
