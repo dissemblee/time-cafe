@@ -4,11 +4,13 @@ import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function HomePage() {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     type: "",
     smoking_allowed: false,
+    description: "",
+    features: [""],
+    min_price: 0
   });
 
   const [createRoom, { isLoading, error }] = useCreateRoomMutation();
@@ -26,7 +28,7 @@ export default function HomePage() {
     try {
       const room = await createRoom(formData).unwrap();
       console.log("Создана комната:", room, "Id комнаты:", room.id);
-      router.push(`/room-builder/${room.id}`);
+      // router.push(`/room-builder/${room.id}`);
     } catch (err) {
       console.error("Ошибка при создании комнаты:", err);
     }

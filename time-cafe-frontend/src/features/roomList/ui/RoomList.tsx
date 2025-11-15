@@ -5,16 +5,17 @@ import { LiquidButton } from "@/shared/ui/LiquidButton";
 import Link from "next/link";
 import styles from "./RoomList.module.scss"
 import { Loader } from "@/shared/ui/Loader";
+import { Error } from "@/shared/ui/Error";
 
 export const RoomList = () => {
   const { data: roomsData, isLoading, error } = useGetAllRoomsQuery();
   
   if (isLoading) return <Loader />;
-  if (error) return <div>Error loading rooms</div>;
+  if (error) return <Error />;
 
   return (
     <section className={styles.RoomsPage__grid}>
-      {roomsData?.data.map((room, index) => (
+      {roomsData?.data?.map((room, index) => (
         <GlassCard key={index} className={styles.RoomsPage__card}>
           <div className={styles.RoomsPage__cardContent}>
             <h3 className={styles.RoomsPage__roomName}>{room.name} ({room.type})</h3>

@@ -1,0 +1,50 @@
+@use '../../../shared/styles/variables' as *;
+@use '../../../shared/styles/mixins' as *;
+
+.Input {
+  display: flex;
+  flex-direction: column;
+  gap: $value-8;
+  width: 100%;
+}
+
+.Input__label {
+  font-size: $value-14;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  padding-left: $value-4;
+}
+
+.Input__field {
+  width: 100%;
+  padding: $value-16;
+  border-radius: $value-12;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: $value-16;
+  transition: 0.25s ease;
+  @include glassEffect;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  &:focus {
+    border-color: #64C8FF;
+    box-shadow: 0 0 12px rgba(#64C8FF, 0.45);
+    outline: none;
+    transform: translateY(-1px);
+  }
+}
+
+.Input__field--error {
+  border-color: #FF4C4C;
+  box-shadow: 0 0 12px rgba(#FF4C4C, 0.35);
+}
+
+.Input__errorText {
+  font-size: $value-12;
+  color: #FF4C4C;
+  padding-left: $value-4;
+}

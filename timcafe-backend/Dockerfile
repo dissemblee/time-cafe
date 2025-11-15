@@ -20,7 +20,7 @@ COPY --chown=www-data:www-data . .
 
 RUN composer install
 
-RUN php artisan migrate:refresh
+# RUN php artisan migrate:refresh
 
 EXPOSE 9000
 
