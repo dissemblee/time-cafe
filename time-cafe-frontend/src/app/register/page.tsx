@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ClientLayout } from '@/app/clientLayout/clientLayout';
+import { ClientLayout } from '@/app/clientLayout/ClientLayout';
 import { LiquidButton } from '@/shared/ui/LiquidButton/LiquidButton';
 import { GlassInput } from '@/shared/ui/GlassInput/Input';
 import styles from './register.module.scss';

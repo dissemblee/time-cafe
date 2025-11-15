@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './Header.module.scss';
-import { FaUser, FaSearch} from "react-icons/fa"
+import { FaUser, FaSearch, FaClock, FaCoffee, FaGamepad } from "react-icons/fa"
 
 export const Header: React.FC = () => {
   const pathname = usePathname();
@@ -17,6 +17,9 @@ export const Header: React.FC = () => {
         <div className={styles.Header__brand}>
           <div className={styles.Header__logo}>
             <div className={styles.Header__logoCore}>
+              <div className={styles.Header__iconCombo}>
+                <FaClock className={styles.Header__logoIcon} />
+              </div>
               <div className={styles.Header__liquidAnimation}></div>
             </div>
             <span className={styles.Header__logoText}>TimeCafe</span>

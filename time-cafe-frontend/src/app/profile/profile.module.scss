@@ -1,0 +1,61 @@
+.ProfilePage {
+  padding: 2rem 20px;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ProfilePage__card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  border-radius: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 600px;
+  width: 100%;
+}
+
+.ProfilePage__title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  background: linear-gradient(45deg, #64C8FF, #B464FF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.ProfilePage__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.ProfilePage__grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.ProfilePage__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ProfilePage__info label {
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  padding-left: 4px;
+}
+
+.ProfilePage__value {
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 14px;
+}

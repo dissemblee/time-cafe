@@ -2,30 +2,31 @@
 
 import React from 'react';
 import { GlassCard } from '../../../shared/ui/GlassCard/GlassCard';
+import { FaChessBoard, FaTv, FaVrCardboard, FaUsers, FaGamepad } from '../../../shared/ui/Icons';
 import styles from './CategoriesSection.module.scss';
 
 export const CategoriesSection: React.FC = () => {
   const categories = [
     {
-      icon: 'fas fa-chess-board',
+      icon: <FaChessBoard className={styles.CategoriesSection__iconSvg} />,
       title: 'Настольные игры',
       description: 'Классические и современные настолки для компании',
       count: '50+ игр'
     },
     {
-      icon: 'fas fa-tv',
+      icon: <FaTv className={styles.CategoriesSection__iconSvg} />,
       title: 'Консольные игры',
       description: 'Новейшие хиты на мощных игровых консолях',
       count: '60+ игр'
     },
     {
-      icon: 'fas fa-vr-cardboard',
+      icon: <FaVrCardboard className={styles.CategoriesSection__iconSvg} />,
       title: 'VR игры',
       description: 'Полное погружение в виртуальную реальность',
       count: '15+ игр'
     },
     {
-      icon: 'fas fa-users',
+      icon: <FaUsers className={styles.CategoriesSection__iconSvg} />,
       title: 'Мультиплеер',
       description: 'Игры для большой компании друзей',
       count: '30+ игр'
@@ -36,6 +37,7 @@ export const CategoriesSection: React.FC = () => {
     <section className={styles.CategoriesSection}>
       <div className={styles.CategoriesSection__header}>
         <div className={styles.CategoriesSection__glass}>
+          <FaGamepad className={styles.CategoriesSection__headerIcon} />
           <div className={styles.CategoriesSection__prism}></div>
         </div>
         <h2 className={styles.CategoriesSection__title}>Категории игр</h2>
@@ -49,7 +51,7 @@ export const CategoriesSection: React.FC = () => {
           <GlassCard key={index} className={styles.CategoriesSection__card}>
             <div className={styles.CategoriesSection__content}>
               <div className={styles.CategoriesSection__icon}>
-                <i className={category.icon}></i>
+                {category.icon}
               </div>
               <h3 className={styles.CategoriesSection__cardTitle}>{category.title}</h3>
               <p className={styles.CategoriesSection__cardDescription}>

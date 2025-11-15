@@ -3,6 +3,7 @@
 import React from 'react';
 import { GlassCard } from '../../../shared/ui/GlassCard/GlassCard';
 import { LiquidButton } from '../../../shared/ui/LiquidButton/LiquidButton';
+import { FaArrowRight, FaPlaystation, FaXbox, FaGamepad } from '../../../shared/ui/Icons';
 import styles from './HeroSection.module.scss';
 
 export const HeroSection: React.FC = () => {
@@ -61,7 +62,7 @@ export const HeroSection: React.FC = () => {
           <div className={styles.HeroSection__actions}>
             <LiquidButton variant="primary" onClick={handleBookTable}>
               <span>Забронировать стол</span>
-              <i className="fas fa-arrow-right"></i>
+              <FaArrowRight className={styles.HeroSection__buttonIcon} />
             </LiquidButton>
             
             <LiquidButton variant="secondary" onClick={handleViewGames}>
@@ -74,7 +75,7 @@ export const HeroSection: React.FC = () => {
           <GlassCard className={styles.HeroSection__consoleCard1}>
             <div className={styles.HeroSection__consoleContent}>
               <div className={styles.HeroSection__consoleIcon}>
-                <i className="fab fa-playstation"></i>
+                <FaPlaystation className={styles.HeroSection__consoleIconSvg} />
               </div>
               <div className={styles.HeroSection__consoleTitle}>PS5 Pro</div>
             </div>
@@ -83,7 +84,7 @@ export const HeroSection: React.FC = () => {
           <GlassCard className={styles.HeroSection__consoleCard2}>
             <div className={styles.HeroSection__consoleContent}>
               <div className={styles.HeroSection__consoleIcon}>
-                <i className="fab fa-xbox"></i>
+                <FaXbox className={styles.HeroSection__consoleIconSvg} />
               </div>
               <div className={styles.HeroSection__consoleTitle}>Xbox Series X</div>
             </div>
@@ -92,7 +93,7 @@ export const HeroSection: React.FC = () => {
           <GlassCard className={styles.HeroSection__consoleCard3}>
             <div className={styles.HeroSection__consoleContent}>
               <div className={styles.HeroSection__consoleIcon}>
-                <i className="fas fa-gamepad"></i>
+                <FaGamepad className={styles.HeroSection__consoleIconSvg} />
               </div>
               <div className={styles.HeroSection__consoleTitle}>Nintendo Switch</div>
             </div>

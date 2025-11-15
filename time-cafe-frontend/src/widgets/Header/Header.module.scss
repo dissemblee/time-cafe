@@ -132,6 +132,69 @@
       transform: translateY(-2px) scale(1.05);
     }
   }
+
+  &__logoCore {
+    position: relative;
+    width: 45px;
+    height: 45px;
+    background: $ultra-glass;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid $ultra-glass-border;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__iconCombo {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+
+  &__logoIcon {
+    font-size: 1.2rem;
+    color: #64C8FF;
+  }
+
+  &__logoIconSmall {
+    font-size: 0.7rem;
+    color: #B464FF;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+  }
+
+  &__liquidAnimation {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      45deg,
+      rgba(100, 200, 255, 0.1),
+      rgba(180, 100, 255, 0.08),
+      rgba(255, 100, 200, 0.06),
+      rgba(100, 200, 255, 0.1)
+    );
+    background-size: 400% 400%;
+    animation: gradient-flow 8s infinite ease-in-out;
+    opacity: 0.7;
+  }
+}
+
+@keyframes gradient-flow {
+  0%, 100% {
+    background-position: 0% 50%;
+    opacity: 0.5;
+  }
+  50% {
+    background-position: 100% 50%;
+    opacity: 0.8;
+  }
 }
 
 @keyframes liquid-flow {
@@ -143,7 +206,6 @@
   }
 }
 
-// Адаптив
 @media (max-width: 768px) {
   .Header {
     &__links {
