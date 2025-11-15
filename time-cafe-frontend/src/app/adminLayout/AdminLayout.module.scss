@@ -1,0 +1,27 @@
+// AdminLayout.module.scss
+.AdminLayout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  color: #333;
+
+  &__Body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  &__Main {
+    flex: 1;
+    padding: 0 2rem;
+    overflow-y: auto;
+    background-color: #f5f7fa;
+  }
+}
+
+@media (max-width: 768px) {
+  .AdminLayout {
+    flex-direction: column;
+  }
+}

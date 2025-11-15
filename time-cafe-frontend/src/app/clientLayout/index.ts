@@ -1,1 +1,1 @@
-export { ClientLayout } from "./clientLayout"
+export { ClientLayout } from "./ClientLayout"
