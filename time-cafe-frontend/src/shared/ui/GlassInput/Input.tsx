@@ -15,7 +15,7 @@ interface InputProps extends NativeInputProps {
   // onChange: (value: string) => void;
 }
 
-export const Input = ({ label, value, placeholder, error, /*onChange,*/ className, ...props }: InputProps) => {
+export const GlassInput = ({ label, value, placeholder, error, /*onChange,*/ className, ...props }: InputProps) => {
   return (
     <div className={styles.Input}>
       {label && <label className={styles.Input__label}>{label}</label>}

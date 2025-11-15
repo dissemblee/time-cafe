@@ -21,7 +21,7 @@ export const bookingsApi = createApi({
     }),
 
     getBooking: builder.query<BookingDto, number>({
-      query: (id) => `${endPoint}/${id}`,
+      query: (id) => ({ url: `${endPoint}/${id}`, method: "GET" }),
       providesTags: (result, error, id) => [{ type: "Bookings", id }],
     }),
 

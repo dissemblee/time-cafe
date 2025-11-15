@@ -1,1 +1,1 @@
-export { Input } from "./Input"
+export { Input, Select, Textarea } from "./Inputs"

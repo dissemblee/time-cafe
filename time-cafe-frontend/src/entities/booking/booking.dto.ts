@@ -1,4 +1,3 @@
-// booking.dto.ts
 import { BookingStatus } from "./booking.enum"
 
 export interface BookingDto {

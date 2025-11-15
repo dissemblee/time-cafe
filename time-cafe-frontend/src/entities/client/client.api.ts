@@ -21,7 +21,7 @@ export const clientApi = createApi({
     }),
 
     getClient: builder.query<ClientDto, number>({
-      query: (id) => `${endPoint}/${id}`,
+      query: (id) => ({ url: `${endPoint}/${id}`, method: "GET" }),
       providesTags: (result, error, id) => [{ type: "Clients", id }],
     }),
 

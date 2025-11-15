@@ -21,7 +21,7 @@ export const boardGamesApi = createApi({
     }),
 
     getBoardGame: builder.query<BoardGameDto, number>({
-      query: (id) => `${endPoint}/${id}`,
+      query: (id) => ({ url: `${endPoint}/${id}`, method: "GET" }),
       providesTags: (result, error, id) => [{ type: "BoardGames", id }],
     }),
 
