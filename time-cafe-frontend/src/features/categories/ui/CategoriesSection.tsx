@@ -1,8 +1,6 @@
-'use client';
-
 import React from 'react';
-import { GlassCard } from '../../../shared/ui/GlassCard/GlassCard';
-import { FaChessBoard, FaTv, FaVrCardboard, FaUsers, FaGamepad } from '../../../shared/ui/Icons';
+import { GlassCard } from '@/shared/ui/GlassCard/GlassCard';
+import { FaChessBoard, FaTv, FaVrCardboard, FaUsers, FaGamepad } from '@/shared/ui/Icons';
 import styles from './CategoriesSection.module.scss';
 
 export const CategoriesSection: React.FC = () => {
