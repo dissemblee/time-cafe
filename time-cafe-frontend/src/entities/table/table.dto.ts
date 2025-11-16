@@ -1,3 +1,4 @@
+import { MetaResponse } from "@/shared/api"
 import { TableStatus } from "./table.enum"
 
 export interface TableDto {
@@ -31,4 +32,10 @@ export interface UpdateTableDto {
   has_console?: boolean
   has_tv?: boolean
   status?: TableStatus
+}
+
+export interface TableResponse {
+  success: boolean;
+  meta: MetaResponse
+  data: TableDto[];
 }

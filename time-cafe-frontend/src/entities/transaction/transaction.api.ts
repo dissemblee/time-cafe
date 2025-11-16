@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { TransactionDto, CreateTransactionDto, UpdateTransactionDto } from "./transaction.dto";
+import type { TransactionDto, CreateTransactionDto, UpdateTransactionDto, TransactionResponse } from "./transaction.dto";
 import { customBaseQuery } from "@/shared/api";
 
 const endPoint = "transactions";
@@ -9,12 +9,16 @@ export const transactionsApi = createApi({
   baseQuery: customBaseQuery,
   tagTypes: ["Transactions"],
   endpoints: (builder) => ({
-    getAllTransactions: builder.query<TransactionDto[], void>({
-      query: () => ({ url: endPoint, method: "GET" }),
+    getAllTransactions: builder.query<TransactionResponse, { page?: number; per_page?: number }>({
+      query: ({ page = 1, per_page = 10 }) => ({
+        url: endPoint,
+        method: "GET",
+        params: { page, per_page },
+      }),
       providesTags: (result) =>
-        result
+        result?.data
           ? [
-              ...result.map(({ id }) => ({ type: "Transactions" as const, id })),
+              ...result.data.map(({ id }) => ({ type: "Transactions" as const, id })),
               { type: "Transactions", id: "LIST" },
             ]
           : [{ type: "Transactions", id: "LIST" }],

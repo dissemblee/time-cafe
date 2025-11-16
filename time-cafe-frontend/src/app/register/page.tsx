@@ -1,10 +1,9 @@
 'use client';
-
 import { useState } from 'react';
-import { ClientLayout } from '@/app/clientLayout/clientLayout';
 import { LiquidButton } from '@/shared/ui/LiquidButton/LiquidButton';
 import { GlassInput } from '@/shared/ui/GlassInput/Input';
 import styles from './register.module.scss';
+import { ClientLayout } from '../clientLayout';
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({

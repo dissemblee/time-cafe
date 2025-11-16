@@ -1,3 +1,5 @@
+import { MetaResponse } from "@/shared/api"
+
 export interface RoomDto {
   id: number
   name: string
@@ -30,5 +32,6 @@ export interface UpdateRoomDto {
 
 export interface RoomsResponse {
   success: boolean;
+  meta: MetaResponse
   data: RoomDto[];
 }

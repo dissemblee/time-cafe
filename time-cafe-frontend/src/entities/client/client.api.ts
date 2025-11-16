@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { ClientDto, CreateClientDto, UpdateClientDto } from "./client.dto";
+import type { ClientDto, ClientResponse, CreateClientDto, UpdateClientDto } from "./client.dto";
 import { customBaseQuery } from "@/shared/api";
 
 const endPoint = "clients";
@@ -9,12 +9,16 @@ export const clientApi = createApi({
   baseQuery: customBaseQuery,
   tagTypes: ["Clients"],
   endpoints: (builder) => ({
-    getAllClients: builder.query<ClientDto[], void>({
-      query: () => ({ url: endPoint, method: "GET" }),
+    getAllClients: builder.query<ClientResponse, { page?: number; per_page?: number }>({
+      query: ({ page = 1, per_page = 10 }) => ({
+        url: endPoint,
+        method: "GET",
+        params: { page, per_page },
+      }),
       providesTags: (result) =>
-        result
+        result?.data
           ? [
-              ...result.map(({ id }) => ({ type: "Clients" as const, id })),
+              ...result.data.map(({ id }) => ({ type: "Clients" as const, id })),
               { type: "Clients", id: "LIST" },
             ]
           : [{ type: "Clients", id: "LIST" }],

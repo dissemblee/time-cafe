@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { RootDto, CreateRootDto, UpdateRootDto } from "./root.dto";
+import type { RootDto, CreateRootDto, UpdateRootDto, RootResponse } from "./root.dto";
 import { customBaseQuery } from "@/shared/api";
 
 const endPoint = "roots";
@@ -9,12 +9,16 @@ export const rootsApi = createApi({
   baseQuery: customBaseQuery,
   tagTypes: ["Roots"],
   endpoints: (builder) => ({
-    getAllRoots: builder.query<RootDto[], void>({
-      query: () => ({ url: endPoint, method: "GET" }),
+    getAllRoots: builder.query<RootResponse, { page?: number; per_page?: number }>({
+      query: ({ page = 1, per_page = 10 }) => ({
+        url: endPoint,
+        method: "GET",
+        params: { page, per_page },
+      }),
       providesTags: (result) =>
-        result
+        result?.data
           ? [
-              ...result.map(({ id }) => ({ type: "Roots" as const, id })),
+              ...result.data.map(({ id }) => ({ type: "Roots" as const, id })),
               { type: "Roots", id: "LIST" },
             ]
           : [{ type: "Roots", id: "LIST" }],

@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { TableDto, CreateTableDto, UpdateTableDto } from "./table.dto";
+import type { TableDto, CreateTableDto, UpdateTableDto, TableResponse } from "./table.dto";
 import { customBaseQuery } from "@/shared/api";
 
 const endPoint = "tables";
@@ -9,12 +9,16 @@ export const tablesApi = createApi({
   baseQuery: customBaseQuery,
   tagTypes: ["Tables"],
   endpoints: (builder) => ({
-    getAllTables: builder.query<TableDto[], void>({
-      query: () => ({ url: endPoint, method: "GET" }),
+    getAllTables: builder.query<TableResponse, { page?: number; per_page?: number }>({
+      query: ({ page = 1, per_page = 10 }) => ({
+        url: endPoint,
+        method: "GET",
+        params: { page, per_page },
+      }),
       providesTags: (result) =>
-        result
+        result?.data
           ? [
-              ...result.map(({ id }) => ({ type: "Tables" as const, id })),
+              ...result.data.map(({ id }) => ({ type: "Tables" as const, id })),
               { type: "Tables", id: "LIST" },
             ]
           : [{ type: "Tables", id: "LIST" }],

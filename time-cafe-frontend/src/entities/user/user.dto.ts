@@ -1,3 +1,5 @@
+import { MetaResponse } from "@/shared/api";
+
 export interface CreateUserDto {
   login: string;
   email: string;
@@ -16,4 +18,10 @@ export interface UserDto {
 export interface UpdateUserDto {
   login: string;
   email: string;
+}
+
+export interface UserResponse {
+  success: boolean;
+  meta: MetaResponse
+  data: UserDto[];
 }

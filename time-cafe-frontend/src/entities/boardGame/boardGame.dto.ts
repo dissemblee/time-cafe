@@ -1,3 +1,5 @@
+import { MetaResponse } from "@/shared/api"
+
 export interface BoardGameDto {
   id: number
   name: string
@@ -17,4 +19,10 @@ export interface UpdateBoardGameDto {
   name?: string
   description?: string
   quantity?: number
+}
+
+export interface BoardGameResponse {
+  success: boolean;
+  meta: MetaResponse;
+  data: BoardGameDto[];
 }

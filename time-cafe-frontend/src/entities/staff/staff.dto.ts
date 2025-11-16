@@ -1,3 +1,4 @@
+import { MetaResponse } from "@/shared/api"
 import { StaffRole } from "./staff.enum"
 
 export interface StaffDto {
@@ -28,4 +29,10 @@ export interface UpdateStaffDto {
   personal_discount?: number
   responsible?: boolean
   role?: StaffRole
+}
+
+export interface StaffResponse {
+  success: boolean;
+  meta: MetaResponse
+  data: StaffDto[];
 }

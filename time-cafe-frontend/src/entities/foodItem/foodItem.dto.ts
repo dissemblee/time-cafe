@@ -1,3 +1,5 @@
+import { MetaResponse } from "@/shared/api"
+
 export enum FoodType {
   DRINK = 'drink',
   SNACK = 'snack',
@@ -31,5 +33,6 @@ export interface UpdateFoodItemDto {
 
 export interface FoodItemsResponse {
   success: boolean;
+  meta: MetaResponse;
   data: FoodItemDto[];
 }

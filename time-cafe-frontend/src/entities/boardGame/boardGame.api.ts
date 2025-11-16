@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react"
-import type { BoardGameDto, CreateBoardGameDto, UpdateBoardGameDto } from "./boardGame.dto"
+import type { BoardGameDto, CreateBoardGameDto, BoardGameResponse, UpdateBoardGameDto } from "./boardGame.dto"
 import { customBaseQuery } from "@/shared/api"
 
 const endPoint = "board-games"
@@ -9,12 +9,16 @@ export const boardGamesApi = createApi({
   baseQuery: customBaseQuery,
   tagTypes: ["BoardGames"],
   endpoints: (builder) => ({
-    getAllBoardGames: builder.query<BoardGameDto[], void>({
-      query: () => ({ url: endPoint, method: "GET" }),
+    getAllBoardGames: builder.query<BoardGameResponse, { page?: number; per_page?: number }>({
+      query: ({ page = 1, per_page = 10 }) => ({
+        url: endPoint,
+        method: "GET",
+        params: { page, per_page },
+      }),
       providesTags: (result) =>
-        result
+        result?.data
           ? [
-              ...result.map(({ id }) => ({ type: "BoardGames" as const, id })),
+              ...result.data.map(({ id }) => ({ type: "BoardGames" as const, id })),
               { type: "BoardGames", id: "LIST" },
             ]
           : [{ type: "BoardGames", id: "LIST" }],

@@ -1,3 +1,5 @@
+import { MetaResponse } from "@/shared/api"
+
 export interface RootDto {
   id: number
   user_id: number
@@ -20,4 +22,10 @@ export interface UpdateRootDto {
   name?: string
   phone?: string
   social_network?: string
+}
+
+export interface RootResponse {
+  success: boolean;
+  meta: MetaResponse
+  data: RootDto[];
 }

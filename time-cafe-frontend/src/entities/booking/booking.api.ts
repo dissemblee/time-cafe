@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { BookingDto, CreateBookingDto, UpdateBookingDto } from "./booking.dto";
+import type { BookingDto, BookingResponse, CreateBookingDto, UpdateBookingDto } from "./booking.dto";
 import { customBaseQuery } from "@/shared/api";
 
 const endPoint = "bookings";
@@ -9,12 +9,16 @@ export const bookingsApi = createApi({
   baseQuery: customBaseQuery,
   tagTypes: ["Bookings"],
   endpoints: (builder) => ({
-    getAllBookings: builder.query<BookingDto[], void>({
-      query: () => ({ url: endPoint, method: "GET" }),
+    getAllBookings: builder.query<BookingResponse, { page?: number; per_page?: number }>({
+      query: ({ page = 1, per_page = 10 }) => ({
+        url: endPoint,
+        method: "GET",
+        params: { page, per_page },
+      }),
       providesTags: (result) =>
-        result
+        result?.data
           ? [
-              ...result.map(({ id }) => ({ type: "Bookings" as const, id })),
+              ...result.data.map(({ id }) => ({ type: "Bookings" as const, id })),
               { type: "Bookings", id: "LIST" },
             ]
           : [{ type: "Bookings", id: "LIST" }],

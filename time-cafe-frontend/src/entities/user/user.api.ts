@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { UserDto, CreateUserDto, UpdateUserDto } from "./user.dto";
+import type { UserDto, CreateUserDto, UpdateUserDto, UserResponse } from "./user.dto";
 import { customBaseQuery } from "@/shared/api";
 
 const endPoint = "users";
@@ -9,12 +9,16 @@ export const usersApi = createApi({
   baseQuery: customBaseQuery,
   tagTypes: ["Users"],
   endpoints: (builder) => ({
-    getAllUsers: builder.query<UserDto[], void>({
-      query: () => ({ url: endPoint, method: "GET" }),
+    getAllUsers: builder.query<UserResponse, { page?: number; per_page?: number }>({
+      query: ({ page = 1, per_page = 10 }) => ({
+        url: endPoint,
+        method: "GET",
+        params: { page, per_page },
+      }),
       providesTags: (result) =>
-        result
+        result?.data
           ? [
-              ...result.map(({ id }) => ({ type: "Users" as const, id })),
+              ...result.data.map(({ id }) => ({ type: "Users" as const, id })),
               { type: "Users", id: "LIST" },
             ]
           : [{ type: "Users", id: "LIST" }],

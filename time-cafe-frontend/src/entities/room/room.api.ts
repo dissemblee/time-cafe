@@ -9,8 +9,12 @@ export const roomsApi = createApi({
   baseQuery: customBaseQuery,
   tagTypes: ["Rooms"],
   endpoints: (builder) => ({
-    getAllRooms: builder.query<RoomsResponse, void>({
-      query: () => ({ url: endPoint, method: "GET" }),
+    getAllRooms: builder.query<RoomsResponse, { page?: number; per_page?: number }>({
+      query: ({ page = 1, per_page = 10 }) => ({
+        url: endPoint,
+        method: "GET",
+        params: { page, per_page },
+      }),
       providesTags: (result) =>
         result?.data
           ? [

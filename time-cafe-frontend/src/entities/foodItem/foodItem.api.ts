@@ -9,8 +9,12 @@ export const foodItemApi = createApi({
   baseQuery: customBaseQuery,
   tagTypes: ["FoodItems"],
   endpoints: (builder) => ({
-    getAllFoodItems: builder.query<FoodItemsResponse, void>({
-      query: () => ({ url: endPoint, method: "GET" }),
+    getAllFoodItems: builder.query<FoodItemsResponse, { page?: number; per_page?: number }>({
+      query: ({ page = 1, per_page = 10 }) => ({
+        url: endPoint,
+        method: "GET",
+        params: { page, per_page },
+      }),
       providesTags: (result) =>
         result?.data
           ? [

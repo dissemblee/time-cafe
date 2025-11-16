@@ -1,3 +1,4 @@
+import { MetaResponse } from "@/shared/api"
 import { BookingStatus } from "./booking.enum"
 
 export interface BookingDto {
@@ -31,4 +32,10 @@ export interface UpdateBookingDto {
   status?: BookingStatus
   price?: number
   hours?: number
+}
+
+export interface BookingResponse {
+  success: boolean;
+  meta: MetaResponse;
+  data: BookingDto[];
 }

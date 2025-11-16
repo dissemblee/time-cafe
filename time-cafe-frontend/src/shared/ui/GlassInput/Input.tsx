@@ -12,10 +12,10 @@ interface InputProps extends NativeInputProps {
   value: string;
   placeholder?: string;
   error?: string;
-  // onChange: (value: string) => void;
+  onChange: (value: string) => void;
 }
 
-export const GlassInput = ({ label, value, placeholder, error, /*onChange,*/ className, ...props }: InputProps) => {
+export const GlassInput = ({ label, value, placeholder, error, onChange, className, ...props }: InputProps) => {
   return (
     <div className={styles.Input}>
       {label && <label className={styles.Input__label}>{label}</label>}
@@ -25,7 +25,7 @@ export const GlassInput = ({ label, value, placeholder, error, /*onChange,*/ cla
         className={clsx(styles.Input__field, className, error && styles['Input__field--error'])}
         value={value}
         placeholder={placeholder}
-        // onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
       />
 
       {error && <div className={styles.Input__errorText}>{error}</div>}

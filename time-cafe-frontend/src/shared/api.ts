@@ -2,6 +2,13 @@ import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from "axios";
 import { BaseQueryFn } from "@reduxjs/toolkit/query/react";
 import { getCookie } from 'cookies-next';
 
+export interface MetaResponse {
+  current_page: number
+  last_page: number
+  per_page: number
+  total: number
+}
+
 interface ApiArgs {
   url: string;
   method?: "GET" | "POST" | "PUT" | "DELETE";

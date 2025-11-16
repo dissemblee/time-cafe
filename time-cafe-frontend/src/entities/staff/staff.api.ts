@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import type { StaffDto, CreateStaffDto, UpdateStaffDto } from "./staff.dto";
+import type { StaffDto, CreateStaffDto, UpdateStaffDto, StaffResponse } from "./staff.dto";
 import { customBaseQuery } from "@/shared/api";
 
 const endPoint = "staffs";
@@ -9,12 +9,16 @@ export const staffApi = createApi({
   baseQuery: customBaseQuery,
   tagTypes: ["Staffs"],
   endpoints: (builder) => ({
-    getAllStaffs: builder.query<StaffDto[], void>({
-      query: () => ({ url: endPoint, method: "GET" }),
+    getAllStaffs: builder.query<StaffResponse, { page?: number; per_page?: number }>({
+      query: ({ page = 1, per_page = 10 }) => ({
+        url: endPoint,
+        method: "GET",
+        params: { page, per_page },
+      }),
       providesTags: (result) =>
-        result
+        result?.data
           ? [
-              ...result.map(({ id }) => ({ type: "Staffs" as const, id })),
+              ...result.data.map(({ id }) => ({ type: "Staffs" as const, id })),
               { type: "Staffs", id: "LIST" },
             ]
           : [{ type: "Staffs", id: "LIST" }],

@@ -1,3 +1,4 @@
+import { MetaResponse } from "@/shared/api"
 import { ClientStatus } from "./client.enum"
 
 export interface ClientDto {
@@ -34,4 +35,10 @@ export interface UpdateClientDto {
   discount_percent?: number
   status?: ClientStatus
   date_of_birth?: string
+}
+
+export interface ClientResponse {
+  success: boolean;
+  meta: MetaResponse;
+  data: ClientDto[];
 }

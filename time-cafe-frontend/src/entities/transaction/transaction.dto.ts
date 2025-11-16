@@ -1,3 +1,4 @@
+import { MetaResponse } from "@/shared/api"
 import { TransactionStatus } from "./transaction.enum"
 
 export interface TransactionDto {
@@ -22,4 +23,10 @@ export interface UpdateTransactionDto {
   table_id?: number
   booking_id?: number
   status?: TransactionStatus
+}
+
+export interface TransactionResponse {
+  success: boolean;
+  meta: MetaResponse
+  data: TransactionDto[];
 }
