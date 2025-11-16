@@ -1,8 +1,9 @@
 "use client"
 import { FoodType, useCreateFoodItemMutation } from '@/entities/foodItem'
 import { useForm } from '@/shared/hooks/useForm'
+import { AdminButton } from '@/shared/ui/AdminButton'
 import { Input, Textarea, Select } from "@/shared/ui/Inputs"
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 const initialFormData = {
   name: '',
@@ -19,6 +20,7 @@ const foodTypeOptions = [
 ]
 
 export const CreateFoodItemForm = () => {
+  const router = useRouter()
   const [createFoodItem, { isLoading, error }] = useCreateFoodItemMutation()
   const { formData, errors, handleChange, resetForm, setErrors } = useForm(initialFormData)
 
@@ -48,7 +50,7 @@ export const CreateFoodItemForm = () => {
       }).unwrap()
       
       resetForm()
-      redirect("/")
+      router.push("/admin/menu")
     } catch (err) {
       console.error('Ошибка при создании продукта:', err)
     }
@@ -98,9 +100,9 @@ export const CreateFoodItemForm = () => {
         disabled={isLoading}
       />
   
-      <button type="submit" disabled={isLoading}>
+      <AdminButton type="submit" disabled={isLoading}>
         {isLoading ? 'Создание...' : 'Создать продукт'}
-      </button>
+      </AdminButton>
     </form>
   )
 }

@@ -2,23 +2,12 @@
 @use '../../styles/mixins' as *;
 
 .HeroSection {
-  @include glassEffect;
+  @include glassCard;
   text-align: center;
-  padding: 4rem 2rem;
-  border-radius: 35px;
-  margin: 0 20px 2rem;
-  box-shadow: $glass-glow;
-  border: 1px solid $ultra-glass-border;
 }
 
 .HeroSection__title {
-  font-size: 3.5rem;
-  font-weight: 800;
-  margin-bottom: 1.5rem;
-  background: $gradient-primary;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  @include glassTitle;
 }
 
 .HeroSection__description {

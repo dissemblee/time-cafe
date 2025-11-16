@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use App\Services\ClientService;
 
 class UserService extends BaseService
 {
@@ -16,7 +18,9 @@ class UserService extends BaseService
     {
         return [
             'login' => 'required|string|max:255' . $id,
-            'email' => 'required|email|unique:users,email,' . $id,
+            'email' => $id
+                ? "required|email|unique:users,email,$id"
+                : 'required|email|unique:users,email',
             'password' => $id ? 'nullable|string|min:6' : 'required|string|min:6',
         ];
     }

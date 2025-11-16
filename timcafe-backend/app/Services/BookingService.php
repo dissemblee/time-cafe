@@ -20,4 +20,11 @@ class BookingService extends BaseService
             'hours' => 'required|numeric|min:1',
         ];
     }
+
+    public function all(array $params = [])
+    {
+        $perPage = $params['per_page'] ?? 10;
+
+        return $this->modelClass::with(['client', 'table'])->paginate($perPage);
+    }
 }

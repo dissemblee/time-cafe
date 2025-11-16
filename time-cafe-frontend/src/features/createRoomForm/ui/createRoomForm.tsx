@@ -1,8 +1,9 @@
 "use client"
 import { useCreateRoomMutation } from '@/entities/room'
 import { useForm } from '@/shared/hooks/useForm'
+import { AdminButton } from '@/shared/ui/AdminButton'
 import { Input, Select, Textarea } from '@/shared/ui/Inputs'
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 
 const smokingOptions = [
   { value: 'true', label: 'Да' },
@@ -19,6 +20,7 @@ const initialFormData = {
 }
 
 export const CreateRoomForm = () => {
+  const router = useRouter()
   const [createRoom, { isLoading, error }] = useCreateRoomMutation()
   const { formData, errors, handleChange, resetForm, setErrors } = useForm(initialFormData)
 
@@ -52,7 +54,7 @@ export const CreateRoomForm = () => {
       
       resetForm()
       
-      redirect("/")
+      router.push("/admin/room")
     } catch (err) {
       console.error('Ошибка при создании комнаты:', err)
     }
@@ -117,9 +119,9 @@ export const CreateRoomForm = () => {
         disabled={isLoading}
       />
   
-      <button type="submit" disabled={isLoading}>
+      <AdminButton type="submit" disabled={isLoading}>
         {isLoading ? 'Создание...' : 'Создать комнату'}
-      </button>
+      </AdminButton>
     </form>
   )
 }

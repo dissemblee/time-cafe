@@ -1,5 +1,7 @@
 import { MetaResponse } from "@/shared/api"
 import { BookingStatus } from "./booking.enum"
+import { ClientDto } from "../client"
+import { TableDto } from "../table"
 
 export interface BookingDto {
   id: number
@@ -12,6 +14,8 @@ export interface BookingDto {
   hours: number
   created_at?: string
   updated_at?: string
+  client?: ClientDto
+  table?: TableDto
 }
 
 export interface CreateBookingDto {

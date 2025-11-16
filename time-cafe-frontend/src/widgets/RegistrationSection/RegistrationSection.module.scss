@@ -1,0 +1,13 @@
+@use '../../shared/styles/variables' as *;
+@use '../../shared/styles/mixins' as *;
+
+.RegistrationSection {
+  @include glassCard;
+  padding-top: 2rem;
+}
+
+.RegistrationSection__Title {
+  @include glassTitle;
+
+  margin-bottom: 2rem;
+}

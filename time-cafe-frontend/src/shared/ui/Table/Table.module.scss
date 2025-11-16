@@ -2,29 +2,16 @@
 @use '../../../shared/styles/mixins' as *;
 
 .Table {
-  width: 100%;
-  background: white;
-  border-radius: $rounded;
-  padding: $value-4;
+  @include adminCard;
   border-collapse: collapse;
-  font-size: 14px;
-  line-height: 1.8;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
-
+  
   th, td {
     padding: $value-3 $value-4;
     text-align: left;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   }
 
   th {
     background: #f9f9f9;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.08);
-  }
-
-  tr:last-child td {
-    border-bottom: none;
   }
 
   tbody tr {
@@ -32,7 +19,7 @@
   }
 
   tbody tr:hover {
-    transform: scale(1.02);
+    transform: scale(1.002);
     background: rgba(0, 0, 0, 0.03);
   }
 }
@@ -40,7 +27,7 @@
 .Pagination {
   @include flexCenter;
   gap: 6px;
-  margin-top: 16px;
+  margin: 16px 0;
   flex-wrap: wrap;
 
   .NavButton, .PageButton {
@@ -48,12 +35,10 @@
     border-radius: 6px;
     border: 1px solid #ccc;
     background: white;
-    cursor: pointer;
-    font-weight: 500;
     transition: all 0.2s;
+    color: black;
 
     &:disabled {
-      opacity: 0.5;
       cursor: not-allowed;
     }
 

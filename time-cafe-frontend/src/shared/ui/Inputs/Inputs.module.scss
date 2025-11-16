@@ -1,21 +1,15 @@
 .Input {
-  margin-bottom: 1.5rem;
-  width: 100%;
-
-  &__label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    font-size: 14px;
-  }
+  margin-bottom: 1rem;
 
   &__field {
     width: 100%;
-    padding: 12px 16px;
-    border: none;
+    padding: 10px 10px;
     border-radius: 8px;
-    font-size: 14px;
     transition: all 0.3s ease;
+    background: white;
+    color: black;
+    font-size: medium;
+    border: 1px solid #a3a5a6;
 
     &:focus {
       outline: none;
@@ -28,10 +22,7 @@
     }
 
     &_textarea {
-      min-height: 120px;
       resize: vertical;
-      font-family: inherit;
-      line-height: 1.5;
     }
 
     &_select {
@@ -56,7 +47,6 @@
     }
   }
 
-  // Стили для чекбокса
   &_checkbox {
     margin-bottom: 1rem;
   }

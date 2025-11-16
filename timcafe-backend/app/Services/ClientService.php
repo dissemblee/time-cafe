@@ -11,7 +11,7 @@ class ClientService extends BaseService
     protected function rules(int $id = null): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
+            'user_id' => $id ? 'sometimes|exists:users,id' : 'required|exists:users,id',
             'name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:50',
             'email' => 'nullable|email|unique:clients,email,' . $id,

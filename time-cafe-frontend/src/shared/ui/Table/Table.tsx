@@ -1,9 +1,8 @@
 "use client"
-import React, { useState } from "react";
 import styles from "./Table.module.scss";
 import { MetaResponse } from "@/shared/api";
 
-type ColumnConfig<Data> =
+export type ColumnConfig<Data> =
   | keyof Data
   | { view: (data: Data) => React.ReactNode };
 

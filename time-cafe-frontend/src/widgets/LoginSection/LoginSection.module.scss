@@ -1,0 +1,13 @@
+@use '../../shared/styles/variables' as *;
+@use '../../shared/styles/mixins' as *;
+
+.LoginSection {
+  @include glassCard;
+  padding-top: 2rem;
+}
+
+.LoginSection__Title {
+  @include glassTitle;
+
+  margin-bottom: 2rem;
+}

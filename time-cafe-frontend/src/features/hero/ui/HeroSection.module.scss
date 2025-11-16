@@ -2,16 +2,13 @@
 @use '../../../shared/styles/mixins' as *;
 
 .HeroSection {
-  @include glassEffect;
+  @include glassCard;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
   align-items: center;
   margin: 2rem 20px 4rem;
-  padding: 4rem 3rem;
   border-radius: 35px;
-  box-shadow: $glass-glow;
-  border: 1px solid $ultra-glass-border;
   position: relative;
   overflow: hidden;
 

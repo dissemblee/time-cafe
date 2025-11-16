@@ -14,6 +14,8 @@ return new class extends Migration {
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->enum('status', array_column(BookingStatus::cases(), 'value'))->default(BookingStatus::ACTIVE->value);
+            $table->decimal('price', 10, 2)->default(0);
+            $table->integer('hours')->default(1);
             $table->timestamps();
         });
     }

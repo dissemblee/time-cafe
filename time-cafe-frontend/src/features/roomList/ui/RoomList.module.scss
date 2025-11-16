@@ -5,15 +5,10 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
   gap: 2rem;
-  margin: 0 20px;
 }
 
 .RoomsPage__card {
-  @include glassEffect;
-  padding: 2.5rem 2rem;
-  border-radius: 25px;
-  box-shadow: $glass-glow;
-  border: 1px solid $ultra-glass-border;
+  @include glassCard;
 }
 
 .RoomsPage__cardContent {

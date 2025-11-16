@@ -7,7 +7,7 @@ import { Loader } from "@/shared/ui/Loader";
 import { Error } from "@/shared/ui/Error"
 
 export const MenuItems = () => {
-  const { data: foodItems, isLoading, error } = useGetAllFoodItemsQuery();
+  const { data: foodItems, isLoading, error } = useGetAllFoodItemsQuery({page: 1, per_page: 10});
 
   const menuCategories = foodItems?.data.reduce<Record<string, string[]>>((acc, item) => {
     if (item.type !== FoodType.NO) {

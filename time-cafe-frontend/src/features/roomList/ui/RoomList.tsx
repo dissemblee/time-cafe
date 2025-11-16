@@ -8,7 +8,7 @@ import { Loader } from "@/shared/ui/Loader";
 import { Error } from "@/shared/ui/Error";
 
 export const RoomList = () => {
-  const { data: roomsData, isLoading, error } = useGetAllRoomsQuery();
+  const { data: roomsData, isLoading, error } = useGetAllRoomsQuery({page: 1, per_page: 10});
   
   if (isLoading) return <Loader />;
   if (error) return <Error />;

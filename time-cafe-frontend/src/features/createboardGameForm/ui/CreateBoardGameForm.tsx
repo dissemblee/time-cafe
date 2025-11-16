@@ -1,8 +1,9 @@
 "use client"
 import { useCreateBoardGameMutation } from '@/entities/boardGame'
 import { useForm } from '@/shared/hooks/useForm'
+import { AdminButton } from '@/shared/ui/AdminButton'
 import { Input, Textarea } from "@/shared/ui/Inputs"
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 const initialFormData = {
   name: '',
@@ -11,6 +12,7 @@ const initialFormData = {
 }
 
 export const CreateBoardGameForm = () => {
+  const router = useRouter()
   const [createBoardGame, { isLoading, error }] = useCreateBoardGameMutation()
   const { formData, errors, handleChange, resetForm, setErrors } = useForm(initialFormData)
 
@@ -40,7 +42,7 @@ export const CreateBoardGameForm = () => {
       }).unwrap()
       
       resetForm()
-      redirect("/")
+      router.push("/admin/game")
     } catch (err) {
       console.error('Ошибка при создании игры:', err)
     }
@@ -55,7 +57,6 @@ export const CreateBoardGameForm = () => {
         error={errors.name}
         onChange={handleChange}
         disabled={isLoading}
-        placeholder="Например: Монополия, Каркассон"
       />
 
       <Textarea
@@ -66,7 +67,6 @@ export const CreateBoardGameForm = () => {
         onChange={handleChange}
         disabled={isLoading}
         rows={4}
-        placeholder="Опишите игру, правила, возрастные ограничения..."
       />
 
       <Input
@@ -82,9 +82,9 @@ export const CreateBoardGameForm = () => {
         step="1"
       />
   
-      <button type="submit" disabled={isLoading}>
+      <AdminButton type="submit" disabled={isLoading} style={{width: '100%'}}>
         {isLoading ? 'Создание...' : 'Создать игру'}
-      </button>
+      </AdminButton>
     </form>
   )
 }

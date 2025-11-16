@@ -4,12 +4,13 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './Header.module.scss';
-import { FaUser, FaSearch, FaClock, FaCoffee, FaGamepad } from "react-icons/fa"
+import { FaUser, FaClock } from "react-icons/fa"
+import { useGetMeQuery } from '@/entities/me';
 
 export const Header: React.FC = () => {
   const pathname = usePathname();
-
   const isActive = (path: string) => pathname === path;
+  const { data: me, isLoading } = useGetMeQuery();
 
   return (
     <div className={styles.Header}>
@@ -69,12 +70,9 @@ export const Header: React.FC = () => {
         </div>
         
         <div className={styles.Header__actions}>
-          <Link href="/register" className={styles.Header__actionButton}>
+          <Link href={`/profile/${me?.client?.id}`} className={styles.Header__actionButton}>
             <FaUser />
           </Link>
-          <button className={styles.Header__actionButton}>
-            <FaSearch />
-          </button>
         </div>
       </nav>
     </div>

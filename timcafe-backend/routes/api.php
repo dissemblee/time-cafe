@@ -17,13 +17,16 @@ use App\Http\Controllers\RoomLayoutItemController;
 use App\Http\Controllers\RootController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+    $user = $request->user()->load('client');
+
+    return $user;
 });
 
 // Auth
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth:sanctum');
+
 
 // Users
 Route::apiResource('users', UserController::class);

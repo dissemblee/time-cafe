@@ -1,0 +1,8 @@
+@use '../../../shared/styles/variables' as *;
+@use '../../../shared/styles/mixins' as *;
+
+.RegistrationForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}

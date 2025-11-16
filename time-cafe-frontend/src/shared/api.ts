@@ -61,11 +61,18 @@ export async function $api<TResponse = any, TData = any>(
       await ensureCsrfCookie()
     }
 
+    const xsrfToken = getCookie("XSRF-TOKEN")?.toString();
+
     const response = await axiosInstance.request<TResponse>({
       url: args.id ? `${args.endPoint}/${args.id}` : args.endPoint,
       method: args.method,
       data: args.data,
       params: args.query,
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+        ...(xsrfToken ? { "X-XSRF-TOKEN": xsrfToken } : {})
+      }
     })
 
     return response

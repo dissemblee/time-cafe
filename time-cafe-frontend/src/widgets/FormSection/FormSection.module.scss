@@ -1,0 +1,12 @@
+@use '../../shared/styles/variables' as *;
+@use '../../shared/styles/mixins' as *;
+
+.FormSection {
+  @include adminCard;
+}
+
+.FormSection__Header {
+  display: flex;
+  gap: 10px;
+  margin-bottom: $value-4;
+}

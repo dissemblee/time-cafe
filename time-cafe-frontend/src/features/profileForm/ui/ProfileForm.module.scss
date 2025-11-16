@@ -1,0 +1,16 @@
+@use '../../../shared/styles/variables' as *;
+@use '../../../shared/styles/mixins' as *;
+
+.ProfileForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  @include glassCard;
+}
+
+.ProfileForm__Title {
+  background: $gradient-primary;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
