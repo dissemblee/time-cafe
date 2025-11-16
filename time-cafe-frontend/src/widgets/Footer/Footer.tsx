@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { FaVk, FaTelegram, FaInstagram, FaClock, FaCoffee } from '../../shared/ui/Icons';
 import styles from './Footer.module.scss';
 
 export const Footer: React.FC = () => {
@@ -10,6 +11,9 @@ export const Footer: React.FC = () => {
         <div className={styles.Footer__brand}>
           <div className={styles.Footer__logo}>
             <div className={styles.Footer__logoCore}>
+              <div className={styles.Footer__iconCombo}>
+                <FaClock className={styles.Footer__logoIcon} />
+              </div>
               <div className={styles.Footer__liquidAnimation}></div>
             </div>
             <span className={styles.Footer__logoText}>TimeCafe</span>
@@ -19,13 +23,13 @@ export const Footer: React.FC = () => {
           </p>
           <div className={styles.Footer__social}>
             <a href="#" className={styles.Footer__socialLink}>
-              <i className="fab fa-vk"></i>
+              <FaVk className={styles.Footer__socialIcon} />
             </a>
             <a href="#" className={styles.Footer__socialLink}>
-              <i className="fab fa-telegram"></i>
+              <FaTelegram className={styles.Footer__socialIcon} />
             </a>
             <a href="#" className={styles.Footer__socialLink}>
-              <i className="fab fa-instagram"></i>
+              <FaInstagram className={styles.Footer__socialIcon} />
             </a>
           </div>
         </div>
