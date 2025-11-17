@@ -1,0 +1,16 @@
+@use '../../../shared/styles/variables' as *;
+@use '../../../shared/styles/mixins' as *;
+
+.UserBookings {
+  display: flex;
+  flex-direction: column;
+  gap: $value-4;
+  @include glassCard;
+}
+
+.UserBookings__Title {
+  background: $gradient-primary;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

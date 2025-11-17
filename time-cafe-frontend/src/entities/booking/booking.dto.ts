@@ -24,8 +24,8 @@ export interface CreateBookingDto {
   start_time: string
   end_time: string
   status?: BookingStatus
-  price: number
-  hours: number
+  price?: number
+  hours?: number
 }
 
 export interface UpdateBookingDto {

@@ -29,6 +29,21 @@ export const bookingsApi = createApi({
       providesTags: (result, error, id) => [{ type: "Bookings", id }],
     }),
 
+    getMyBookings: builder.query<BookingResponse, { page?: number; per_page?: number }>({
+      query: ({ page = 1, per_page = 10 }) => ({
+        url: `${endPoint}/my-bookings`,
+        method: "GET",
+        params: { page, per_page },
+      }),
+      providesTags: (result) =>
+        result?.data
+          ? [
+              ...result.data.map(({ id }) => ({ type: "Bookings" as const, id })),
+              { type: "Bookings", id: "LIST" },
+            ]
+          : [{ type: "Bookings", id: "LIST" }],
+    }),
+
     createBooking: builder.mutation<BookingDto, CreateBookingDto>({
       query: (data) => ({
         url: endPoint,
@@ -83,4 +98,5 @@ export const {
   useUpdateBookingMutation,
   useDeleteBookingMutation,
   useGetClientBookingsQuery,
+  useGetMyBookingsQuery,
 } = bookingsApi;

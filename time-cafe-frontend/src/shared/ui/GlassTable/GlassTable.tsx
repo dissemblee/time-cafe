@@ -23,7 +23,7 @@ export function GlassTable<Data>({
 }: GlassTableProps<Data>) {
   if (isLoading) return <>Загрузка...</>;
 
-  if (!data || data.length === 0 || !meta) return <>Нет данных</>;
+  if (!data || data.length === 0) return <>Нет данных</>;
   return (
     <>
       <table className={styles.GlassTable}>

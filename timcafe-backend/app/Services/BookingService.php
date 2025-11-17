@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Booking;
+use Illuminate\Http\Request;
 
 class BookingService extends BaseService
 {
@@ -16,8 +17,8 @@ class BookingService extends BaseService
             'start_time' => 'required|date',
             'end_time' => 'required|date|after_or_equal:start_time',
             'status' => 'required|string',
-            'price' => 'required|numeric|min:1',
-            'hours' => 'required|numeric|min:1',
+            'price' => 'sometimes|numeric|min:1',
+            'hours' => 'sometimes|numeric|min:1',
         ];
     }
 
@@ -27,4 +28,34 @@ class BookingService extends BaseService
 
         return $this->modelClass::with(['client', 'table'])->paginate($perPage);
     }
+
+    public function myBookings(Request $request)
+    {
+        $user = $request->user();
+
+        if (!$user || !$user->client) {
+            return response()->json([
+                'error' => 'У пользователя нет связанного клиента'
+            ], 400);
+        }
+
+        $clientId = $user->client->id;
+
+        $bookings = Booking::where('client_id', $clientId)
+            ->with(['client', 'table'])
+            ->paginate($request->get('per_page', 10));
+
+        return response()->json($bookings);
+    }
+
+    public function store(Request $request, BookingService $bookingService)
+    {
+        try {
+            $booking = $bookingService->create($request->all());
+            return response()->json($booking, 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+    }
+
 }
