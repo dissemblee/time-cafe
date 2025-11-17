@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useGetAllFoodItemsQuery, useDeleteFoodItemMutation, FoodItemDto } from "@/entities/foodItem";
 import Link from "next/link";
 import { DataTableSection } from "@/widgets/DataTableSection";
-import { EditFoodItemModal } from "@/features/foodManagement/EditFoodItemModal";
+import { EditFoodItemModal } from "@/features/foodManagement/ui/EditFoodItemModal";
 import { ConfirmModal } from "@/shared/ui/ConfirmModal";
 import { AdminButton } from "@/shared/ui/AdminButton";
 

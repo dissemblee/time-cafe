@@ -1,6 +1,6 @@
 "use client"
 import { Modal } from '@/shared/ui/Modal'
-import { CreateFoodItemForm } from '../createFoodItemForm'
+import { CreateFoodItemForm } from '../../createFoodItemForm'
 import { FoodItemDto } from '@/entities/foodItem'
 
 interface EditFoodItemModalProps {

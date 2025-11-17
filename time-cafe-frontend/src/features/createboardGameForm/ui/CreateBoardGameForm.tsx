@@ -1,9 +1,20 @@
 "use client"
-import { useCreateBoardGameMutation } from '@/entities/boardGame'
+import { useCreateBoardGameMutation, useUpdateBoardGameMutation } from '@/entities/boardGame'
 import { useForm } from '@/shared/hooks/useForm'
 import { AdminButton } from '@/shared/ui/AdminButton'
 import { Input, Textarea } from "@/shared/ui/Inputs"
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+
+interface CreateBoardGameFormProps {
+  editingItem?: {
+    id: number
+    name: string
+    description: string
+    quantity: number
+  }
+  onSuccess?: () => void
+}
 
 const initialFormData = {
   name: '',
@@ -11,10 +22,23 @@ const initialFormData = {
   quantity: ''
 }
 
-export const CreateBoardGameForm = () => {
+export const CreateBoardGameForm = ({ editingItem, onSuccess }: CreateBoardGameFormProps) => {
   const router = useRouter()
-  const [createBoardGame, { isLoading, error }] = useCreateBoardGameMutation()
-  const { formData, errors, handleChange, resetForm, setErrors } = useForm(initialFormData)
+  const [createBoardGame, { isLoading: isCreating }] = useCreateBoardGameMutation()
+  const [updateBoardGame, { isLoading: isUpdating }] = useUpdateBoardGameMutation()
+  const { formData, errors, handleChange, resetForm, setErrors, setFormData } = useForm(initialFormData)
+
+  const isLoading = isCreating || isUpdating
+
+  useEffect(() => {
+    if (editingItem) {
+      setFormData({
+        name: editingItem.name,
+        description: editingItem.description,
+        quantity: editingItem.quantity.toString()
+      })
+    }
+  }, [editingItem, setFormData])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -35,16 +59,31 @@ export const CreateBoardGameForm = () => {
     }
 
     try {
-      await createBoardGame({
-        name: formData.name,
-        description: formData.description,
-        quantity: Number(formData.quantity)
-      }).unwrap()
+      if (editingItem) {
+        await updateBoardGame({
+          id: editingItem.id,
+          data: {
+            name: formData.name,
+            description: formData.description,
+            quantity: Number(formData.quantity)
+          }
+        }).unwrap()
+      } else {
+        await createBoardGame({
+          name: formData.name,
+          description: formData.description,
+          quantity: Number(formData.quantity)
+        }).unwrap()
+      }
       
       resetForm()
-      router.push("/admin/game")
+      if (onSuccess) {
+        onSuccess()
+      } else {
+        router.push("/admin/game")
+      }
     } catch (err) {
-      console.error('Ошибка при создании игры:', err)
+      console.error('Ошибка при сохранении игры:', err)
     }
   }
 
@@ -83,7 +122,10 @@ export const CreateBoardGameForm = () => {
       />
   
       <AdminButton type="submit" disabled={isLoading} style={{width: '100%'}}>
-        {isLoading ? 'Создание...' : 'Создать игру'}
+        {isLoading 
+          ? (editingItem ? 'Сохранение...' : 'Создание...') 
+          : (editingItem ? 'Сохранить изменения' : 'Создать игру')
+        }
       </AdminButton>
     </form>
   )
