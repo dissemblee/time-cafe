@@ -1,9 +1,21 @@
 "use client"
-import { FoodType, useCreateFoodItemMutation } from '@/entities/foodItem'
+import { FoodType, useCreateFoodItemMutation, useUpdateFoodItemMutation } from '@/entities/foodItem'
 import { useForm } from '@/shared/hooks/useForm'
 import { AdminButton } from '@/shared/ui/AdminButton'
 import { Input, Textarea, Select } from "@/shared/ui/Inputs"
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+
+interface CreateFoodItemFormProps {
+  editingItem?: {
+    id: number
+    name: string
+    description?: string
+    price: number
+    type: FoodType
+  }
+  onSuccess?: () => void
+}
 
 const initialFormData = {
   name: '',
@@ -19,10 +31,24 @@ const foodTypeOptions = [
   { value: FoodType.NO, label: 'Другое' }
 ]
 
-export const CreateFoodItemForm = () => {
+export const CreateFoodItemForm = ({ editingItem, onSuccess }: CreateFoodItemFormProps) => {
   const router = useRouter()
-  const [createFoodItem, { isLoading, error }] = useCreateFoodItemMutation()
-  const { formData, errors, handleChange, resetForm, setErrors } = useForm(initialFormData)
+  const [createFoodItem, { isLoading: isCreating }] = useCreateFoodItemMutation()
+  const [updateFoodItem, { isLoading: isUpdating }] = useUpdateFoodItemMutation()
+  const { formData, errors, handleChange, resetForm, setErrors, setFormData } = useForm(initialFormData)
+
+  const isLoading = isCreating || isUpdating
+
+  useEffect(() => {
+    if (editingItem) {
+      setFormData({
+        name: editingItem.name,
+        description: editingItem.description || '',
+        price: editingItem.price.toString(),
+        type: editingItem.type
+      })
+    }
+  }, [editingItem, setFormData])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -42,17 +68,33 @@ export const CreateFoodItemForm = () => {
     }
 
     try {
-      await createFoodItem({
-        name: formData.name,
-        description: formData.description || undefined,
-        price: Number(formData.price),
-        type: formData.type as FoodType
-      }).unwrap()
+      if (editingItem) {
+        await updateFoodItem({
+          id: editingItem.id,
+          data: {
+            name: formData.name,
+            description: formData.description || undefined,
+            price: Number(formData.price),
+            type: formData.type as FoodType
+          }
+        }).unwrap()
+      } else {
+        await createFoodItem({
+          name: formData.name,
+          description: formData.description || undefined,
+          price: Number(formData.price),
+          type: formData.type as FoodType
+        }).unwrap()
+      }
       
       resetForm()
-      router.push("/admin/menu")
+      if (onSuccess) {
+        onSuccess()
+      } else {
+        router.push("/admin/menu")
+      }
     } catch (err) {
-      console.error('Ошибка при создании продукта:', err)
+      console.error('Ошибка при сохранении продукта:', err)
     }
   }
 
@@ -101,7 +143,10 @@ export const CreateFoodItemForm = () => {
       />
   
       <AdminButton type="submit" disabled={isLoading}>
-        {isLoading ? 'Создание...' : 'Создать продукт'}
+        {isLoading 
+          ? (editingItem ? 'Сохранение...' : 'Создание...') 
+          : (editingItem ? 'Сохранить изменения' : 'Создать продукт')
+        }
       </AdminButton>
     </form>
   )
