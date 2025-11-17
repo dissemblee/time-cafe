@@ -209,3 +209,6 @@ export {
   FaUserInjured,
   FaUserNurse,
 } from 'react-icons/fa';
+export { wallSvg } from './wallSvg';
+export { tableSvg } from './tableSvg';
+export { sofaSvg } from './sofaSvg';
