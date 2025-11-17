@@ -1,4 +1,4 @@
-import { CreateBoardGameForm } from "@/features/createBoardGameForm";
+import { CreateBoardGameForm } from "@/features/boardGameManagement";
 import { FormSection } from "@/widgets/FormSection/FormSection";
 
 export const CreateGamePage = () => {

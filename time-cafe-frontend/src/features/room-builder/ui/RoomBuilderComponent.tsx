@@ -7,6 +7,8 @@ import Konva from "konva";
 import { AdminButton } from "@/shared/ui/AdminButton";
 import styles from "./RoomBuilderComponent.module.scss"
 import Link from "next/link";
+import { TbWall, TbTable, TbSofa } from "react-icons/tb"; 
+import { wallSvg, tableSvg, sofaSvg } from "@/shared/ui/Icons";
 
 export const RoomBuilderComponent = () => {
   const {
@@ -49,9 +51,25 @@ export const RoomBuilderComponent = () => {
       onTap: () => setSelectedId(it.id),
     };
 
+    if (it.svg) {
+      return (
+        <Group key={it.id}>
+          <SvgItem item={it} isSelected={isSelected} commonProps={commonProps} />
+          <Text 
+            x={it.x} 
+            y={it.y - 18} 
+            text={isSelected ? it.name : ""} 
+            fontSize={12} 
+            fill="#333"
+            listening={false}
+          />
+        </Group>
+      );
+    }
+    
     if (it.type === "wall") return <Group key={it.id}><Rect {...commonProps} cornerRadius={2} fill={it.fill || "#333"} stroke={isSelected ? "#1976d2" : undefined} strokeWidth={isSelected ? 2 : 0} /><Text x={it.x} y={it.y - 18} text={isSelected ? "Стена" : ""} fontSize={12} /></Group>;
     if (it.type === "table") return <Group key={it.id}><Rect {...commonProps} cornerRadius={6} fill={it.fill || "#d9b38c"} stroke={isSelected ? "#1976d2" : undefined} strokeWidth={isSelected ? 2 : 0} /><Text x={it.x + 6} y={it.y + Math.max(6, it.height / 2 - 6)} text={it.name ?? "Стол"} fontSize={14} listening={false} /></Group>;
-    if (it.type === "sofa" && it.svg) return <Group key={it.id}><SvgItem item={it} isSelected={isSelected} commonProps={commonProps} /><Text x={it.x + 8} y={it.y + Math.max(6, it.height / 2 - 8)} text="Диван" fontSize={14} listening={false} /></Group>;
+    
     return null;
   };
 
@@ -70,9 +88,22 @@ export const RoomBuilderComponent = () => {
     <section className={styles.RoomBuilderComponent}>
       <div className={styles.RoomBuilderComponent__SideBar}>
         <h3>Room builder — {room?.name}</h3>
-        <AdminButton onClick={() => addItem("wall", { width: 240, height: 8, fill: "#444", name: "Wall" })}>Добавить стену</AdminButton>
-        <AdminButton onClick={() => addItem("table", { width: 120, height: 70, fill: "#d9b38c", name: "Table" }, true)}>Добавить стол</AdminButton>
-        <AdminButton onClick={() => addItem("sofa", { width: 160, height: 80, fill: "#7aa6ff", name: "Sofa", svg: "<svg>...</svg>" })}>Добавить диван</AdminButton>
+        
+        <AdminButton onClick={() => addItem("wall", { width: 240, height: 12, fill: "#666", name: "Стена", svg: wallSvg })}>
+          <TbWall style={{ marginRight: '8px' }} />
+          Добавить стену
+        </AdminButton>
+
+        <AdminButton onClick={() => addItem("table", { width: 120, height: 70, fill: "#d9b38c", name: "Стол", svg: tableSvg }, true)}>
+          <TbTable style={{ marginRight: '8px' }} />
+          Добавить стол
+        </AdminButton>
+
+        <AdminButton onClick={() => addItem("sofa", { width: 160, height: 80, fill: "#8B4513", name: "Диван", svg: sofaSvg })}>
+          <TbSofa style={{ marginRight: '8px' }} />
+          Добавить диван
+        </AdminButton>
+
         <h3>Элементы</h3>
         <div className={styles.RoomBuilderComponent__ElementList}>
           {items.map(it => (
@@ -94,7 +125,7 @@ export const RoomBuilderComponent = () => {
           Del/Backspace — удалить
         </div>
 
-        <Link href="/admin/room"><AdminButton>Вернуться к списку кнопок</AdminButton></Link>
+        <Link href="/admin/room"><AdminButton>Вернуться к списку комнат</AdminButton></Link>
       </div>
 
       <Stage width={1200} height={780} onMouseDown={onStageMouseDown} className={styles.RoomBuilderComponent__Grid} ref={stageRef}>

@@ -1,6 +1,6 @@
 "use client";
-import { Stage, Layer, Rect, Group, Text } from "react-konva";
-import { useState } from "react";
+import { Stage, Layer, Group, Text, Rect, Image } from "react-konva";
+import { useState, useEffect } from "react";
 import { useGetRoomQuery } from "@/entities/room";
 import { useGetRoomLayoutItemQuery } from "@/entities/roomLayoutItem";
 import { useGetTableQuery } from "@/entities/table";
@@ -9,6 +9,36 @@ import { Loader } from "@/shared/ui/Loader";
 import { Error } from "@/shared/ui/Error";
 import { LiquidButton } from "@/shared/ui/LiquidButton";
 import Link from "next/link";
+import { Modal } from "@/shared/ui/Modal";
+import { wallSvg, tableSvg, sofaSvg } from "@/shared/ui/Icons";
+
+const SvgImage = ({ svg, x, y, width, height, rotation }: any) => {
+  const [image, setImage] = useState<HTMLImageElement | null>(null);
+
+  useEffect(() => {
+    if (!svg) return;
+    
+    const svgBlob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(svgBlob);
+    const img = new window.Image();
+    img.onload = () => {
+      setImage(img);
+      URL.revokeObjectURL(url);
+    };
+    img.src = url;
+  }, [svg]);
+
+  return (
+    <Image
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      rotation={rotation}
+      image={image || undefined}
+    />
+  );
+};
 
 export const RoomSchemeComponent = ({ roomId }: { roomId: number }) => {
   const [selectedTableId, setSelectedTableId] = useState<number | null>(null);
@@ -23,6 +53,19 @@ export const RoomSchemeComponent = ({ roomId }: { roomId: number }) => {
     skip: !selectedTableId,
   });
 
+  const closeModal = () => {
+    setSelectedTableId(null);
+  };
+
+  const getSvgForType = (type: string) => {
+    switch(type) {
+      case "wall": return wallSvg;
+      case "table": return tableSvg;
+      case "sofa": return sofaSvg;
+      default: return null;
+    }
+  };
+
   if (!room) return <p>Комната не найдена</p>;
   if (isLoading) return <Loader />;
   if (!layout) return <Loader />;
@@ -33,12 +76,7 @@ export const RoomSchemeComponent = ({ roomId }: { roomId: number }) => {
       <Stage width={1200} height={780} className={styles.RoomSchemeComponent}>
         <Layer>
           {layout.items.map((item, index) => {
-            const color =
-              item.type === "wall"
-                ? "#444"
-                : item.type === "table"
-                ? "#d9b38c"
-                : "#7aa6ff";
+            const svg = getSvgForType(item.type);
 
             return (
               <Group
@@ -57,12 +95,23 @@ export const RoomSchemeComponent = ({ roomId }: { roomId: number }) => {
                   }
                 }}
               >
-                <Rect
-                  width={item.width}
-                  height={item.height}
-                  fill={color}
-                  cornerRadius={4}
-                />
+                {svg ? (
+                  <SvgImage 
+                    svg={svg}
+                    x={0}
+                    y={0}
+                    width={item.width}
+                    height={item.height}
+                  />
+                ) : (
+                  <Rect
+                    width={item.width}
+                    height={item.height}
+                    fill={item.type === "wall" ? "#444" : item.type === "table" ? "#d9b38c" : "#7aa6ff"}
+                    cornerRadius={4}
+                  />
+                )}
+                
                 {item.type === "table" && (
                   <Text
                     text={`Стол #${item.table_id}`}
@@ -78,24 +127,29 @@ export const RoomSchemeComponent = ({ roomId }: { roomId: number }) => {
         </Layer>
       </Stage>
 
-      {selectedTableId && (
-        <div className={styles.TableInfo}>
-          {tableLoading && <Loader />}
-          {tableError && <Error />}
-          {selectedTable && (
-            <div>
-              <h3>Стол #{selectedTable.id}</h3>
-              <p>Название: {selectedTable.name}</p>
-              <p>Статус: {selectedTable.status}</p>
-              <p>Мест: {selectedTable.seats}</p>
-              <p>Забронировано: {selectedTable.name ? "Да" : "Нет"}</p>
+      <Modal 
+        isOpen={!!selectedTableId} 
+        onClose={closeModal}
+        title={selectedTable ? `Стол #${selectedTable.id}` : "Загрузка..."}
+      >
+        {tableLoading && <Loader />}
+        {tableError && <Error />}
+        
+        {selectedTable && (
+          <div>
+            <p><strong>Название:</strong> {selectedTable.name}</p>
+            <p><strong>Статус:</strong> {selectedTable.status}</p>
+            <p><strong>Мест:</strong> {selectedTable.seats}</p>
+            <p><strong>Забронировано:</strong> {selectedTable.name ? "Да" : "Нет"}</p>
+            
+            <div style={{ display: "flex", justifyContent: "center", marginTop: "25px" }}>
               <Link href={`/booking/${selectedTable.id}`}>
                 <LiquidButton>Забронировать</LiquidButton>
               </Link>
             </div>
-          )}
-        </div>
-      )}
+          </div>  
+        )}
+      </Modal>
     </>
   );
 };

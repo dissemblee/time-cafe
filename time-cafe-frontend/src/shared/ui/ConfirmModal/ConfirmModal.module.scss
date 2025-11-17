@@ -1,0 +1,16 @@
+@use '../../styles/variables';
+@use '../../styles/mixins';
+
+.ConfirmModal {
+  &__Message {
+    margin-bottom: 2rem;
+    color: variables.$text-color;
+    line-height: 1.5;
+  }
+
+  &__Actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+  }
+}

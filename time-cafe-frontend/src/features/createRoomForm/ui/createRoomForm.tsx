@@ -1,9 +1,23 @@
 "use client"
-import { useCreateRoomMutation } from '@/entities/room'
+import { useCreateRoomMutation, useUpdateRoomMutation } from '@/entities/room'
 import { useForm } from '@/shared/hooks/useForm'
 import { AdminButton } from '@/shared/ui/AdminButton'
 import { Input, Select, Textarea } from '@/shared/ui/Inputs'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+
+interface CreateRoomFormProps {
+  editingItem?: {
+    id: number
+    name: string
+    type: string
+    smoking_allowed: boolean
+    description: string
+    features: string[]
+    min_price: number
+  }
+  onSuccess?: () => void
+}
 
 const smokingOptions = [
   { value: 'true', label: 'Да' },
@@ -19,10 +33,26 @@ const initialFormData = {
   min_price: ''
 }
 
-export const CreateRoomForm = () => {
+export const CreateRoomForm = ({ editingItem, onSuccess }: CreateRoomFormProps) => {
   const router = useRouter()
-  const [createRoom, { isLoading, error }] = useCreateRoomMutation()
-  const { formData, errors, handleChange, resetForm, setErrors } = useForm(initialFormData)
+  const [createRoom, { isLoading: isCreating }] = useCreateRoomMutation()
+  const [updateRoom, { isLoading: isUpdating }] = useUpdateRoomMutation()
+  const { formData, errors, handleChange, resetForm, setErrors, setFormData } = useForm(initialFormData)
+
+  const isLoading = isCreating || isUpdating
+
+  useEffect(() => {
+    if (editingItem) {
+      setFormData({
+        name: editingItem.name,
+        type: editingItem.type,
+        smoking_allowed: editingItem.smoking_allowed.toString(),
+        description: editingItem.description,
+        features: editingItem.features.join(', '),
+        min_price: editingItem.min_price.toString()
+      })
+    }
+  }, [editingItem, setFormData])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -45,18 +75,37 @@ export const CreateRoomForm = () => {
     }
 
     try {
-      const room = await createRoom({
-        ...formData,
-        smoking_allowed: formData.smoking_allowed === 'true',
-        min_price: Number(formData.min_price),
-        features: formData.features.split(',').map(f => f.trim()).filter(Boolean)
-      }).unwrap()
+      let roomId: number
+      
+      if (editingItem) {
+        const updatedRoom = await updateRoom({
+          id: editingItem.id,
+          data: {
+            ...formData,
+            smoking_allowed: formData.smoking_allowed === 'true',
+            min_price: Number(formData.min_price),
+            features: formData.features.split(',').map(f => f.trim()).filter(Boolean)
+          }
+        }).unwrap()
+        roomId = updatedRoom.id
+      } else {
+        const newRoom = await createRoom({
+          ...formData,
+          smoking_allowed: formData.smoking_allowed === 'true',
+          min_price: Number(formData.min_price),
+          features: formData.features.split(',').map(f => f.trim()).filter(Boolean)
+        }).unwrap()
+        roomId = newRoom.id
+      }
       
       resetForm()
-
-      router.push("/admin/builder/" + room.id)
+      if (onSuccess) {
+        onSuccess()
+      } else {
+        router.push("/admin/room")
+      }
     } catch (err) {
-      console.error('Ошибка при создании комнаты:', err)
+      console.error('Ошибка при сохранении комнаты:', err)
     }
   }
 
@@ -120,7 +169,10 @@ export const CreateRoomForm = () => {
       />
   
       <AdminButton type="submit" disabled={isLoading}>
-        {isLoading ? 'Создание...' : 'Создать комнату'}
+        {isLoading 
+          ? (editingItem ? 'Сохранение...' : 'Создание...') 
+          : (editingItem ? 'Сохранить изменения' : 'Создать комнату')
+        }
       </AdminButton>
     </form>
   )
