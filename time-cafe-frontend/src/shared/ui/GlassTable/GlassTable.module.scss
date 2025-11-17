@@ -1,0 +1,81 @@
+@use '../../../shared/styles/variables' as *;
+@use '../../../shared/styles/mixins' as *;
+
+.GlassTable {
+  width: 100%;
+  border-collapse: collapse;
+  @include glassEffect;
+  border-radius: 20px;
+  //box-shadow: $glass-glow;
+  border: 1px solid $ultra-glass-border;
+  overflow: hidden;
+  
+  thead {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  
+  th {
+    padding: 1.2rem 1rem;
+    text-align: left;
+    color: $glass-text;
+    font-weight: 600;
+    font-size: 1rem;
+    border-bottom: 1px solid $ultra-glass-border;
+  }
+  
+  tbody {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  td {
+    padding: 1rem;
+    color: $glass-text;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  tr {
+    transition: background 0.3s ease;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    &:last-child td {
+      border-bottom: none;
+    }
+  }
+}
+
+.Pagination {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+  align-items: center;
+}
+
+.NavButton, .PageButton {
+  padding: 0.5rem 1rem;
+  border: 1px solid $ultra-glass-border;
+  background: rgba(255, 255, 255, 0.1);
+  color: $glass-text;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.PageButton.Active {
+  background: rgba(100, 200, 255, 0.3);
+  border-color: #64C8FF;
+  box-shadow: 0 0 15px rgba(100, 200, 255, 0.3);
+}

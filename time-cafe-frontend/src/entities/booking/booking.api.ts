@@ -57,6 +57,22 @@ export const bookingsApi = createApi({
         { type: "Bookings", id: "LIST" },
       ],
     }),
+
+    getClientBookings: builder.query<BookingResponse, { clientId: number; page?: number; per_page?: number }>({
+      query: ({ clientId, page = 1, per_page = 10 }) => ({
+        url: `clients/${clientId}/bookings`,
+        method: "GET",
+        params: { page, per_page },
+      }),
+      providesTags: (result) =>
+        result?.data
+          ? [
+              ...result.data.map(({ id }) => ({ type: "Bookings" as const, id })),
+              { type: "Bookings", id: "LIST" },
+            ]
+          : [{ type: "Bookings", id: "LIST" }],
+    }),
+
   }),
 });
 
@@ -66,4 +82,5 @@ export const {
   useCreateBookingMutation,
   useUpdateBookingMutation,
   useDeleteBookingMutation,
+  useGetClientBookingsQuery,
 } = bookingsApi;

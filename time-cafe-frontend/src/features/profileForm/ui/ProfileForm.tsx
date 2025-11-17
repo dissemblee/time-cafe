@@ -8,6 +8,7 @@ import type { ClientStatus } from "@/entities/client";
 import { useGetUserQuery, useUpdateUserMutation } from "@/entities/user";
 import { GlassInput } from "@/shared/ui/GlassInput";
 import { LiquidButton } from "@/shared/ui/LiquidButton";
+import { UserBookings } from "@/features/bookings";
 import styles from "./ProfileForm.module.scss"
 
 export const ProfileForm = () => {
@@ -127,6 +128,7 @@ export const ProfileForm = () => {
         />
         <LiquidButton type="submit">{isClientLoading ? "Сохранение..." : "Сохранить"}</LiquidButton>
       </form>
+      <UserBookings />
     </section>
   );
 };
