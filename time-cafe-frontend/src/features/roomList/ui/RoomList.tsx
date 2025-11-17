@@ -30,7 +30,7 @@ export const RoomList = () => {
               ))}
             </div>
             
-            <Link href={"/booking"}>
+            <Link href={"/room-scheme/" + room.id}>
               <LiquidButton 
                 variant="primary" 
                 className={styles.RoomsPage__bookButton}

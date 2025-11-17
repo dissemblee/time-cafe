@@ -5,10 +5,10 @@
   padding: $value-3;
   border-radius: $rounded-lg;
   cursor: pointer;
-
   &--primary {
     background: rgb(85, 85, 202);
     border: 1px solid rgba(126, 182, 212, 0.4);
+    color: white;
 
     transition: 0.5s;
     &:hover {

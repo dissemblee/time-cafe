@@ -45,7 +45,7 @@ export const CreateRoomForm = () => {
     }
 
     try {
-      await createRoom({
+      const room = await createRoom({
         ...formData,
         smoking_allowed: formData.smoking_allowed === 'true',
         min_price: Number(formData.min_price),
@@ -53,8 +53,8 @@ export const CreateRoomForm = () => {
       }).unwrap()
       
       resetForm()
-      
-      router.push("/admin/room")
+
+      router.push("/admin/builder/" + room.id)
     } catch (err) {
       console.error('Ошибка при создании комнаты:', err)
     }

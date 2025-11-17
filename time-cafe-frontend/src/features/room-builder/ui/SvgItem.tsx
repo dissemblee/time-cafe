@@ -1,6 +1,6 @@
 import { Image as KonvaImage } from "react-konva";
 import React, { useEffect, useRef, useState } from "react";
-import { Item } from "./room-builder";
+import { Item } from "../types/types";
 
 type SvgItemProps = {
   item: Item;

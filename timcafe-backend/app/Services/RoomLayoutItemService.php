@@ -10,8 +10,7 @@ class RoomLayoutItemService extends BaseService
 
     protected function rules(int $id = null): array
     {
-        return [
-            'room_id' => 'required|exists:rooms,id',
+        $rules = [
             'items' => 'required|array|min:1',
             'items.*.type' => 'required|string|max:255',
             'items.*.table_id' => 'nullable|exists:tables,id',
@@ -21,5 +20,11 @@ class RoomLayoutItemService extends BaseService
             'items.*.height' => 'required|numeric',
             'items.*.rotation' => 'nullable|numeric',
         ];
+
+        if (!$id) {
+            $rules['room_id'] = 'required|exists:rooms,id';
+        }
+
+        return $rules;
     }
 }

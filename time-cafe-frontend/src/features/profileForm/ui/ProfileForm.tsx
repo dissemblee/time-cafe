@@ -17,11 +17,11 @@ export const ProfileForm = () => {
   const userId = Number(id);
 
   const { data: clientData } = useGetClientQuery(userId);
-  const [updateClient] = useUpdateClientMutation();
+  const [updateClient, { isLoading: isClientLoading }] = useUpdateClientMutation();
 
   // @ts-ignore
   const { data: userData } = useGetUserQuery(clientData?.user_id);
-  const [updateUser] = useUpdateUserMutation();
+  const [updateUser, { isLoading: isUserLoading  }] = useUpdateUserMutation();
 
   const { formData: userForm, handleChange: handleUserChange, setFormData: setUserForm } = useForm({
     login: "",
@@ -94,7 +94,7 @@ export const ProfileForm = () => {
           onChange={handleUserChange}
           required
         />
-        <LiquidButton type="submit">Сохранить</LiquidButton>
+        <LiquidButton type="submit">{isUserLoading ? "Сохранение..." : "Сохранить"}</LiquidButton>
       </form>
       <br />
       <form onSubmit={handleClientSubmit} className={styles.ProfileForm}>
@@ -125,7 +125,7 @@ export const ProfileForm = () => {
           value={clientForm.date_of_birth}
           onChange={handleClientChange}
         />
-        <LiquidButton type="submit">Сохранить</LiquidButton>
+        <LiquidButton type="submit">{isClientLoading ? "Сохранение..." : "Сохранить"}</LiquidButton>
       </form>
     </section>
   );

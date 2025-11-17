@@ -1,0 +1,1 @@
+export { RoomBuilderComponent } from "@/features/room-builder/ui/RoomBuilderComponent";

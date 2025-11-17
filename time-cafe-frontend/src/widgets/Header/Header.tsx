@@ -15,17 +15,14 @@ export const Header: React.FC = () => {
   return (
     <div className={styles.Header}>
       <nav className={styles.Header__nav}>
-        <div className={styles.Header__brand}>
+        <Link href={'/'}>
           <div className={styles.Header__logo}>
             <div className={styles.Header__logoCore}>
-              <div className={styles.Header__iconCombo}>
-                <FaClock className={styles.Header__logoIcon} />
-              </div>
-              <div className={styles.Header__liquidAnimation}></div>
+              <FaClock className={styles.Header__logoIcon} />
             </div>
             <span className={styles.Header__logoText}>TimeCafe</span>
           </div>
-        </div>
+        </Link>
         
         <div className={styles.Header__links}>
           <Link 
@@ -34,14 +31,6 @@ export const Header: React.FC = () => {
           >
             <div className={styles.Header__linkLiquid}></div>
             <span className={styles.Header__linkText}>Главная</span>
-          </Link>
-          
-          <Link 
-            href="/builder" 
-            className={`${styles.Header__link} ${isActive('/builder') ? styles['Header__link--active'] : ''}`}
-          >
-            <div className={styles.Header__linkLiquid}></div>
-            <span className={styles.Header__linkText}>Конструктор</span>
           </Link>
           
           <Link 

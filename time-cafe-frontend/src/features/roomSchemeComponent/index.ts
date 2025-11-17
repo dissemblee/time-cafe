@@ -1,0 +1,1 @@
+export { RoomSchemeComponent } from './ui/RoomSchemeComponent';
