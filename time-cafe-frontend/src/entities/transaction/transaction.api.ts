@@ -24,6 +24,21 @@ export const transactionsApi = createApi({
           : [{ type: "Transactions", id: "LIST" }],
     }),
 
+    createPaymentSession: builder.mutation<{ success: boolean; payment_url: string; transaction_id: number },{ booking_id: number; client_id: number }>({
+      query: (data) => ({
+        url: "payments/create-session",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    confirmPayment: builder.mutation<{ success: boolean }, { id: number }>({
+      query: ({ id }) => ({
+        url: `fake-gateway/confirm/${id}`,
+        method: "POST",
+      }),
+    }),
+
     getTransaction: builder.query<TransactionDto, number>({
       query: (id) => ({ url: `${endPoint}/${id}`, method: "GET" }),
       providesTags: (_res, _err, id) => [{ type: "Transactions", id }],
@@ -55,4 +70,6 @@ export const {
   useCreateTransactionMutation,
   useUpdateTransactionMutation,
   useDeleteTransactionMutation,
+  useCreatePaymentSessionMutation,
+  useConfirmPaymentMutation
 } = transactionsApi;

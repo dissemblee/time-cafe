@@ -7,7 +7,6 @@ import { useParams } from "next/navigation"
 export const BookingProcess = () => {
   const params = useParams()
   const tableId = Number(params?.tableId)
-  console.log(tableId)
   return (
     <section className={styles.BookingProcess}>
       <CreateBookingForm tableId={tableId} />

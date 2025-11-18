@@ -33,6 +33,9 @@ Route::apiResource('users', UserController::class);
 Route::apiResource('clients', ClientController::class);
 
 // Bookings
+Route::middleware(['auth:sanctum'])->post('bookings/{booking}/cancel', [BookingController::class, 'cancel'])
+    ->name('bookings.cancel');
+
 Route::middleware('auth:sanctum')->get('bookings/my-bookings', [BookingController::class, 'myBookings']);
 
 Route::apiResource('bookings', BookingController::class);
@@ -44,6 +47,11 @@ Route::apiResource('rooms', RoomController::class);
 Route::apiResource('tables', TableController::class);
 
 // Transactions
+Route::post('payments/create-session', [TransactionController::class, 'createPaymentSession'])
+     ->middleware('auth:sanctum');
+
+Route::post('/fake-gateway/confirm/{id}', [TransactionController::class, 'paymentCallback']);
+
 Route::apiResource('transactions', TransactionController::class);
 
 // Food items

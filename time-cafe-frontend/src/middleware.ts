@@ -1,21 +1,19 @@
 // import { NextResponse } from "next/server";
 // import type { NextRequest } from "next/server";
 
-// // Middleware для защиты всех маршрутов /admin/*
 // export async function middleware(req: NextRequest) {
 //   const { pathname } = req.nextUrl;
 
-//   // Только маршруты /admin/*
 //   if (pathname.startsWith("/admin")) {
 //     try {
-//       // Проверка авторизации на Laravel
+
 //       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user`, {
 //         headers: {
-//           cookie: req.headers.get("cookie") ?? "",
+//           cookie: req.headers.get("XSRF-TOKEN") ?? "",
 //         },
 //         credentials: "include",
 //       });
-
+//       console.log(res.status , res.statusText)
 //       if (res.ok) {
 //         return NextResponse.next();
 //       } else {
@@ -37,9 +35,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// Middleware для защиты всех маршрутов /admin/*
 export async function middleware(req: NextRequest) {
-  // Просто пропускаем все маршруты, не проверяя авторизацию
   return NextResponse.next();
 }
 

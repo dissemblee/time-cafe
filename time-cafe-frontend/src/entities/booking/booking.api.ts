@@ -24,6 +24,17 @@ export const bookingsApi = createApi({
           : [{ type: "Bookings", id: "LIST" }],
     }),
 
+    cancelBooking: builder.mutation<BookingDto, number>({
+      query: (bookingId) => ({
+        url: `bookings/${bookingId}/cancel`,
+        method: "POST",
+      }),
+      invalidatesTags: (result, error, bookingId) => [
+        { type: "Bookings", id: bookingId },
+        { type: "Bookings", id: "LIST" },
+      ],
+    }),
+
     getBooking: builder.query<BookingDto, number>({
       query: (id) => ({ url: `${endPoint}/${id}`, method: "GET" }),
       providesTags: (result, error, id) => [{ type: "Bookings", id }],
@@ -99,4 +110,5 @@ export const {
   useDeleteBookingMutation,
   useGetClientBookingsQuery,
   useGetMyBookingsQuery,
+  useCancelBookingMutation,
 } = bookingsApi;

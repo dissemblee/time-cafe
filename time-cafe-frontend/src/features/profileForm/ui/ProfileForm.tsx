@@ -128,7 +128,6 @@ export const ProfileForm = () => {
         />
         <LiquidButton type="submit">{isClientLoading ? "Сохранение..." : "Сохранить"}</LiquidButton>
       </form>
-      <UserBookings />
     </section>
   );
 };

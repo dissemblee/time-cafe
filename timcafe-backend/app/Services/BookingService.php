@@ -29,6 +29,21 @@ class BookingService extends BaseService
         return $this->modelClass::with(['client', 'table'])->paginate($perPage);
     }
 
+    public function cancelBooking(Booking $booking): Booking
+    {
+        $booking->update([
+            'status' => \App\Enums\BookingStatus::CANCELLED,
+        ]);
+
+        if ($booking->table) {
+            $booking->table->update([
+                'status' => \App\Enums\TableStatus::FREE,
+            ]);
+        }
+
+        return $booking;
+    }
+
     public function myBookings(Request $request)
     {
         $user = $request->user();
@@ -48,14 +63,25 @@ class BookingService extends BaseService
         return response()->json($bookings);
     }
 
-    public function store(Request $request, BookingService $bookingService)
+    public function create(array $data, ?Booking $booking = null): Booking
     {
-        try {
-            $booking = $bookingService->create($request->all());
-            return response()->json($booking, 201);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 400);
-        }
-    }
+        $table = \App\Models\Table::findOrFail($data['table_id']);
+        $room = $table->room;
 
+        $start = new \DateTime($data['start_time']);
+        $end = new \DateTime($data['end_time']);
+        $hours = max(1, ceil(($end->getTimestamp() - $start->getTimestamp()) / 3600));
+
+        $price = $hours * ($room->min_price ?? 100);
+
+        $data['hours'] = $hours;
+        $data['price'] = $price;
+
+        if ($booking) {
+            $booking->update($data);
+            return $booking;
+        }
+
+        return Booking::create($data);
+    }
 }

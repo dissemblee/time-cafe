@@ -30,7 +30,7 @@ export const CreateBookingForm = ({ tableId }: { tableId: number }) => {
       const start = new Date(formData.start_time)
       const end = new Date(formData.end_time)
 
-      await createBooking({
+      const booking = await createBooking({
         client_id: clientId,
         table_id: tableId,
         start_time: start.toISOString(),
@@ -39,7 +39,7 @@ export const CreateBookingForm = ({ tableId }: { tableId: number }) => {
       }).unwrap()
 
       resetForm()
-      route.push("/profile/" + me?.client?.id)
+      route.push("/transaction/" + booking.id)
     } catch (err: any) {
       console.error("Ошибка при создании бронирования:", err)
       if (err?.data) console.error("Детали ошибки от сервера:", err.data)

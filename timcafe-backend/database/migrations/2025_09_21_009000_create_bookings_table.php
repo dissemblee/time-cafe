@@ -13,11 +13,18 @@ return new class extends Migration {
             $table->foreignId('table_id')->constrained()->cascadeOnDelete();
             $table->dateTime('start_time');
             $table->dateTime('end_time');
-            $table->enum('status', array_column(BookingStatus::cases(), 'value'))->default(BookingStatus::ACTIVE->value);
+            $table->enum('status', array_column(BookingStatus::cases(), 'value'))
+                  ->default(BookingStatus::ACTIVE->value);
             $table->decimal('price', 10, 2)->default(0);
             $table->integer('hours')->default(1);
             $table->timestamps();
         });
+
+        DB::statement("
+            CREATE UNIQUE INDEX unique_active_bookings 
+            ON bookings(table_id, start_time, end_time) 
+            WHERE status = 'active'
+        ");
     }
 
     public function down(): void {

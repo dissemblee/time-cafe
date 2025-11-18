@@ -1,11 +1,10 @@
 'use client';
-
-import { useParams } from 'next/navigation';
 import { GlassTable } from '@/shared/ui/GlassTable/GlassTable';
-import { useGetAllBookingsQuery, useGetMyBookingsQuery } from '@/entities/booking';
+import { BookingStatus, useCancelBookingMutation, useGetMyBookingsQuery } from '@/entities/booking';
 import { BookingDto, getStatusLabel, getStatusStyle } from '@/entities/booking';
 import styles from "./UserBookings.module.scss"
 import { useState } from 'react';
+import { LiquidButton } from '@/shared/ui/LiquidButton';
 
 export const UserBookings = () => {
   const [page, setPage] = useState(1);
@@ -14,7 +13,9 @@ export const UserBookings = () => {
     page, 
     per_page: 10 
   });
-  console.log(bookingsData?.data)
+
+  const [ cancelBooking, { isLoading: cancelLoading }] = useCancelBookingMutation()
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('ru-RU');
   };
@@ -33,6 +34,14 @@ export const UserBookings = () => {
     return `${hours} часа`;
   };
 
+  const handleCancel = async (id: number) => {
+    try { 
+      await cancelBooking(id)
+    } catch(e) {
+      console.log(e)
+    } 
+  }
+
   return (
     <div className={styles.UserBookings}>
       <h2 className={styles.UserBookings__Title}>
@@ -47,19 +56,44 @@ export const UserBookings = () => {
           'Сумма': { view: (data: BookingDto) => `${data.price} ₽` },
           'Статус': { 
             view: (data: BookingDto) => {
+              const label = getStatusLabel(data.status);
               const style = getStatusStyle(data.status);
               return (
-                <span style={style}>
-                  {getStatusLabel(data.status)}
+                <span style={{
+                  padding: "2px 6px",
+                  borderRadius: "4px",
+                  fontWeight: 500,
+                  ...style
+                }}>
+                  {label}
                 </span>
               );
             }
           },
+          Действие: {
+            view(data) {
+              return (
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  {data.status === BookingStatus.Cancelled || data.status === BookingStatus.Completed ? (
+                    <>Нет действий</>
+                  ) : (
+                    <LiquidButton 
+                      onClick={() => handleCancel(data.id)}
+                      disabled={cancelLoading}
+                    >
+                      {cancelLoading ? "Отмена" : "Отменить"}
+                    </LiquidButton>
+                  )}
+                </div>
+              )
+            },
+          }
         }}
         data={bookingsData?.data}
         isLoading={isLoading}
         meta={bookingsData?.meta}
         onPageChange={setPage}
+
       />
     </div>
   );
