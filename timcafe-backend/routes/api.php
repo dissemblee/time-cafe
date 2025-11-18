@@ -21,58 +21,56 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user()->load(['client', 'staff']);
 });
 
-// Auth
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth:sanctum');
 
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/registration-links/generate', [TemporaryRegistrationLinkController::class, 'generate']);
-    Route::apiResource('/registration-links', TemporaryRegistrationLinkController::class);
-});
-
+Route::get('/food-items', [FoodItemController::class, 'index']);
+Route::get('/board-games', [BoardGameController::class, 'index']);
+Route::get('/rooms', [RoomController::class, 'index']);
+Route::get('/tables', [TableController::class, 'index']);
+Route::get('/room-layout-items', [RoomLayoutItemController::class, 'index']);
 Route::get('/registration-links/validate/{token}', [TemporaryRegistrationLinkController::class, 'validateLink']);
 
-// Users
-Route::apiResource('users', UserController::class);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/registration-links/generate', [TemporaryRegistrationLinkController::class, 'generate']);
+    Route::apiResource('/registration-links', TemporaryRegistrationLinkController::class)->except(['index', 'show']);
+    Route::get('/registration-links/{id}', [TemporaryRegistrationLinkController::class, 'show']);
 
-// Clients
-Route::apiResource('clients', ClientController::class);
+    Route::post('/food-items', [FoodItemController::class, 'store']);
+    Route::put('/food-items/{id}', [FoodItemController::class, 'update']);
+    Route::delete('/food-items/{id}', [FoodItemController::class, 'destroy']);
+    Route::get('/food-items/{id}', [FoodItemController::class, 'show']);
 
-// Bookings
-Route::middleware(['auth:sanctum'])->post('bookings/{booking}/cancel', [BookingController::class, 'cancel'])
-    ->name('bookings.cancel');
+    Route::post('/board-games', [BoardGameController::class, 'store']);
+    Route::put('/board-games/{id}', [BoardGameController::class, 'update']);
+    Route::delete('/board-games/{id}', [BoardGameController::class, 'destroy']);
+    Route::get('/board-games/{id}', [BoardGameController::class, 'show']);
 
-Route::middleware('auth:sanctum')->get('bookings/my-bookings', [BookingController::class, 'myBookings']);
+    Route::post('/rooms', [RoomController::class, 'store']);
+    Route::put('/rooms/{id}', [RoomController::class, 'update']);
+    Route::delete('/rooms/{id}', [RoomController::class, 'destroy']);
 
-Route::apiResource('bookings', BookingController::class);
+    Route::post('/tables', [TableController::class, 'store']);
+    Route::put('/tables/{id}', [TableController::class, 'update']);
+    Route::delete('/tables/{id}', [TableController::class, 'destroy']);
 
-// Rooms
-Route::apiResource('rooms', RoomController::class);
+    Route::post('/room-layout-items', [RoomLayoutItemController::class, 'store']);
+    Route::put('/room-layout-items/{id}', [RoomLayoutItemController::class, 'update']);
+    Route::delete('/room-layout-items/{id}', [RoomLayoutItemController::class, 'destroy']);
 
-// Tables
-Route::apiResource('tables', TableController::class);
+    Route::post('bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+    Route::get('bookings/my-bookings', [BookingController::class, 'myBookings']);
+    Route::apiResource('bookings', BookingController::class);
 
-// Transactions
-Route::post('payments/create-session', [TransactionController::class, 'createPaymentSession'])
-     ->middleware('auth:sanctum');
+    Route::post('payments/create-session', [TransactionController::class, 'createPaymentSession']);
+    Route::apiResource('transactions', TransactionController::class);
+
+    Route::apiResource('users', UserController::class);
+    Route::apiResource('clients', ClientController::class);
+    Route::apiResource('staffs', StaffController::class);
+    Route::apiResource('roots', RootController::class);
+});
 
 Route::post('/fake-gateway/confirm/{id}', [TransactionController::class, 'paymentCallback']);
-
-Route::apiResource('transactions', TransactionController::class);
-
-// Food items
-Route::apiResource('food-items', FoodItemController::class);
-
-// Board games
-Route::apiResource('board-games', BoardGameController::class);
-
-// Staff
-Route::apiResource('staffs', StaffController::class);
-
-// Room Layout Items
-Route::apiResource('room-layout-items', RoomLayoutItemController::class);
-
-// Roots
-Route::apiResource('roots', RootController::class);
