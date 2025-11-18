@@ -5,6 +5,7 @@ import { useForm } from "@/shared/hooks/useForm";
 import styles from "./RegistrationForm.module.scss";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { useRouter } from "next/navigation";
+import { setCookie } from 'cookies-next';
 
 const initialFormData = {
   login: "",
@@ -36,14 +37,19 @@ export const RegistrationForm = () => {
     if (Object.values(newErrors).some((e) => e !== "")) return;
 
     try {
-      await register({
+      const response = await register({
         login: formData.login,
         email: formData.email,
         password: formData.password,
         password_confirmation: formData.password_confirmation
       });
+
+      console.log("Login successful:", response);
       
-      router.push('/')
+      // @ts-ignore
+      setCookie("user_token", response?.token);
+      // @ts-ignore
+      router.push('/profile/' + response?.user?.id);
     } catch (err: any) {
       console.error("Ошибка при регистрации:", err);
     }

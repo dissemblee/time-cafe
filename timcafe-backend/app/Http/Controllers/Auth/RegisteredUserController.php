@@ -11,6 +11,8 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Http\JsonResponse;
+use Firebase\JWT\JWT;
 
 class RegisteredUserController extends Controller
 {
@@ -19,7 +21,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request, UserService $userService): Response
+    public function store(Request $request, UserService $userService): JsonResponse
     {
          $request->validate([
             'login' => ['required', 'string', 'max:255', 'unique:'.User::class],
@@ -37,6 +39,23 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return response()->noContent();
+        $payload = [
+            'sub'  => $user->id,
+            'name' => $user->name ?? $user->login,
+            'role' => $user->client ? 'client' : 'admin',
+            'iat'  => time(),
+            'exp'  => time() + 60*60*24,
+        ];
+
+        $jwt = JWT::encode($payload, env('JWT_SECRET'), 'HS256');
+
+        return response()->json([
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name ?? $user->login,
+                'role' => $payload['role'],
+            ],
+            'token' => $jwt
+        ]);
     }
 }

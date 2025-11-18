@@ -5,6 +5,7 @@ import { useForm } from "@/shared/hooks/useForm";
 import styles from "./LoginForm.module.scss";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { useRouter } from "next/navigation";
+import { setCookie } from 'cookies-next';
 
 const initialFormData = {
   email: "",
@@ -29,12 +30,15 @@ export const LoginForm = () => {
     if (Object.values(newErrors).some((e) => e !== "")) return;
 
     try {
-      await login({
+      const response = await login({
         email: formData.email,
         password: formData.password
       });
-      
-      router.push('/')
+
+      // @ts-ignore
+      setCookie("user_token", response?.token);
+      // @ts-ignore
+      router.push('/profile/' + response?.user?.id);
     } catch (err: any) {
       console.error("Ошибка при входе:", err);
     }
