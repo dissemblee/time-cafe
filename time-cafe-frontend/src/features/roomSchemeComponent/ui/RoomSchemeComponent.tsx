@@ -2,7 +2,7 @@
 import { Stage, Layer, Group, Text, Rect, Image } from "react-konva";
 import { useState, useEffect } from "react";
 import { useGetRoomQuery } from "@/entities/room";
-import { useGetRoomLayoutItemQuery } from "@/entities/roomLayoutItem";
+import { useGetAllRoomLayoutItemsQuery } from "@/entities/roomLayoutItem"; // ИЗМЕНИЛ НА getAll
 import { TableStatus, useGetTableQuery } from "@/entities/table";
 import styles from "./RoomSchemeComponent.module.scss";
 import { Loader } from "@/shared/ui/Loader";
@@ -44,7 +44,10 @@ export const RoomSchemeComponent = ({ roomId }: { roomId: number }) => {
   const [selectedTableId, setSelectedTableId] = useState<number | null>(null);
 
   const { data: room } = useGetRoomQuery(roomId);
-  const { data: layout, isLoading, error } = useGetRoomLayoutItemQuery(roomId);
+  const { data: allLayouts, isLoading, error } = useGetAllRoomLayoutItemsQuery();
+  
+  const layout = allLayouts?.data?.find((layout: any) => layout.room_id === roomId);
+
   const {
     data: selectedTable,
     isLoading: tableLoading,

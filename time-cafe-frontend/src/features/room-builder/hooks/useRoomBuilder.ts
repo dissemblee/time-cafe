@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { useGetRoomQuery } from "@/entities/room";
 import {
-  useGetRoomLayoutItemQuery,
+  useGetAllRoomLayoutItemsQuery,
   useCreateRoomLayoutItemMutation,
   useUpdateRoomLayoutItemMutation,
 } from "@/entities/roomLayoutItem";
@@ -19,7 +19,9 @@ export function useRoomBuilder() {
   if (!roomId) throw new Error("Неверный ID комнаты");
 
   const { data: room } = useGetRoomQuery(roomId);
-  const { data: persistedLayouts } = useGetRoomLayoutItemQuery(roomId);
+  const { data: allLayouts } = useGetAllRoomLayoutItemsQuery();
+  
+  const persistedLayouts = allLayouts?.data?.find((layout: any) => layout.room_id === roomId);
 
   const [createTable] = useCreateTableMutation();
   const [createLayoutItem] = useCreateRoomLayoutItemMutation();
@@ -37,8 +39,13 @@ export function useRoomBuilder() {
   const snap = useCallback((value: number) => (snapToGrid ? Math.round(value / GRID) * GRID : value), [snapToGrid]);
 
   useEffect(() => {
-    if (!persistedLayouts?.items) return;
-    const mapped: Item[] = persistedLayouts.items.map((p, idx) => ({
+    console.log(persistedLayouts);
+    if (!persistedLayouts?.items) {
+      return;
+    }
+    
+    console.log(persistedLayouts.items);
+    const mapped: Item[] = persistedLayouts.items.map((p: any, idx: number) => ({
       id: `db-${idx}`,
       layoutId: persistedLayouts.id,
       tableId: p.table_id ?? null,
@@ -48,10 +55,11 @@ export function useRoomBuilder() {
       width: p.width,
       height: p.height,
       rotation: p.rotation ?? 0,
-      fill: p.type === "wall" ? "#444" : p.type === "table" ? "#d9b38c" : "#7aa6ff",
-      name: p.type === "table" ? `Стол #${p.table_id ?? idx}` : undefined,
-      svg: undefined,
+      fill: p.fill ?? (p.type === "wall" ? "#444" : p.type === "table" ? "#d9b38c" : "#7aa6ff"),
+      name: p.name ?? (p.type === "table" ? `Стол #${p.table_id ?? idx}` : undefined),
+      svg: p.svg ?? undefined,
     }));
+    
     setItems(mapped);
     setLayoutId(persistedLayouts.id);
   }, [persistedLayouts]);
@@ -86,6 +94,8 @@ export function useRoomBuilder() {
 
   const handleSaveLayout = useCallback(async () => {
     if (!items.length) return;
+    
+
     const payload = {
       room_id: roomId,
       items: items.map(i => ({
@@ -96,23 +106,27 @@ export function useRoomBuilder() {
         width: i.width,
         height: i.height,
         rotation: i.rotation,
+        svg: i.svg ?? undefined,
+        fill: i.fill ?? undefined,
+        name: i.name ?? undefined,
       })),
     };
 
     try {
-      if (layoutId) {
-        await updateLayoutItem({ id: layoutId, data: payload }).unwrap();
-        alert("Комната обновлена");
+      if (persistedLayouts) {
+        console.log(persistedLayouts.id);
+        await updateLayoutItem({ id: persistedLayouts.id, data: payload }).unwrap();
+        alert("Схема обновлена");
       } else {
         const created = await createLayoutItem(payload).unwrap();
         setItems(prev => prev.map((it, idx) => ({ ...it, id: `db-${idx}`, layoutId: created.id })));
         setLayoutId(created.id);
-        alert("Комната создана");
+        alert("Схема создана");
       }
     } catch (err) {
       console.error(err);
     }
-  }, [items, layoutId, roomId, createLayoutItem, updateLayoutItem]);
+  }, [items, persistedLayouts, layoutId, roomId, createLayoutItem, updateLayoutItem]);
 
   useKeyboardControls({ items, selectedId, setItems, setSelectedId, step: 10 });
 

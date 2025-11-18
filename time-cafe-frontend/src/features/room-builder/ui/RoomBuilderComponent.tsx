@@ -11,6 +11,12 @@ import { TbWall, TbTable, TbSofa } from "react-icons/tb";
 import { wallSvg, tableSvg, sofaSvg } from "@/shared/ui/Icons";
 
 export const RoomBuilderComponent = () => {
+  const builder = useRoomBuilder();
+  
+  if (!builder.room) {
+    return <div>Загрузка комнаты...</div>;
+  }
+
   const {
     room,
     items,
@@ -23,7 +29,7 @@ export const RoomBuilderComponent = () => {
     addItem,
     updateItem,
     handleSaveLayout,
-  } = useRoomBuilder();
+  } = builder;
 
   const renderItem = (it: any, isSelected: boolean) => {
     const commonProps = {
