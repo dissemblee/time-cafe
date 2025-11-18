@@ -12,8 +12,8 @@ export const ArchiveGamePage = () => {
   const [editingItem, setEditingItem] = useState<BoardGameDto | null>(null);
   const [deletingItem, setDeletingItem] = useState<BoardGameDto | null>(null);
   
-  const { data: boardGames, isLoading, refetch } = useGetAllBoardGamesQuery({ page, per_page: 10 });
-  const [deleteBoardGame, { isLoading: isDeleting }] = useDeleteBoardGameMutation();
+  const { data: boardGames, isLoading: isGamesLoading, error: gamesError, refetch } = useGetAllBoardGamesQuery({ page, per_page: 10 });
+  const [deleteBoardGame, { isLoading: isDeleting, error: deleteError }] = useDeleteBoardGameMutation();
 
   const handleEdit = (item: BoardGameDto) => {
     setEditingItem(item);
@@ -45,14 +45,17 @@ export const ArchiveGamePage = () => {
       <AdminButton 
         variant="secondary"
         onClick={() => handleDelete(item)}
+        disabled={isDeleting}
       >
-        Удалить
+        {deleteError ? "Упс... Ошибка" : (isDeleting ? "Удаление..." : "Удалить")}
       </AdminButton>
     </div>
   );
 
   return (
     <>
+      {gamesError && <div>Упс... Ошибка</div>}
+      
       <DataTableSection
         data={boardGames?.data}
         columns={{
@@ -61,7 +64,7 @@ export const ArchiveGamePage = () => {
           Описание: "description",
           Количество: "quantity",
         }}
-        isLoading={isLoading}
+        isLoading={isGamesLoading}
         meta={boardGames?.meta}
         onPageChange={setPage}
         headerActions={<Link href="/admin/game/create">Создать новую игру</Link>}
@@ -81,6 +84,7 @@ export const ArchiveGamePage = () => {
         title="Удаление игры"
         message={`Вы уверены, что хотите удалить игру "${deletingItem?.name}"?`}
         isLoading={isDeleting}
+        confirmText={deleteError ? "Упс... Ошибка" : (isDeleting ? "Удаление..." : "Удалить")}
       />
     </>
   );

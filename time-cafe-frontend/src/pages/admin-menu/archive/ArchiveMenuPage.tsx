@@ -13,7 +13,7 @@ export const ArchiveMenuPage = () => {
   const [deletingItem, setDeletingItem] = useState<FoodItemDto | null>(null);
   
   const { data: foodItems, isLoading, refetch } = useGetAllFoodItemsQuery({ page, per_page: 10 });
-  const [deleteFoodItem, { isLoading: isDeleting }] = useDeleteFoodItemMutation();
+  const [deleteFoodItem, { isLoading: isDeleting, error: deleteError }] = useDeleteFoodItemMutation();
 
   const handleEdit = (item: FoodItemDto) => {
     setEditingItem(item);
@@ -45,8 +45,9 @@ export const ArchiveMenuPage = () => {
       <AdminButton 
         variant="secondary"
         onClick={() => handleDelete(item)}
+        disabled={isDeleting}
       >
-        Удалить
+        {deleteError ? "Упс... Ошибка" : (isDeleting ? "Удаление..." : "Удалить")}
       </AdminButton>
     </div>
   );
@@ -82,6 +83,7 @@ export const ArchiveMenuPage = () => {
         title="Удаление блюда"
         message={`Вы уверены, что хотите удалить блюдо "${deletingItem?.name}"?`}
         isLoading={isDeleting}
+        confirmText={deleteError ? "Упс... Ошибка" : (isDeleting ? "Удаление..." : "Удалить")}
       />
     </>
   );
