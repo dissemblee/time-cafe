@@ -12,19 +12,21 @@ class Transaction extends Model
 
   protected $fillable = [
     'client_id',
-    'table_id',
     'booking_id',
+    'amount',
     'status',
+    'transaction_code',
+    'gateway_payload',
+  ];
+
+  protected $casts = [
+    'gateway_payload' => 'array',
+    'status' => TransactionStatus::class,
   ];
 
   public function client()
   {
     return $this->belongsTo(Client::class);
-  }
-
-  public function table()
-  {
-    return $this->belongsTo(Table::class);
   }
 
   public function booking()

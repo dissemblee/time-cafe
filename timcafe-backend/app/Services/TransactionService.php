@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Transaction;
+use App\Enums\TransactionStatus;
 
 class TransactionService extends BaseService
 {
@@ -12,11 +13,11 @@ class TransactionService extends BaseService
     {
         return [
             'client_id' => 'required|exists:clients,id',
-            'table_id' => 'required|exists:tables,id',
             'booking_id' => 'required|exists:bookings,id',
-            'hours' => 'required|numeric|min:0',
-            'price' => 'required|numeric|min:0',
-            'status' => 'required|string',
+            'amount' => 'required|numeric|min:0',
+            'status' => 'required|in:' . implode(',', array_column(TransactionStatus::cases(), 'value')),
+            'transaction_code' => 'nullable|string',
+            'gateway_payload' => 'nullable|array',
         ];
     }
 }

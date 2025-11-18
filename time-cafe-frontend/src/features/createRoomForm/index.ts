@@ -1,1 +1,1 @@
-export { CreateRoomForm } from "./ui/CreateRoomForm"
+export { CreateRoomForm } from "./ui/createRoomForm"
