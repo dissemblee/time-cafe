@@ -12,8 +12,8 @@ export const ArchiveRoomPage = () => {
   const [editingItem, setEditingItem] = useState<RoomDto | null>(null);
   const [deletingItem, setDeletingItem] = useState<RoomDto | null>(null);
   
-  const { data: rooms, isLoading, refetch } = useGetAllRoomsQuery({ page, per_page: 10 });
-  const [deleteRoom, { isLoading: isDeleting }] = useDeleteRoomMutation();
+  const { data: rooms, isLoading: isRoomsLoading, error: roomsError, refetch } = useGetAllRoomsQuery({ page, per_page: 10 });
+  const [deleteRoom, { isLoading: isDeleting, error: deleteError }] = useDeleteRoomMutation();
 
   const handleEdit = (item: RoomDto) => {
     setEditingItem(item);
@@ -55,14 +55,17 @@ export const ArchiveRoomPage = () => {
       <AdminButton 
         variant="secondary"
         onClick={() => handleDelete(item)}
+        disabled={isDeleting}
       >
-        Удалить
+        {deleteError ? "Упс... Ошибка" : (isDeleting ? "Удаление..." : "Удалить")}
       </AdminButton>
     </div>
   );
 
   return (
     <>
+      {roomsError && <div>Упс... Ошибка</div>}
+      
       <DataTableSection
         data={rooms?.data}
         columns={{
@@ -78,7 +81,7 @@ export const ArchiveRoomPage = () => {
           Особенности: "features",
           "Минимальная стоимость": "min_price",
         }}
-        isLoading={isLoading}
+        isLoading={isRoomsLoading}
         meta={rooms?.meta}
         onPageChange={setPage}
         headerActions={<Link href="/admin/room/create">Создать новую комнату</Link>}
@@ -98,6 +101,7 @@ export const ArchiveRoomPage = () => {
         title="Удаление комнаты"
         message={`Вы уверены, что хотите удалить комнату "${deletingItem?.name}"?`}
         isLoading={isDeleting}
+        confirmText={deleteError ? "Упс... Ошибка" : (isDeleting ? "Удаление..." : "Удалить")}
       />
     </>
   );
