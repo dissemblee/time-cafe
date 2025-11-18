@@ -3,7 +3,7 @@ import { Stage, Layer, Group, Text, Rect, Image } from "react-konva";
 import { useState, useEffect } from "react";
 import { useGetRoomQuery } from "@/entities/room";
 import { useGetRoomLayoutItemQuery } from "@/entities/roomLayoutItem";
-import { useGetTableQuery } from "@/entities/table";
+import { TableStatus, useGetTableQuery } from "@/entities/table";
 import styles from "./RoomSchemeComponent.module.scss";
 import { Loader } from "@/shared/ui/Loader";
 import { Error } from "@/shared/ui/Error";
@@ -138,9 +138,8 @@ export const RoomSchemeComponent = ({ roomId }: { roomId: number }) => {
         {selectedTable && (
           <div>
             <p><strong>Название:</strong> {selectedTable.name}</p>
-            <p><strong>Статус:</strong> {selectedTable.status}</p>
             <p><strong>Мест:</strong> {selectedTable.seats}</p>
-            <p><strong>Забронировано:</strong> {selectedTable.name ? "Да" : "Нет"}</p>
+            <p><strong>Забронировано:</strong> {selectedTable.status === TableStatus.BOOKED ? "Да" : "Нет"}</p>
             
             <div style={{ display: "flex", justifyContent: "center", marginTop: "25px" }}>
               <Link href={`/booking/${selectedTable.id}`}>
