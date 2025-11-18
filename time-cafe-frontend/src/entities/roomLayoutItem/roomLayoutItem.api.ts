@@ -9,12 +9,12 @@ export const roomLayoutItemsApi = createApi({
   baseQuery: customBaseQuery,
   tagTypes: ["RoomLayoutItems"],
   endpoints: (builder) => ({
-    getAllRoomLayoutItems: builder.query<RoomLayoutItemDto[], void>({
+    getAllRoomLayoutItems: builder.query<{ data: RoomLayoutItemDto[] }, void>({
       query: () => ({ url: endPoint, method: "GET" }),
       providesTags: (result) =>
-        result
+        result?.data
           ? [
-              ...result.map(({ id }) => ({ type: "RoomLayoutItems" as const, id })),
+              ...result.data.map(({ id }) => ({ type: "RoomLayoutItems" as const, id })),
               { type: "RoomLayoutItems", id: "LIST" },
             ]
           : [{ type: "RoomLayoutItems", id: "LIST" }],
