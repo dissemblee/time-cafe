@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\Transaction;
 use App\Enums\TableStatus;
 use Illuminate\Http\Request;
+use App\Enums\TransactionStatus;
 
 class TransactionController extends BaseController
 {
@@ -38,7 +39,7 @@ class TransactionController extends BaseController
         $success = rand(1, 100) > 10;
 
         $tx->update([
-            'status' => $success ? TransactionStatus::SUCCESS : TransactionStatus::FAILED,
+            'status' => $success ? TransactionStatus::COMPLETED : TransactionStatus::CANCELLED,
             'gateway_payload' => [
                 'confirmed_at' => $success ? now() : null,
                 'reason' => $success ? null : 'Simulated payment failure',
