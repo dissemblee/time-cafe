@@ -12,6 +12,13 @@ export const Header: React.FC = () => {
   const isActive = (path: string) => pathname === path;
   const { data: me, isLoading } = useGetMeQuery();
 
+  const handleProfileClick = (e: React.MouseEvent) => {
+    if (!me?.client?.id) {
+      e.preventDefault();
+      window.location.href = '/registration';
+    }
+  };
+
   return (
     <div className={styles.Header}>
       <nav className={styles.Header__nav}>
@@ -59,7 +66,11 @@ export const Header: React.FC = () => {
         </div>
         
         <div className={styles.Header__actions}>
-          <Link href={`/profile/${me?.client?.id}`} className={styles.Header__actionButton}>
+          <Link 
+            href={me?.client?.id ? `/profile/${me.client.id}` : '/registration'} 
+            className={styles.Header__actionButton}
+            onClick={handleProfileClick}
+          >
             <FaUser />
           </Link>
         </div>
