@@ -1,0 +1,122 @@
+// fakeGateway.module.scss
+.Gateway {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.Gateway__card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+  backdrop-filter: blur(10px);
+}
+
+.Gateway__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 30px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.Gateway__bankInfo {
+  background: #f7fafc;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 25px 0;
+  text-align: left;
+}
+
+.Gateway__bankLabel {
+  color: #718096;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.Gateway__bankNumber {
+  color: #2d3748;
+  font-weight: 600;
+  font-size: 1.2rem;
+  font-family: 'Courier New', monospace;
+}
+
+.Gateway__button {
+  background: linear-gradient(135deg, #48bb78, #38a169);
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+  width: 100%;
+  max-width: 300px;
+  margin-top: 20px;
+  
+  &:hover:not(.Gateway__button--disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
+  }
+  
+  &:active:not(.Gateway__button--disabled) {
+    transform: translateY(0);
+  }
+}
+
+.Gateway__button--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.Gateway__success {
+  background: linear-gradient(135deg, #48bb78, #38a169);
+  color: white;
+  padding: 30px;
+  border-radius: 16px;
+  margin: 20px 0;
+}
+
+.Gateway__successIcon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.Gateway__successText {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.Gateway__redirectText {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.Gateway__loader {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: Gateway__spin 1s ease-in-out infinite;
+  margin-right: 10px;
+}
+
+@keyframes Gateway__spin {
+  to { transform: rotate(360deg); }
+}

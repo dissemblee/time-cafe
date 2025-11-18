@@ -72,7 +72,7 @@ export const RegistrationWithTokenForm = () => {
       // @ts-ignore
       setCookie("user_token", response?.token);
       // @ts-ignore
-      router.push('/admin/profile/' + response?.user?.id);
+      router.push('/admin');
     } catch (err: any) {
       console.error("Ошибка при регистрации:", err);
     }
