@@ -24,7 +24,7 @@ export const DataTableSection = <Data,>({
 
   return (
     <section className={styles.DataTableSection}>
-      {headerActions && <div className={styles.DataTableSection__Action}><AdminButton>{headerActions}</AdminButton></div>}
+      {headerActions && <div className={styles.DataTableSection__Action}><AdminButton>{headerActions}</AdminButton></div>} <br />
       <Table
         data={data}
         columns={enhancedColumns}

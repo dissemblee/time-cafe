@@ -1,0 +1,2 @@
+export { registrationLinksApi, useDeleteRegistrationLinkMutation, useGenerateRegistrationLinkMutation, useGetAllRegistrationLinksQuery, useGetRegistrationLinkQuery, useUpdateRegistrationLinkMutation, useValidateRegistrationLinkQuery } from "./registrationLinks.api"
+export type { CreateRegistrationLinkDto, UpdateRegistrationLinkDto, GenerateLinkResponse, RegistrationLinkDto, RegistrationLinkResponse, ValidateLinkResponse } from "./registrationLinks.dto"

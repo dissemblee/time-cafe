@@ -13,7 +13,6 @@ class Root extends Model
     'user_id',
     'name',
     'phone',
-    'social_network',
   ];
 
   public function user()

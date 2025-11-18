@@ -15,9 +15,10 @@ use App\Http\Controllers\BoardGameController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\RoomLayoutItemController;
 use App\Http\Controllers\RootController;
+use App\Http\Controllers\TemporaryRegistrationLinkController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user()->load('client');
+    return $request->user()->load(['client', 'staff']);
 });
 
 // Auth
@@ -25,6 +26,13 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth:sanctum');
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/registration-links/generate', [TemporaryRegistrationLinkController::class, 'generate']);
+    Route::apiResource('/registration-links', TemporaryRegistrationLinkController::class);
+});
+
+Route::get('/registration-links/validate/{token}', [TemporaryRegistrationLinkController::class, 'validateLink']);
 
 // Users
 Route::apiResource('users', UserController::class);

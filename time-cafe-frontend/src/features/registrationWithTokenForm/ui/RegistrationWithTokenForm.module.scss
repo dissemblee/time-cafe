@@ -1,0 +1,9 @@
+@use '../../../shared/styles/variables' as *;
+@use '../../../shared/styles/mixins' as *;
+
+.RegistrationWithTokenForm {
+  @include glassCard;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}

@@ -4,11 +4,9 @@ import { useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useForm } from "@/shared/hooks/useForm";
 import { useGetClientQuery, useUpdateClientMutation } from "@/entities/client";
-import type { ClientStatus } from "@/entities/client";
 import { useGetUserQuery, useUpdateUserMutation } from "@/entities/user";
 import { GlassInput } from "@/shared/ui/GlassInput";
 import { LiquidButton } from "@/shared/ui/LiquidButton";
-import { UserBookings } from "@/features/bookings";
 import styles from "./ProfileForm.module.scss"
 
 export const ProfileForm = () => {
@@ -46,11 +44,7 @@ export const ProfileForm = () => {
   const { formData: clientForm, handleChange: handleClientChange, setFormData: setClientForm } = useForm({
     name: "",
     phone: "",
-    note: "",
     bank_number: "",
-    discount_percent: 0,
-    status: "active",
-    date_of_birth: "",
   });
 
   useEffect(() => {
@@ -58,11 +52,7 @@ export const ProfileForm = () => {
       setClientForm({
         name: clientData.name,
         phone: clientData.phone ?? "",
-        note: clientData.note ?? "",
         bank_number: clientData.bank_number ?? "",
-        discount_percent: clientData.discount_percent ?? 0,
-        status: clientData.status,
-        date_of_birth: clientData.date_of_birth ?? "",
       });
     }
   }, [clientData, setClientForm]);
@@ -71,7 +61,6 @@ export const ProfileForm = () => {
     e.preventDefault();
     const payload = {
       ...clientForm,
-      status: clientForm.status as ClientStatus,
     };
     await updateClient({ id: clientData!.id, data: payload });
   };
@@ -117,13 +106,6 @@ export const ProfileForm = () => {
           label="Банковский счет"
           name="bank_number"
           value={clientForm.bank_number}
-          onChange={handleClientChange}
-        />
-        <GlassInput
-          label="Дата рождения"
-          name="date_of_birth"
-          type="date"
-          value={clientForm.date_of_birth}
           onChange={handleClientChange}
         />
         <LiquidButton type="submit">{isClientLoading ? "Сохранение..." : "Сохранить"}</LiquidButton>

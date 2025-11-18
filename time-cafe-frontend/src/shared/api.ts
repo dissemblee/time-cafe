@@ -28,7 +28,7 @@ interface ApiArgsAxios<TData = any> {
  * Axios instance с правильными заголовками и withCredentials
  */
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL, // без /api на конце
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
   withCredentials: true,
   headers: {
     "Accept": "application/json",
@@ -68,7 +68,7 @@ export async function $api<TResponse = any, TData = any>(
       method: args.method,
       data: args.data,
       params: args.query,
-      withCredentials: true,
+      // withCredentials: true,
       headers: {
         "Content-Type": "application/json",
         ...(xsrfToken ? { "X-XSRF-TOKEN": xsrfToken } : {})

@@ -3,6 +3,7 @@ import Link from "next/link"
 import { FaUser } from "react-icons/fa"
 import styles from "./AdminHeader.module.scss"
 import { usePathname } from "next/navigation";
+import { useGetMeQuery } from "@/entities/me";
 
 interface NAV_ITEM {
   href: string;
@@ -16,7 +17,8 @@ interface NAV_ITEMS {
 
 export const AdminHeader = ({ nav }: NAV_ITEMS) => {
   const pathname = usePathname();
-  
+  const { data: me, isLoading } = useGetMeQuery();
+
   const currentNavItem = nav.find(item => 
     pathname === item.href || 
     (item.href !== '/admin' && pathname?.startsWith(item.href))
@@ -30,7 +32,7 @@ export const AdminHeader = ({ nav }: NAV_ITEMS) => {
     <header className={styles.AdminHeader}>
       <div className={styles.AdminHeader__content}>
         <h1>{pageTitle}</h1>
-        <Link href="/staff-profile">
+        <Link href={`/admin/profile/${me?.staff?.id}`}>
           <FaUser />
         </Link>
       </div>

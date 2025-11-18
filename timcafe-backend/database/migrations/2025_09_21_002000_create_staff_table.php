@@ -12,9 +12,6 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('phone')->nullable();
-            $table->integer('personal_discount')->default(10);
-            $table->boolean('responsible')->default(false);
-            $table->enum('role', array_column(StaffRole::cases(), 'value'))->default(StaffRole::JUNIOR->value);
             $table->timestamps();
         });
     }

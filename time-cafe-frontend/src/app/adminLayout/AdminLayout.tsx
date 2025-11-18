@@ -9,6 +9,9 @@ const NAV_ITEMS = [
   { href: '/admin/room', icon: '🏠', text: 'Комнаты' },
   { href: '/admin/booking', icon: '🛎️', text: 'Бронирования' },
   { href: '/admin/transaction', icon: '💰', text: 'Транзакции' },
+  { href: '/admin/user', icon: '👤', text: 'Пользователи' },
+  { href: '/admin/client', icon: '👤', text: 'Клиенты' },
+  { href: '/admin/staff', icon: '👤', text: 'Работники' },
 ];
 
 export const AdminLayout = ({

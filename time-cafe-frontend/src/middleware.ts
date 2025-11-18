@@ -12,38 +12,38 @@ export async function middleware(req: NextRequest) {
   }
 
   try {
-    // const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET!);
-    // const { payload } = await jwtVerify(token, secret);
+    const secret = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET!);
+    const { payload } = await jwtVerify(token, secret);
 
-    // const userRole = payload.role as string;
+    const userRole = payload.role as string;
 
-    // if (pathname.startsWith('/admin')) {
-    //   if (userRole !== 'admin') {
-    //     console.log(`Access denied: User role ${userRole} trying to access admin route`);
-    //     url.pathname = '/login';
-    //     return NextResponse.redirect(url);
-    //   }
-    // }
+    if (pathname.startsWith('/admin')) {
+      if (userRole !== 'admin') {
+        console.log(`Access denied: User role ${userRole} trying to access admin route`);
+        url.pathname = '/login';
+        return NextResponse.redirect(url);
+      }
+    }
 
-    // const clientRoutes = [
-    //   '/fake-gateway',
-    //   '/booking', 
-    //   '/profile',
-    //   '/transaction'
-    // ];
+    const clientRoutes = [
+      '/fake-gateway',
+      '/booking', 
+      '/profile',
+      '/transaction'
+    ];
 
-    // const isClientRoute = clientRoutes.some(route => pathname.startsWith(route));
+    const isClientRoute = clientRoutes.some(route => pathname.startsWith(route));
     
-    // if (isClientRoute && userRole !== 'client') {
-    //   url.pathname = '/login';
-    //   return NextResponse.redirect(url);
-    // }
+    if (isClientRoute && userRole !== 'client') {
+      url.pathname = '/login';
+      return NextResponse.redirect(url);
+    }
 
     const response = NextResponse.next();
-    // response.headers.set('x-user-role', userRole);
-    // if (payload.sub) {
-    //   response.headers.set('x-user-id', payload.sub.toString());
-    // }
+    response.headers.set('x-user-role', userRole);
+    if (payload.sub) {
+      response.headers.set('x-user-id', payload.sub.toString());
+    }
     
     return response;
   } catch (e) {

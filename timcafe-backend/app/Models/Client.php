@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Enums\ClientStatus;
 
 class Client extends Model
 {
@@ -14,17 +13,10 @@ class Client extends Model
     'user_id',
     'name',
     'phone',
-    'note',
     'bank_number',
-    'discount_percent',
-    'status',
-    'date_of_birth',
   ];
 
   protected $casts = [
-    'date_of_birth'     => 'date',
-    'status'            => ClientStatus::class,
-    'discount_percent'  => 'decimal:2',
     'bank_number'       => 'string',
     'phone'             => 'string',
     'email'             => 'string',

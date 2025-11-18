@@ -5,13 +5,15 @@ namespace App\Services;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Services\ClientService;
+use App\Services\StaffService;
 
 class UserService extends BaseService
 {
     protected string $modelClass = User::class;
 
     public function __construct(
-        private ClientService $clientService
+        private ClientService $clientService,
+        private StaffService $staffService
     ) {}
 
     protected function rules(int $id = null): array
@@ -36,8 +38,22 @@ class UserService extends BaseService
         $this->clientService->create([
             'user_id' => $user->id,
             'name' => 'Аноним',
-            'status' => 'active',
-            'discount_percent' => 0,
+        ]);
+
+        return $user;
+    }
+
+    public function createStaff(array $data): User
+    {
+        if (isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        $user = parent::create($data);
+
+        $this->staffService->create([
+            'user_id' => $user->id,
+            'name' => 'Аноним',
         ]);
 
         return $user;

@@ -1,0 +1,1 @@
+export { RegistrationWithTokenForm } from "./ui/RegistrationWithTokenForm";

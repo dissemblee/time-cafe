@@ -13,11 +13,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->text('note')->nullable();
             $table->string('bank_number')->nullable();
-            $table->decimal('discount_percent', 5, 2)->default(0);
-            $table->enum('status', array_column(ClientStatus::cases(), 'value'))->default(ClientStatus::Active->value);
-            $table->date('date_of_birth')->nullable();
             $table->timestamps();
         });
     }

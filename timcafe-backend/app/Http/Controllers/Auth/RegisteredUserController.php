@@ -4,56 +4,69 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\TemporaryRegistrationLinkService;
 use App\Services\UserService;
+use App\Services\JwtService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 use Illuminate\Http\JsonResponse;
-use Firebase\JWT\JWT;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function store(Request $request, UserService $userService): JsonResponse
-    {
-         $request->validate([
+    public function store(
+        Request $request, 
+        UserService $userService,
+        TemporaryRegistrationLinkService $linkService,
+        JwtService $jwtService
+    ): JsonResponse {
+        $role = null;
+        if ($request->has('invitation_token')) {
+            $link = $linkService->findByToken($request->invitation_token);
+            
+            if (!$link || !$link->isValid()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid or expired invitation link'
+                ], 422);
+            }
+            
+            $role = $linkService->getRoleFromHash($link->role_hash);
+            
+            $linkService->markAsUsed($request->invitation_token);
+        }
+
+        $request->validate([
             'login' => ['required', 'string', 'max:255', 'unique:'.User::class],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'invitation_token' => ['sometimes', 'string'],
         ]);
 
-        $user = $userService->create([
+        $userData = [
             'login' => $request->login,
             'email' => $request->email,
             'password' => $request->password,
-        ]);
-
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        $payload = [
-            'sub'  => $user->id,
-            'name' => $user->name ?? $user->login,
-            'role' => $user->client ? 'client' : 'admin',
-            'iat'  => time(),
-            'exp'  => time() + 60*60*24,
         ];
 
-        $jwt = JWT::encode($payload, env('JWT_SECRET'), 'HS256');
+        if ($role === 'admin') {
+            $user = $userService->createStaff($userData);
+        } else {
+            $user = $userService->create($userData);
+        }
+
+        event(new Registered($user));
+        Auth::login($user);
+        $user->load(['client', 'staff']);
+        $jwt = $jwtService->generateToken($user);
 
         return response()->json([
+            'success' => true,
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name ?? $user->login,
-                'role' => $payload['role'],
+                'role' => $user->staff ? 'admin' : 'client',
             ],
             'token' => $jwt
         ]);
