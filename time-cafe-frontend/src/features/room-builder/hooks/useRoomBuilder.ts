@@ -78,16 +78,24 @@ export function useRoomBuilder() {
     []
   );
 
-  const addItem = useCallback((type: ItemType, defaults: Partial<Item>, createTableOnServer = false) => {
+  const addItem = useCallback((type: ItemType, defaults: Partial<Item> & { tableData?: any }, createTableOnServer = false) => {
     const id = uuidv4();
     const item: Item = { id, layoutId, tableId: null, type, x: 50, y: 50, width: 100, height: 50, rotation: 0, ...defaults };
     setItems(p => [...p, item]);
     setSelectedId(id);
 
-    if (type === "table" && createTableOnServer) {
-      createTable({ room_id: roomId, name: `Стол`, seats: 4, sofas: 0, has_console: false, has_tv: false, status: TableStatus.FREE })
+    if (type === "table" && createTableOnServer && defaults.tableData) {
+      createTable({ 
+        room_id: roomId, 
+        name: defaults.tableData.name || `Стол`,
+        seats: defaults.tableData.seats || 4,
+        sofas: defaults.tableData.sofas || 0,
+        has_console: defaults.tableData.has_console || false,
+        has_tv: defaults.tableData.has_tv || false,
+        status: TableStatus.FREE 
+      })
         .unwrap()
-        .then(table => setItems(prev => prev.map(it => it.id === id ? { ...it, tableId: table.id, name: `Стол #${table.id}` } : it)))
+        .then(table => setItems(prev => prev.map(it => it.id === id ? { ...it, tableId: table.id, name: defaults.tableData.name || `Стол #${table.id}` } : it)))
         .catch(err => setItems(prev => prev.filter(it => it.id !== id)));
     }
   }, [createTable, layoutId, roomId]);

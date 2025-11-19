@@ -16,10 +16,9 @@ export async function middleware(req: NextRequest) {
     const { payload } = await jwtVerify(token, secret);
 
     const userRole = payload.role as string;
-
+    console.log(payload)
     if (pathname.startsWith('/admin')) {
       if (userRole !== 'admin') {
-        console.log(`Access denied: User role ${userRole} trying to access admin route`);
         url.pathname = '/login';
         return NextResponse.redirect(url);
       }

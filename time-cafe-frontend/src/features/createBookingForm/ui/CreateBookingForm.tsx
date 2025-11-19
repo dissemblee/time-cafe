@@ -16,7 +16,7 @@ const initialFormData = {
 export const CreateBookingForm = ({ tableId }: { tableId: number }) => {
   const route = useRouter()
   const { data: me } = useGetMeQuery()
-  const clientId = me?.id ?? null
+  const clientId = me?.client?.id ?? null
 
   const [createBooking, { isLoading }] = useCreateBookingMutation()
   const { formData, errors, handleChange, setErrors, resetForm } = useForm(initialFormData)

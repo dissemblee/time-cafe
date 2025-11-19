@@ -36,7 +36,6 @@ export default function PayPage() {
       <div className={styles.PayPage__card}>
         <h1 className={styles.PayPage__title}>Оплата бронирования</h1>
         
-        {/* Информация о счете */}
         <div className={styles.PayPage__section}>
           <h2 className={styles.PayPage__sectionTitle}>Банковские реквизиты</h2>
           <div className={styles.PayPage__infoGrid}>
@@ -51,7 +50,6 @@ export default function PayPage() {
           </div>
         </div>
 
-        {/* Информация о бронировании */}
         <div className={styles.PayPage__section}>
           <h2 className={styles.PayPage__sectionTitle}>Детали бронирования</h2>
           <div className={styles.PayPage__infoGrid}>

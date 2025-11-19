@@ -29,11 +29,6 @@ class ClientSeeder extends Seeder
                 'name' => $faker->name,
                 'phone' => $faker->phoneNumber,
                 'email' => $faker->unique()->safeEmail,
-                'note' => $faker->optional()->text(100),
-                'bank_number' => $faker->optional()->bankAccountNumber,
-                'discount_percent' => $faker->randomFloat(2, 0, 30),
-                'status' => ClientStatus::cases()[array_rand(ClientStatus::cases())]->value,
-                'date_of_birth' => $faker->optional()->date('Y-m-d', '2005-01-01'),
             ]);
         }
 

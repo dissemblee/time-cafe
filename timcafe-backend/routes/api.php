@@ -29,8 +29,12 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 Route::get('/food-items', [FoodItemController::class, 'index']);
 Route::get('/board-games', [BoardGameController::class, 'index']);
 Route::get('/rooms', [RoomController::class, 'index']);
+Route::get('/rooms/{id}', [RoomController::class, 'show']);
 Route::get('/tables', [TableController::class, 'index']);
+Route::get('/tables/{id}', [TableController::class, 'show']);
 Route::get('/room-layout-items', [RoomLayoutItemController::class, 'index']);
+Route::get('/room-layout-items/{id}', [RoomLayoutItemController::class, 'index']);
+
 Route::get('/registration-links/validate/{token}', [TemporaryRegistrationLinkController::class, 'validateLink']);
 
 Route::middleware(['auth:sanctum'])->group(function () {

@@ -8,6 +8,7 @@ import { useGetUserQuery, useUpdateUserMutation } from "@/entities/user";
 import { GlassInput } from "@/shared/ui/GlassInput";
 import { LiquidButton } from "@/shared/ui/LiquidButton";
 import styles from "./ProfileForm.module.scss"
+import { useGetMeQuery } from "@/entities/me";
 
 export const ProfileForm = () => {
   const params = useParams();
@@ -15,12 +16,11 @@ export const ProfileForm = () => {
   const id = Array.isArray(idParam) ? idParam[0] : idParam;
   const userId = Number(id);
 
-  const { data: clientData } = useGetClientQuery(userId);
-  const [updateClient, { isLoading: isClientLoading }] = useUpdateClientMutation();
-
-  // @ts-ignore
-  const { data: userData } = useGetUserQuery(clientData?.user_id);
+  const { data: userData } = useGetMeQuery()
   const [updateUser, { isLoading: isUserLoading  }] = useUpdateUserMutation();
+
+  const { data: clientData } = useGetClientQuery(Number(userData?.client?.id));
+  const [updateClient, { isLoading: isClientLoading }] = useUpdateClientMutation();
 
   const { formData: userForm, handleChange: handleUserChange, setFormData: setUserForm } = useForm({
     login: "",

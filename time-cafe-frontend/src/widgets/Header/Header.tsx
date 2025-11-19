@@ -66,13 +66,27 @@ export const Header: React.FC = () => {
         </div>
         
         <div className={styles.Header__actions}>
-          <Link 
-            href={me?.client?.id ? `/profile/${me.client.id}` : '/registration'} 
-            className={styles.Header__actionButton}
-            onClick={handleProfileClick}
-          >
-            <FaUser />
-          </Link>
+          {me?.staff ? (
+            <>
+              <Link 
+                href="/admin" 
+                className={`${styles.Header__link} ${isActive('/admin') ? styles['Header__link--active'] : ''}`}
+              >
+                <div className={styles.Header__linkLiquid}></div>
+                <span className={styles.Header__linkText}>Админка</span>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link 
+                href={me?.client?.id ? `/profile/${me.client.id}` : '/registration'} 
+                className={styles.Header__actionButton}
+                onClick={handleProfileClick}
+              >
+                <FaUser />
+              </Link>
+            </>
+          )}
         </div>
       </nav>
     </div>

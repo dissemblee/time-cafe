@@ -2,7 +2,7 @@
 import { Stage, Layer, Group, Text, Rect, Image } from "react-konva";
 import { useState, useEffect } from "react";
 import { useGetRoomQuery } from "@/entities/room";
-import { useGetAllRoomLayoutItemsQuery } from "@/entities/roomLayoutItem"; // ИЗМЕНИЛ НА getAll
+import { useGetAllRoomLayoutItemsQuery } from "@/entities/roomLayoutItem";
 import { TableStatus, useGetTableQuery } from "@/entities/table";
 import styles from "./RoomSchemeComponent.module.scss";
 import { Loader } from "@/shared/ui/Loader";
@@ -10,7 +10,19 @@ import { Error } from "@/shared/ui/Error";
 import { LiquidButton } from "@/shared/ui/LiquidButton";
 import Link from "next/link";
 import { Modal } from "@/shared/ui/Modal";
-import { wallSvg, tableSvg, sofaSvg } from "@/shared/ui/Icons";
+
+interface LayoutItem {
+  type: string;
+  table_id?: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  rotation?: number;
+  svg?: string;
+  fill?: string;
+  name?: string;
+}
 
 const SvgImage = ({ svg, x, y, width, height, rotation }: any) => {
   const [image, setImage] = useState<HTMLImageElement | null>(null);
@@ -60,15 +72,6 @@ export const RoomSchemeComponent = ({ roomId }: { roomId: number }) => {
     setSelectedTableId(null);
   };
 
-  const getSvgForType = (type: string) => {
-    switch(type) {
-      case "wall": return wallSvg;
-      case "table": return tableSvg;
-      case "sofa": return sofaSvg;
-      default: return null;
-    }
-  };
-
   if (!room) return <p>Комната не найдена</p>;
   if (isLoading) return <Loader />;
   if (!layout) return <Loader />;
@@ -78,15 +81,13 @@ export const RoomSchemeComponent = ({ roomId }: { roomId: number }) => {
     <>
       <Stage width={1200} height={780} className={styles.RoomSchemeComponent}>
         <Layer>
-          {layout.items.map((item, index) => {
-            const svg = getSvgForType(item.type);
-
+          {(layout.items as LayoutItem[]).map((item, index) => {
             return (
               <Group
                 key={index}
                 x={item.x}
                 y={item.y}
-                rotation={item.rotation}
+                rotation={item.rotation || 0}
                 onClick={() => {
                   if (item.type === "table") {
                     setSelectedTableId(item.table_id || 0);
@@ -98,9 +99,9 @@ export const RoomSchemeComponent = ({ roomId }: { roomId: number }) => {
                   }
                 }}
               >
-                {svg ? (
+                {item.svg ? (
                   <SvgImage 
-                    svg={svg}
+                    svg={item.svg}
                     x={0}
                     y={0}
                     width={item.width}
@@ -110,14 +111,14 @@ export const RoomSchemeComponent = ({ roomId }: { roomId: number }) => {
                   <Rect
                     width={item.width}
                     height={item.height}
-                    fill={item.type === "wall" ? "#444" : item.type === "table" ? "#d9b38c" : "#7aa6ff"}
+                    fill={item.fill || (item.type === "wall" ? "#444" : item.type === "table" ? "#d9b38c" : "#7aa6ff")}
                     cornerRadius={4}
                   />
                 )}
                 
                 {item.type === "table" && (
                   <Text
-                    text={`Стол #${item.table_id}`}
+                    text={item.name || `Стол #${item.table_id}`}
                     fontSize={14}
                     fill="#333"
                     y={item.height / 2 - 7}
@@ -133,7 +134,7 @@ export const RoomSchemeComponent = ({ roomId }: { roomId: number }) => {
       <Modal 
         isOpen={!!selectedTableId} 
         onClose={closeModal}
-        title={selectedTable ? `Стол #${selectedTable.id}` : "Загрузка..."}
+        title={selectedTable ? (selectedTable.name || `Стол #${selectedTable.id}`) : "Загрузка..."}
       >
         {tableLoading && <Loader />}
         {tableError && <Error />}
@@ -142,7 +143,10 @@ export const RoomSchemeComponent = ({ roomId }: { roomId: number }) => {
           <div>
             <p><strong>Название:</strong> {selectedTable.name}</p>
             <p><strong>Мест:</strong> {selectedTable.seats}</p>
-            <p><strong>Забронировано:</strong> {selectedTable.status === TableStatus.BOOKED ? "Да" : "Нет"}</p>
+            <p><strong>Диваны:</strong> {selectedTable.sofas}</p>
+            <p><strong>Консоль:</strong> {selectedTable.has_console ? "Есть" : "Нет"}</p>
+            <p><strong>Телевизор:</strong> {selectedTable.has_tv ? "Есть" : "Нет"}</p>
+            <p><strong>Статус:</strong> {selectedTable.status === TableStatus.BOOKED ? "Забронирован" : "Свободен"}</p>
             
             <div style={{ display: "flex", justifyContent: "center", marginTop: "25px" }}>
               <Link href={`/booking/${selectedTable.id}`}>

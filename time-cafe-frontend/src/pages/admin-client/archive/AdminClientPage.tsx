@@ -1,3 +1,4 @@
+"use client"
 import { useGetAllClientsQuery } from "@/entities/client";
 import { useGetUserQuery } from "@/entities/user";
 import { DataTableSection } from "@/widgets/DataTableSection";

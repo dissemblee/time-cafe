@@ -38,7 +38,7 @@ export const LoginForm = () => {
       // @ts-ignore
       setCookie("user_token", response?.token);
       // @ts-ignore
-      router.push('/profile/' + response?.user?.id);
+      router.push('/');
     } catch (err: any) {
       console.error("Ошибка при входе:", err);
     }
