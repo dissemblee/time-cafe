@@ -1,16 +1,530 @@
-@use '../../../shared/styles/variables' as *;
-@use '../../../shared/styles/mixins' as *;
-
 .CreateBookingForm {
   display: flex;
   flex-direction: column;
-  gap: $value-4;
-  @include glassCard;
+  gap: 28px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  padding: 32px;
+  position: relative;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 40px rgba(255, 255, 255, 0.05);
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  margin-bottom: 60px;
 }
 
 .CreateBookingForm__Title {
-  background: $gradient-primary;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 0;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.DateTimeSection {
+  position: relative;
+}
+
+.DateTimeDisplay {
+  display: flex;
+  gap: 16px;
+}
+
+.DateDisplay, .TimeDisplay {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.DateLabel, .TimeLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-left: 4px;
+}
+
+.DateButton, .TimeButton {
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 18px;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 56px;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  flex: 1;
+}
+
+.DateButton:hover, .TimeButton:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.TimeButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.DateIcon, .TimeIcon {
+  font-size: 20px;
+  opacity: 0.7;
+}
+
+/* Overlay для блокировки фона */
+.PickerOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 9998;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.2s ease;
+  border-radius: 24px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* УМЕНЬШЕННЫЙ ПЛАВАЮЩИЙ ПИКЕР */
+.FloatingPicker {
+  position: fixed !important;
+  z-index: 9999 !important;
+  background: rgba(40, 60, 100, 0.98);
+  backdrop-filter: blur(35px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 0 40px rgba(100, 150, 255, 0.1);
+  animation: floatIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 260px; /* Уменьшил с 320px до 260px (на 20%) */
+  max-height: 60vh; /* Уменьшил высоту */
+  overflow-y: auto;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0);
+  }
+}
+
+/* УМЕНЬШЕННЫЙ КАЛЕНДАРЬ */
+.CalendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.NavButton {
+  background: rgba(255, 255, 255, 0.12);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.NavButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.MonthYear {
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: -0.3px;
+}
+
+.WeekDays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.WeekDay {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 4px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.CalendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.EmptyDay {
+  height: 32px;
+}
+
+.Day {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Day:hover:not(.Past):not(.Selected) {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.Day.Selected {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 3px 10px rgba(102, 126, 234, 0.5);
+  transform: scale(1.05);
+}
+
+.Day.Today:not(.Selected) {
+  background: rgba(102, 126, 234, 0.25);
+  border: 1px solid rgba(102, 126, 234, 0.5);
+}
+
+.Day.Past {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.CalendarFooter {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+}
+
+.TodayButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.TodayButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* УМЕНЬШЕННЫЙ ВЕРТИКАЛЬНЫЙ ТАЙМПИКЕР */
+.TimePickerHeader {
+  margin-bottom: 16px;
+  text-align: center;
+  width: 100%;
+}
+
+.TimePickerTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 6px;
+}
+
+.WorkHours {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  display: inline-block;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* УМЕНЬШЕННЫЙ ВЕРТИКАЛЬНЫЙ ВЫБОР ВРЕМЕНИ */
+.TimeGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 300px; /* Уменьшил высоту */
+  overflow-y: auto;
+  padding-right: 4px;
+  width: 100%;
+}
+
+.TimeGrid::-webkit-scrollbar {
+  width: 4px;
+}
+
+.TimeGrid::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+}
+
+.TimeGrid::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 6px;
+}
+
+.TimeSlot {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px; /* Уменьшил высоту */
+  width: 100%;
+  text-align: left;
+}
+
+.TimeSlot:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateX(3px);
+}
+
+.TimeSlot.SelectedTime {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  transform: translateX(3px);
+}
+
+.TimeValue {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.TimePeriod {
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.8;
+  margin-left: auto;
+  padding: 3px 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+.TimeIcon {
+  font-size: 16px;
+}
+
+.TimePickerFooter {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  width: 100%;
+}
+
+.DurationInfo {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: inline-block;
+}
+
+/* Подсказки */
+.Hints {
+  margin-top: 8px;
+}
+
+.Hint {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.HintIcon {
+  font-size: 18px;
+  opacity: 0.8;
+  flex-shrink: 0;
+}
+
+.HintText {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
+}
+
+.SubmitButton {
+  margin-top: 12px;
+  padding: 18px 32px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  border-radius: 18px !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.SubmitButton:hover:not(:disabled) {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 16px 32px rgba(102, 126, 234, 0.4) !important;
+}
+
+@media (max-width: 520px) {
+  .CreateBookingForm {
+    padding: 24px;
+    gap: 24px;
+    max-width: 100%;
+  }
+
+  .CreateBookingForm__Title {
+    font-size: 24px;
+  }
+
+  .DateTimeDisplay {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .DateButton, .TimeButton {
+    padding: 14px 18px;
+    min-height: 52px;
+    font-size: 15px;
+  }
+
+  .FloatingPicker {
+    width: 240px; /* Еще меньше на мобильных */
+    padding: 14px;
+  }
+
+  .CalendarGrid {
+    gap: 3px;
+  }
+
+  .Day {
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .EmptyDay {
+    height: 28px;
+  }
+
+  .WeekDay {
+    font-size: 10px;
+    padding: 3px 0;
+  }
+
+  .NavButton {
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+  }
+
+  .MonthYear {
+    font-size: 14px;
+  }
+
+  .TimeSlot {
+    padding: 8px 10px;
+    min-height: 40px;
+  }
+
+  .TimeValue {
+    font-size: 13px;
+    gap: 8px;
+  }
+
+  .TimeIcon {
+    font-size: 14px;
+  }
+
+  .TimePeriod {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+
+  .SubmitButton {
+    padding: 16px 28px !important;
+  }
+}
+
+@media (max-height: 700px) {
+  .FloatingPicker {
+    max-height: 70vh;
+  }
+  
+  .TimeGrid {
+    max-height: 250px;
+  }
 }

@@ -1,6 +1,6 @@
 import { Footer } from "@/widgets/Footer";
 import { Header } from "@/widgets/Header"
-import styles from "./ClientLayout.module.scss"
+import styles from "./clientLayout.module.scss"
 
 export const ClientLayout = ({
   children,
