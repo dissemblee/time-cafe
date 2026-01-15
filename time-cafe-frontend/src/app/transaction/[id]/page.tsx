@@ -90,7 +90,7 @@ export default function PayPage() {
               {isBookingLoading ? (
                 <div className={styles.PayPage__skeleton} style={{ width: '120px' }}></div>
               ) : (
-                <span className={styles.PayPage__infoValue}>{booking?.table?.name}</span>
+                <span className={styles.PayPage__infoValue}>{booking?.table_id}</span>
               )}
             </div>
           </div>

@@ -3,35 +3,15 @@
 import React from 'react';
 import { LiquidButton } from '../../../shared/ui/LiquidButton/LiquidButton';
 import styles from './GamesSection.module.scss';
+import { Loader } from '@/shared/ui/Loader';
+import { Error } from "@/shared/ui/Error";
+import { useGetAllBoardGamesQuery } from '@/entities/boardGame';
 
 export const GamesSection: React.FC = () => {
-  const games = [
-    {
-      platform: 'PS5',
-      title: 'Spider-Man 2',
-      description: 'Захватывающее приключение с Питером Паркером и Майлзом Моралесом',
-      players: '1-2 игрока',
-      genre: 'Приключение'
-    },
-    {
-      platform: 'XBOX',
-      title: 'Halo Infinite',
-      description: 'Эпическая научно-фантастическая сага с мастером Чифом',
-      players: '1-4 игрока',
-      genre: 'Шутер'
-    },
-    {
-      platform: 'SWITCH',
-      title: 'Zelda: Tears of the Kingdom',
-      description: 'Легендарное приключение Линка в огромном открытом мире',
-      players: '1 игрок',
-      genre: 'Приключение'
-    }
-  ];
-
-  const handleBookGame = (gameTitle: string) => {
-    alert(`Забронировано: ${gameTitle}`);
-  };
+  const { data: gameData, isLoading, error } = useGetAllBoardGamesQuery({page: 1, per_page: 10});
+    
+  if (isLoading) return <Loader />;
+  if (error) return <Error />;
 
   return (
     <section className={styles.GamesSection}>
@@ -44,35 +24,35 @@ export const GamesSection: React.FC = () => {
           Самые востребованные игры нашего антикафе
         </p>
       </div>
-      
+ 
       <div className={styles.GamesSection__grid}>
-        {games.map((game, index) => (
-          <div key={index} className={styles.GamesSection__card}>
-            <div className={styles.GamesSection__image}>
-              <div className={styles.GamesSection__platform}>{game.platform}</div>
-              <div className={styles.GamesSection__imageRefraction}></div>
-            </div>
-            <div className={styles.GamesSection__content}>
-              <h3 className={styles.GamesSection__gameTitle}>{game.title}</h3>
-              <p className={styles.GamesSection__gameDescription}>
-                {game.description}
-              </p>
-              <div className={styles.GamesSection__details}>
-                <span className={styles.GamesSection__detail}>{game.players}</span>
-                <span className={styles.GamesSection__detail}>{game.genre}</span>
+        {gameData!.data?.length > 0 ? (
+          gameData!.data.map((game) => (
+            <div key={game.id} className={styles.GamesSection__card}>
+              <div className={styles.GamesSection__image}>
+                <div className={styles.GamesSection__imageRefraction}></div>
               </div>
-              <LiquidButton 
-                variant="primary" 
-                onClick={() => handleBookGame(game.title)}
-                className={styles.GamesSection__button}
-              >
-                <span>Забронировать</span>
-                <i className="fas fa-arrow-right"></i>
-              </LiquidButton>
+              <div className={styles.GamesSection__content}>
+                <h3 className={styles.GamesSection__gameTitle}>{game.name}</h3>
+                <p className={styles.GamesSection__gameDescription}>
+                  {game.description}
+                </p>
+                <div className={styles.GamesSection__details}>
+                  <span className={styles.GamesSection__detail}>
+                    {game.quantity ? `Количество: ${game.quantity}` : "Нет в наличии"}
+                  </span>
+                </div>
+              </div>
+              <div className={styles.GamesSection__glow}></div>
             </div>
-            <div className={styles.GamesSection__glow}></div>
+          ))
+        ) : (
+          <div className={styles.GamesSection__card}>
+            <div className={styles.GamesSection__details}>
+              <span className={styles.GamesSection__detail}>Упс... Игр нет</span>
+            </div>
           </div>
-        ))}
+        )}
       </div>
     </section>
   );

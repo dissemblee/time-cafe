@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -24,7 +25,9 @@ abstract class BaseService
     public function create(array $data): Model
     {
         $this->validate($data);
-        return $this->modelClass::create($data);
+        return DB::transaction(function () use ($data) {
+            return $this->modelClass::create($data);
+        });
     }
 
     public function update(int $id, array $data): ?Model
@@ -35,9 +38,10 @@ abstract class BaseService
         }
 
         $this->validate($data, $id);
-        $model->update($data);
-
-        return $model;
+        return DB::transaction(function () use ($model, $data) {
+            $model->update($data);
+            return $model->fresh();
+        });
     }
 
     public function delete(int $id): bool
@@ -47,7 +51,9 @@ abstract class BaseService
             return false;
         }
 
-        return $model->delete();
+        return DB::transaction(function () use ($model) {
+            return $model->delete();
+        });
     }
 
     protected function validate(array $data, int $id = null)
