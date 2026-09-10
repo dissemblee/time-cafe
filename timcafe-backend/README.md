@@ -1,61 +1,79 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Time Cafe Backend
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Laravel API для клиентского приложения и панели управления Time Cafe. Сервис хранит данные залов и столиков, меню, игр, клиентов и персонала, создаёт бронирования, рассчитывает их стоимость и ведёт транзакции демонстрационной оплаты.
 
-## About Laravel
+## Стек
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+PHP 8.2, Laravel 12, Laravel Sanctum, PostgreSQL 17, Firebase PHP-JWT, PHPUnit. Для контейнерного запуска используется PHP-FPM и Nginx из корня репозитория.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Локальная настройка
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Требуются PHP 8.2+, Composer и PostgreSQL либо Docker Compose из корня проекта.
 
-## Learning Laravel
+```bash
+cp .env.example .env
+composer install
+php artisan key:generate
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Для PostgreSQL внесите в `.env` как минимум следующие значения. При запуске через Docker хост БД — `db`; при локальном запуске укажите адрес своего PostgreSQL.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```dotenv
+APP_URL=http://localhost
+DB_CONNECTION=pgsql
+DB_HOST=db
+DB_PORT=5432
+DB_DATABASE=timcafe
+DB_USERNAME=postgres
+DB_PASSWORD=secret
+SESSION_DRIVER=file
+JWT_SECRET=replace-with-a-long-random-secret
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Затем создайте схему и демо-данные:
 
-## Laravel Sponsors
+```bash
+php artisan migrate --seed
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Запуск без Docker:
 
-### Premium Partners
+```bash
+php artisan serve
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+При запуске из Docker используйте команды из [корневого README](../README.md#быстрый-старт-в-docker).
 
-## Contributing
+## API
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Базовый URL: `/api`.
 
-## Code of Conduct
+Публично доступны `POST /register`, `POST /login`, чтение `/food-items`, `/board-games`, `/rooms`, `/tables`, `/room-layout-items`, а также проверка ссылки регистрации. Остальные операции требуют `auth:sanctum`.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Группа | Назначение |
+| --- | --- |
+| `food-items`, `board-games` | каталог меню и игр |
+| `rooms`, `tables`, `room-layout-items` | помещения, столики и элементы схемы |
+| `bookings` | создание, просмотр, отмена и список бронирований текущего клиента (`/bookings/my-bookings`) |
+| `payments/create-session`, `transactions` | создание платёжной сессии и работа с транзакциями |
+| `users`, `clients`, `staffs`, `roots` | управление пользователями и персоналом |
+| `registration-links` | выпуск и проверка временных ссылок для регистрации |
 
-## Security Vulnerabilities
+Полный перечень и HTTP-методы определены в [routes/api.php](routes/api.php).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Бизнес-правила
 
-## License
+- при создании бронирования длительность округляется вверх до целого часа;
+- стоимость рассчитывается как число часов × `min_price` зала;
+- при отмене бронирования столик возвращается в состояние `FREE`;
+- тестовый callback оплаты с вероятностью 90% подтверждает транзакцию; при неуспехе бронирование отменяется.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Проверки
+
+```bash
+php artisan test
+```
+
+## Безопасность
+
+Не коммитьте `.env`, реальный `JWT_SECRET`, пароли БД и учётные данные, создаваемые сидерами. Демо-платёжный callback не является интеграцией с реальным платёжным провайдером и не должен использоваться для приёма платежей.

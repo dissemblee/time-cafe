@@ -1,94 +1,71 @@
-# Особенности структуры и интеграция FSD и NextJS app routing
+# Time Cafe Frontend
 
-## 📂 Папка `app`-> Является точкой входа, в ней лежат маршруты.  
-  - App routing обязывает создавать маршруты внутри папки `app`, и называть их `page.tsx`, например для маршрута `/`.  
-  - Папка `app` будет иметь в себе маршруты, а фактическая реализация страницы будет лежать в папке `pages`.  
-  - Таким образом получится изолировать маршруты от фактической реализации и избежать захламления папки `app`.
+Frontend для сервиса тайм-кафе и административной панели. Приложение построено на Next.js App Router; страницы сгруппированы по принципам Feature-Sliced Design.
 
-  **Нейминг:**
-  - **Файлы:** всегда `page.tsx`  
-  - **Функции:** `PascalCase + Route` → `LandingRoute()`  
-  - **Пример:** `app/landing/page.tsx -> LandingRoute()`
+## Что реализовано
 
-## 📂 Папка `pages`-> Фактическая реализация страниц.  
+- главная страница, каталог залов, меню и настольных игр;
+- авторизация, регистрация и регистрация по временной ссылке;
+- визуальный билдер схемы помещения и выбор столика для бронирования;
+- профиль и история бронирований клиента;
+- демонстрационный экран оплаты;
+- административные экраны для управления залами, схемами, столиками, меню, играми, пользователями, клиентами, персоналом, бронированиями и транзакциями.
 
-  **Нейминг:**
-  - **Файлы:** `PascalCase + Page.tsx` → `LandingPage.tsx`, `LoginPage.tsx`  
-  - **Функции:** совпадает с именем файла, `PascalCase`  
-  - **Примеры:** `pages/landing/LandingPage.tsx -> LandingPage()`, `pages/LoginPage.tsx -> LoginPage()`
+## Стек
 
-## 📂 Папка `widgets` — Составные UI компоненты.
+Next.js 15, React 19, TypeScript, Redux Toolkit/RTK Query, Axios, Ant Design, SCSS Modules, Konva и React Konva.
 
-  **Нейминг:**
-  - **Файлы и компоненты:** `PascalCase` → `Header.tsx`, `Sidebar.tsx`  
-  - **Стили:** `.module.css` → `Header.module.css`  
-  - **Пример:** `widgets/Header/Header.tsx || Header.module.css`
+## Требования и запуск
 
-## 📂 Папка `features` — Блоки
-  **Нейминг:**
-  - **Файлы UI:** `PascalCase` → `LoginForm.tsx`, `NotificationList.tsx`  
-  - **Пример:** ` features/auth/ui/LoginForm.tsx -> LoginForm()`, `features/auth/model/authSlice.ts`  
+Нужны Node.js 20+ и запущенный backend. Установите зависимости и создайте `.env.local`:
 
-## 📂 Папка `entities` — доменные объекты
-  **Нейминг:**
-  - **Модели / типы:** `PascalCase` → `User.ts`, `Product.ts`  
-  - **API:** `camel.case` → `user.api.ts`  
-  - **Файлы state / model:** `camelCase` → `authSlice.ts`  
-  - **Утилиты:** `camelCase` → `userUtils.ts`  
-  - **Пример:** `entities/user/model.ts || api.ts || utils.ts`
+```dotenv
+NEXT_PUBLIC_BACKEND_URL=http://localhost/api
+NEXT_PUBLIC_JWT_SECRET=the-same-value-as-backend-JWT_SECRET
+```
 
-## 📂 Папка `shared` — переиспользуемые утилиты и UI
-  **Нейминг:**
-  - **UI компоненты:** `PascalCase` → `Button.tsx`, `Modal.tsx`  
-  - **Утилиты:** `camelCase` → `fetcher.ts`, `debounce.ts`  
-  - **Пример:** `shared/ui/Button.tsx || Input.tsx`
+```bash
+npm ci
+npm run dev
+```
 
-# 🎨 Принципы БЭМ
+Приложение откроется на `http://localhost:3000`.
 
-### **Блок (Block)** → Самостоятельный компонент с собственной логикой и стилями
+## Команды
 
-**Название файла** → `НазваниеUIБлока.module.scss → LoginForm.module.scss`
+```bash
+npm run dev    # режим разработки с Turbopack
+npm run build  # production-сборка
+npm run start  # запуск production-сборки
+npm run lint   # проверка ESLint
+```
 
-**Использовать миксины и переменные** → `в scss @use '../../shared/styles/variables' as * @use '../../shared/styles/mixins' as *;`
+## Структура
 
-### **Блок (Block)** → Основная часть
-**Обозначение:** `BlockPascalCase`
-**Пример:**
-  ```scss
-    .Header {
-      @include flexCenter;
-      @include cardInfoBase;
-      padding: $value-9 $value-28;
-      background-color: #080A23;
-    }
-  ```
+```text
+src/
+├── app/       # маршруты Next.js, layout и providers
+├── pages/     # композиция экранов
+├── widgets/   # крупные составные блоки интерфейса
+├── features/  # пользовательские сценарии: формы, бронирование, редактор схемы
+├── entities/  # доменные типы и API для room, table, booking и др.
+└── shared/    # общие компоненты, хуки, стили и HTTP-клиент
+```
 
-### **Элемент (Element)** → Составная часть блока, не существует без блока
-**Обозначение:** `block__element`
-**Пример:**
-  ```scss
-    .Header__logo {
-      width: 120px;
-    }
+Маршруты в `src/app` остаются тонкими: они подключают реализацию страницы из `src/pages`. Защита приватных адресов задана в `src/middleware.ts`: клиентские маршруты — `/booking`, `/profile`, `/transaction`, `/fake-gateway`; панель управления — `/admin`.
 
-    .Header__nav {
-      display: flex;
-    }
-  ```
+## Билдер схемы зала
 
-### **Модификатор (Modifier)** → Вариант блока или элемента (цвет, состояние, размер)
-**Обозначение:** `block--modifier` или `block__element--modifier`
-**Пример:**
-  ```scss
-    .Button--primary {
-      background-color: #344AEB;
-    }
+Администратор открывает редактор по маршруту `/admin/builder/[roomId]`. Он реализован в `src/features/room-builder` на Konva и сохраняет схему в API как набор `room-layout-items`.
 
-    .Button--disabled {
-      opacity: 0.5;
-    }
+- создаёт на холсте стены, диваны и столики;
+- при создании столика запрашивает его название, число мест и диванов, наличие консоли и телевизора, после чего создаёт связанную запись столика в API;
+- позволяет выделять элементы, перетаскивать их с привязкой к сетке 20 px, менять размер и поворачивать;
+- поддерживает клавиатурное редактирование выделенного элемента: стрелки — перемещение, `R` — поворот на 15°, `Delete`/`Backspace` — удаление;
+- по кнопке «Сохранить» создаёт или обновляет схему текущего зала.
 
-    .Header__nav--mobile {
-      display: none;
-    }
-  ```
+## Интеграция с API
+
+HTTP-клиент находится в `src/shared/api.ts`. Для изменяющих запросов он сначала запрашивает CSRF-cookie Laravel, затем передаёт `X-XSRF-TOKEN`. Поэтому API должен быть доступен по адресу из `NEXT_PUBLIC_BACKEND_URL` и разрешать credentialed CORS-запросы с адреса фронтенда.
+
+JWT сохраняется в cookie `user_token`. В текущей реализации middleware проверяет его симметричным секретом из `NEXT_PUBLIC_JWT_SECRET`; см. предупреждение о production-безопасности в [корневом README](../README.md#важные-замечания).
